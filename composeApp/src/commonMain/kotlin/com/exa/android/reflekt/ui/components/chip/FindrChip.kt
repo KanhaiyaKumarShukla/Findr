@@ -22,6 +22,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.exa.android.reflekt.ui.theme.Primary
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
+
 // ─────────────────────────────────────────────────────────────
 //  Filter chip  (toggleable, selection-aware)
 // ─────────────────────────────────────────────────────────────
@@ -41,29 +53,40 @@ fun FindrFilterChip(
     modifier: Modifier = Modifier,
     leadingIcon: @Composable (() -> Unit)? = null,
 ) {
-    FilterChip(
-        selected = selected,
-        onClick = onToggle,
-        label = {
+    Box(
+        modifier = modifier
+            .height(48.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(
+                if (selected) MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
+                else MaterialTheme.colorScheme.background.copy(alpha = 0.5f),
+            )
+            .border(
+                width = 1.dp,
+                color = if (selected) MaterialTheme.colorScheme.primary
+                else MaterialTheme.colorScheme.outline,
+                shape = RoundedCornerShape(16.dp),
+            )
+            .clickable { onToggle() },
+        contentAlignment = Alignment.Center,
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            if (leadingIcon != null) {
+                leadingIcon()
+                Spacer(Modifier.width(8.dp))
+            }
             Text(
                 text = label,
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
+                color = if (selected) MaterialTheme.colorScheme.primary
+                else MaterialTheme.colorScheme.onSurface,
             )
-        },
-        leadingIcon = leadingIcon,
-        colors = FilterChipDefaults.filterChipColors(
-            selectedContainerColor = Primary.copy(alpha = 0.15f),
-            selectedLabelColor = Primary,
-            selectedLeadingIconColor = Primary,
-        ),
-        border = if (selected) {
-            BorderStroke(width = 1.5.dp, color = Primary)
-        } else {
-            BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.outline)
-        },
-        modifier = modifier,
-    )
+        }
+    }
 }
 
 // ─────────────────────────────────────────────────────────────

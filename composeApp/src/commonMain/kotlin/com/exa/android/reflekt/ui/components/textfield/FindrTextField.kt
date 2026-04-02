@@ -57,6 +57,7 @@ fun FindrTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    colors: androidx.compose.material3.TextFieldColors? = null,
 ) {
     val isError = !errorMessage.isNullOrEmpty()
 
@@ -89,14 +90,14 @@ fun FindrTextField(
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions,
             shape = RoundedCornerShape(16.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = if (isError) MaterialTheme.colorScheme.error else Primary,
+            colors = colors ?: OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = if (isError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
                 unfocusedBorderColor = if (isError) MaterialTheme.colorScheme.error
                 else MaterialTheme.colorScheme.outline,
                 focusedContainerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.5f),
                 unfocusedContainerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.5f),
                 disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-                cursorColor = Primary,
+                cursorColor = MaterialTheme.colorScheme.primary,
                 errorBorderColor = MaterialTheme.colorScheme.error,
                 errorLeadingIconColor = MaterialTheme.colorScheme.error,
             ),
