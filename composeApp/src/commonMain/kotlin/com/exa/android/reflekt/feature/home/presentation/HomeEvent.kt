@@ -10,4 +10,6 @@ sealed class HomeEvent {
     data object ViewAllLiveClicked : HomeEvent()
     data class BottomNavClicked(val index: Int) : HomeEvent()
     data class AnnouncementCtaClicked(val announcementId: String) : HomeEvent()
+    data class ProjectEnrollClicked(val projectId: String) : HomeEvent()
+    data class BugCollaborateClicked(val bugId: String) : HomeEvent()
 }

@@ -23,7 +23,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Close
@@ -116,8 +115,11 @@ fun CreatePostSelectionScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Bug report (secondary style)
-            BugReportOption(
+            // Bug report
+            SelectionOption(
+                icon = Icons.Default.BugReport,
+                title = "Report a Bug",
+                description = "Help us improve the app experience.",
                 onClick = { onCategorySelected(PostCategory.BUG_REPORT) },
             )
         }
@@ -275,66 +277,6 @@ private fun SupportDivider() {
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.background)
                 .padding(horizontal = 8.dp),
-        )
-    }
-}
-
-@Composable
-private fun BugReportOption(onClick: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.outlineVariant,
-                shape = RoundedCornerShape(16.dp),
-            )
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = ripple(),
-                onClick = onClick,
-            )
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        // Icon container
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .clip(RoundedCornerShape(12.dp))
-                .background(MaterialTheme.colorScheme.surfaceVariant),
-            contentAlignment = Alignment.Center,
-        ) {
-            Icon(
-                imageVector = Icons.Default.BugReport,
-                contentDescription = "Report a Bug",
-                modifier = Modifier.size(20.dp),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-
-        Spacer(modifier = Modifier.width(16.dp))
-
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = "Report a Bug",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f),
-            )
-
-            Text(
-                text = "Help us improve the app experience.",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-
-        Icon(
-            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-            contentDescription = null,
-            modifier = Modifier.size(18.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }

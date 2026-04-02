@@ -41,6 +41,7 @@ import androidx.compose.material.icons.filled.Campaign
 import androidx.compose.material.icons.filled.ChatBubbleOutline
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
@@ -76,20 +77,38 @@ import com.exa.android.reflekt.ui.theme.appColors
 private val LiveRed = Color(0xFFEF4444)
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel) {
+fun HomeScreen(
+    viewModel: HomeViewModel,
+    onNavigateToCreatePost: () -> Unit = {},
+    onNavigateToNotifications: () -> Unit = {},
+) {
     val uiState by viewModel.uiState.collectAsState()
 
     Scaffold(
         topBar = {
             TopNavBar(
                 notificationCount = uiState.notificationCount,
-                onEvent = viewModel::onEvent,
+                onEvent = { event ->
+                    if (event is HomeEvent.NotificationClicked) {
+                        onNavigateToNotifications()
+                    } else {
+                        viewModel.onEvent(event)
+                    }
+                },
             )
         },
         bottomBar = {
             BottomNavBar(
                 items = uiState.bottomNavItems,
-                onEvent = viewModel::onEvent,
+                onEvent = { event ->
+                    if (event is HomeEvent.BottomNavClicked &&
+                        uiState.bottomNavItems.getOrNull(event.index)?.isFab == true
+                    ) {
+                        onNavigateToCreatePost()
+                    } else {
+                        viewModel.onEvent(event)
+                    }
+                },
             )
         },
         containerColor = MaterialTheme.colorScheme.background,
@@ -107,30 +126,44 @@ fun HomeScreen(viewModel: HomeViewModel) {
                 )
             }
 
-            // Trending News Ticker
-            item {
-                TrendingNewsTicker(items = uiState.newsTickerItems)
+            // Sticky: Trending News Ticker + Filter Chips
+            stickyHeader {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.background),
+                ) {
+                    TrendingNewsTicker(items = uiState.newsTickerItems)
+                    FilterChipsRow(
+                        chips = uiState.filterChips,
+                        onEvent = viewModel::onEvent,
+                    )
+                }
             }
 
-            // Filter Chips
-            item {
-                FilterChipsRow(
-                    chips = uiState.filterChips,
-                    onEvent = viewModel::onEvent,
-                )
-            }
+            // Mixed Feed Items
+            items(uiState.feedItems, key = { it.id }) { item ->
+                when (item) {
+                    is FeedItem.Post -> FeedPostCard(
+                        post = item.data,
+                        onEvent = viewModel::onEvent,
+                    )
 
-            // Feed Posts
-            items(uiState.feedPosts, key = { it.id }) { post ->
-                FeedPostCard(post = post, onEvent = viewModel::onEvent)
-            }
+                    is FeedItem.Project -> ProjectPostCard(
+                        project = item.data,
+                        onEvent = viewModel::onEvent,
+                    )
 
-            // Announcements
-            items(uiState.announcements, key = { it.id }) { announcement ->
-                AnnouncementCard(
-                    announcement = announcement,
-                    onEvent = viewModel::onEvent,
-                )
+                    is FeedItem.Bug -> BugPostCard(
+                        bug = item.data,
+                        onEvent = viewModel::onEvent,
+                    )
+
+                    is FeedItem.Announcement -> AnnouncementCard(
+                        announcement = item.data,
+                        onEvent = viewModel::onEvent,
+                    )
+                }
             }
 
             item { Spacer(modifier = Modifier.height(16.dp)) }
@@ -716,6 +749,374 @@ private fun FeedPostCard(
                     contentDescription = "Share",
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.size(20.dp),
+                )
+            }
+        }
+    }
+}
+
+// ─── Project Post Card ───────────────────────────────────────────────────────
+
+@Composable
+private fun ProjectPostCard(
+    project: ProjectPost,
+    onEvent: (HomeEvent) -> Unit,
+) {
+    val appColors = MaterialTheme.appColors
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 4.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(MaterialTheme.colorScheme.surface)
+            .border(1.dp, appColors.cardBorder.copy(alpha = 0.5f), RoundedCornerShape(16.dp))
+            .padding(16.dp),
+    ) {
+        // Header: Avatar + Name + Tag + three-dot menu
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(CircleShape)
+                    .background(project.avatarColor.copy(alpha = 0.2f)),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = null,
+                    tint = project.avatarColor,
+                    modifier = Modifier.size(22.dp),
+                )
+            }
+
+            Spacer(modifier = Modifier.width(12.dp))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    Text(
+                        text = project.authorName,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold,
+                    )
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(6.dp))
+                            .background(project.categoryColor.copy(alpha = 0.1f))
+                            .padding(horizontal = 8.dp, vertical = 2.dp),
+                    ) {
+                        Text(
+                            text = project.categoryLabel,
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = project.categoryColor,
+                        )
+                    }
+                }
+                Text(
+                    text = project.authorSubtitle,
+                    fontSize = 11.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+
+            IconButton(onClick = { }) {
+                Icon(
+                    imageVector = Icons.Default.MoreHoriz,
+                    contentDescription = "More",
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        // Title
+        Text(
+            text = project.title,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onBackground,
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Description
+        Text(
+            text = project.description,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            lineHeight = 20.sp,
+        )
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        // Tech tags
+        if (project.tags.isNotEmpty()) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                project.tags.forEach { tag ->
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(6.dp))
+                            .border(
+                                1.dp,
+                                MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
+                                RoundedCornerShape(6.dp),
+                            )
+                            .padding(horizontal = 10.dp, vertical = 5.dp),
+                    ) {
+                        Text(
+                            text = "#$tag",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(14.dp))
+        }
+
+        // Footer: Location + Enroll button
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            if (project.location != null) {
+                Icon(
+                    imageVector = Icons.Default.LocationOn,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(14.dp),
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = project.location,
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            Button(
+                onClick = { onEvent(HomeEvent.ProjectEnrollClicked(project.id)) },
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                ),
+                contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
+            ) {
+                Text(
+                    text = "Enroll",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 13.sp,
+                )
+            }
+        }
+    }
+}
+
+// ─── Bug Post Card ───────────────────────────────────────────────────────────
+
+@Composable
+private fun BugPostCard(
+    bug: BugPost,
+    onEvent: (HomeEvent) -> Unit,
+) {
+    val appColors = MaterialTheme.appColors
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 4.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(MaterialTheme.colorScheme.surface)
+            .border(1.dp, bug.categoryColor.copy(alpha = 0.25f), RoundedCornerShape(16.dp))
+            .padding(16.dp),
+    ) {
+        // Header: Avatar + Name + Tag + three-dot menu
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(CircleShape)
+                    .background(bug.avatarColor.copy(alpha = 0.2f)),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = null,
+                    tint = bug.avatarColor,
+                    modifier = Modifier.size(22.dp),
+                )
+            }
+
+            Spacer(modifier = Modifier.width(12.dp))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    Text(
+                        text = bug.authorName,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold,
+                    )
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(6.dp))
+                            .background(bug.categoryColor.copy(alpha = 0.1f))
+                            .padding(horizontal = 8.dp, vertical = 2.dp),
+                    ) {
+                        Text(
+                            text = bug.categoryLabel,
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = bug.categoryColor,
+                        )
+                    }
+                }
+                Text(
+                    text = bug.authorSubtitle,
+                    fontSize = 11.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+
+            IconButton(onClick = { }) {
+                Icon(
+                    imageVector = Icons.Default.MoreHoriz,
+                    contentDescription = "More",
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        // Title
+        Text(
+            text = bug.title,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onBackground,
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        // Error code snippet
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(10.dp))
+                .background(MaterialTheme.colorScheme.background)
+                .border(
+                    1.dp,
+                    bug.categoryColor.copy(alpha = 0.2f),
+                    RoundedCornerShape(10.dp),
+                )
+                .padding(12.dp),
+        ) {
+            Text(
+                text = bug.errorSnippet,
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                lineHeight = 18.sp,
+                fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+            )
+        }
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        // Footer: Overlapping avatars + Collaborate button
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            // Overlapping collaborator circles
+            if (bug.collaboratorColors.isNotEmpty()) {
+                Box(modifier = Modifier.height(28.dp)) {
+                    bug.collaboratorColors.forEachIndexed { index, color ->
+                        Box(
+                            modifier = Modifier
+                                .offset(x = (index * 18).dp)
+                                .size(28.dp)
+                                .clip(CircleShape)
+                                .border(2.dp, MaterialTheme.colorScheme.surface, CircleShape)
+                                .background(color.copy(alpha = 0.3f)),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Person,
+                                contentDescription = null,
+                                tint = color,
+                                modifier = Modifier.size(14.dp),
+                            )
+                        }
+                    }
+                    // "+N" count
+                    if (bug.collaboratorCount > 0) {
+                        Box(
+                            modifier = Modifier
+                                .offset(x = (bug.collaboratorColors.size * 18).dp)
+                                .size(28.dp)
+                                .clip(CircleShape)
+                                .border(2.dp, MaterialTheme.colorScheme.surface, CircleShape)
+                                .background(appColors.cardBackground),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Text(
+                                text = "+${bug.collaboratorCount}",
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            // Collaborate button
+            Row(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(10.dp))
+                    .border(
+                        1.dp,
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
+                        RoundedCornerShape(10.dp),
+                    )
+                    .clickable { onEvent(HomeEvent.BugCollaborateClicked(bug.id)) }
+                    .padding(horizontal = 14.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ChatBubbleOutline,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(16.dp),
+                )
+                Text(
+                    text = "Collaborate",
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.primary,
                 )
             }
         }

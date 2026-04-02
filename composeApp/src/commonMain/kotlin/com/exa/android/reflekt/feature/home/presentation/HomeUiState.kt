@@ -38,6 +38,32 @@ data class FeedPost(
     val avatarColor: Color,
 )
 
+data class ProjectPost(
+    val id: String,
+    val authorName: String,
+    val authorSubtitle: String,
+    val title: String,
+    val description: String,
+    val tags: List<String> = emptyList(),
+    val location: String? = null,
+    val avatarColor: Color,
+    val categoryLabel: String = "Project",
+    val categoryColor: Color = Color(0xFF13B6EC),
+)
+
+data class BugPost(
+    val id: String,
+    val authorName: String,
+    val authorSubtitle: String,
+    val title: String,
+    val errorSnippet: String,
+    val collaboratorCount: Int = 0,
+    val collaboratorColors: List<Color> = emptyList(),
+    val avatarColor: Color,
+    val categoryLabel: String = "Bug Help",
+    val categoryColor: Color = Color(0xFFEF4444),
+)
+
 data class AnnouncementPost(
     val id: String,
     val source: String,
@@ -48,6 +74,13 @@ data class AnnouncementPost(
     val accentColor: Color,
     val icon: ImageVector,
 )
+
+sealed class FeedItem(val id: String) {
+    data class Post(val data: FeedPost) : FeedItem(data.id)
+    data class Project(val data: ProjectPost) : FeedItem(data.id)
+    data class Bug(val data: BugPost) : FeedItem(data.id)
+    data class Announcement(val data: AnnouncementPost) : FeedItem(data.id)
+}
 
 data class BottomNavItem(
     val label: String,
@@ -60,8 +93,7 @@ data class HomeUiState(
     val liveEvents: List<LiveEvent> = emptyList(),
     val newsTickerItems: List<NewsTicker> = emptyList(),
     val filterChips: List<FilterChip> = emptyList(),
-    val feedPosts: List<FeedPost> = emptyList(),
-    val announcements: List<AnnouncementPost> = emptyList(),
+    val feedItems: List<FeedItem> = emptyList(),
     val bottomNavItems: List<BottomNavItem> = emptyList(),
     val selectedFilterIndex: Int = 0,
     val notificationCount: Int = 0,

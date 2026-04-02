@@ -22,6 +22,7 @@ import com.exa.android.reflekt.feature.post.presentation.create_event.CreateEven
 import com.exa.android.reflekt.feature.post.presentation.create_event.CreateEventViewModel
 import com.exa.android.reflekt.feature.post.presentation.create_project.CreateProjectScreen
 import com.exa.android.reflekt.feature.post.presentation.create_project.CreateProjectViewModel
+import com.exa.android.reflekt.feature.notification.presentation.NotificationScreen
 import com.exa.android.reflekt.feature.project.presentation.ProjectDetailScreen
 import com.exa.android.reflekt.ui.theme.CampusConnectTheme
 
@@ -64,7 +65,11 @@ fun App() {
 
                 "home" -> {
                     val viewModel = remember { HomeViewModel() }
-                    HomeScreen(viewModel = viewModel)
+                    HomeScreen(
+                        viewModel = viewModel,
+                        onNavigateToCreatePost = { currentScreen = "create_post" },
+                        onNavigateToNotifications = { currentScreen = "notifications" },
+                    )
                 }
 
                 "create_post" -> {
@@ -76,7 +81,7 @@ fun App() {
                                 else -> { /* TODO: Navigate to other post creation screens */ }
                             }
                         },
-                        onDismiss = { currentScreen = "login" },
+                        onDismiss = { currentScreen = "home" },
                     )
                 }
 
@@ -97,6 +102,12 @@ fun App() {
                         viewModel = viewModel,
                         onCancel = { currentScreen = "create_post" },
                         onPostSuccess = { currentScreen = "home" },
+                    )
+                }
+
+                "notifications" -> {
+                    NotificationScreen(
+                        onBack = { currentScreen = "home" },
                     )
                 }
 
