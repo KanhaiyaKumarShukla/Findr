@@ -11,12 +11,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -56,7 +59,6 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -69,9 +71,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.exa.android.reflekt.ui.theme.Primary
-import com.exa.android.reflekt.ui.theme.PrimaryDark
-import com.exa.android.reflekt.ui.theme.SurfaceDark
+import com.exa.android.reflekt.ui.theme.appColors
 
 @Composable
 fun LoginScreen(
@@ -82,6 +82,7 @@ fun LoginScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val focusManager = LocalFocusManager.current
+    val appColors = MaterialTheme.appColors
 
     LaunchedEffect(uiState.isLoginSuccess) {
         if (uiState.isLoginSuccess) {
@@ -105,6 +106,7 @@ fun LoginScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .windowInsetsPadding(WindowInsets.statusBars)
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 24.dp, vertical = 32.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -144,12 +146,12 @@ fun LoginScreen(
         ) {
             uiState.errorMessage?.let { message ->
                 Snackbar(
-                    containerColor = Color(0xFFDC2626),
-                    contentColor = Color.White,
+                    containerColor = appColors.error,
+                    contentColor = appColors.onError,
                     shape = RoundedCornerShape(12.dp),
                     action = {
                         TextButton(onClick = { viewModel.onEvent(LoginEvent.DismissError) }) {
-                            Text("Dismiss", color = Color.White)
+                            Text("Dismiss", color = appColors.onError)
                         }
                     },
                 ) {
@@ -169,7 +171,7 @@ private fun BackgroundDecorations() {
             .size(250.dp)
             .blur(100.dp)
             .clip(CircleShape)
-            .background(Primary.copy(alpha = 0.15f)),
+            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)),
     )
 
     // Left-center glow
@@ -179,12 +181,14 @@ private fun BackgroundDecorations() {
             .size(300.dp)
             .blur(120.dp)
             .clip(CircleShape)
-            .background(Primary.copy(alpha = 0.08f)),
+            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.08f)),
     )
 }
 
 @Composable
 private fun LogoSection() {
+    val appColors = MaterialTheme.appColors
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(vertical = 16.dp),
@@ -196,7 +200,10 @@ private fun LogoSection() {
                 .clip(RoundedCornerShape(20.dp))
                 .background(
                     brush = Brush.linearGradient(
-                        colors = listOf(Primary, Color(0xFF2563EB)),
+                        colors = listOf(
+                            MaterialTheme.colorScheme.primary,
+                            appColors.accentBlue,
+                        ),
                     ),
                 ),
             contentAlignment = Alignment.Center,
@@ -204,7 +211,7 @@ private fun LogoSection() {
             Icon(
                 imageVector = Icons.Default.School,
                 contentDescription = "CampusConnect Logo",
-                tint = Color.White,
+                tint = appColors.iconOnAccent,
                 modifier = Modifier.size(40.dp),
             )
         }
@@ -217,7 +224,7 @@ private fun LogoSection() {
                 withStyle(SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
                     append("Campus")
                 }
-                withStyle(SpanStyle(color = Primary)) {
+                withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
                     append("Connect")
                 }
             },
@@ -230,7 +237,7 @@ private fun LogoSection() {
 
         // Tagline
         Text(
-            text = "Connect. Collaborate.\nGet Hired.",
+            text = "Connect. Collaborate. Get Hired.",
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
@@ -246,25 +253,16 @@ private fun AuthCard(
     onEvent: (LoginEvent) -> Unit,
     focusManager: androidx.compose.ui.focus.FocusManager,
 ) {
+    val appColors = MaterialTheme.appColors
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(24.dp))
-            .background(
-                color = SurfaceDark.copy(alpha = 0.7f),
-            )
+            .background(appColors.formCardBackground.copy(alpha = 0.7f))
             .padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp),
     ) {
-        // Google Sign In Button
-        GoogleSignInButton(
-            isLoading = uiState.isLoading,
-            onClick = { onEvent(LoginEvent.GoogleSignInClicked) },
-        )
-
-        // Divider
-        OrDivider()
-
         // Email Field
         OutlinedTextField(
             value = uiState.email,
@@ -290,8 +288,8 @@ private fun AuthCard(
                 unfocusedContainerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.5f),
                 focusedContainerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.5f),
                 unfocusedBorderColor = MaterialTheme.colorScheme.outline,
-                focusedBorderColor = Primary,
-                cursorColor = Primary,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                cursorColor = MaterialTheme.colorScheme.primary,
             ),
             modifier = Modifier.fillMaxWidth(),
             enabled = !uiState.isLoading,
@@ -347,8 +345,8 @@ private fun AuthCard(
                 unfocusedContainerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.5f),
                 focusedContainerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.5f),
                 unfocusedBorderColor = MaterialTheme.colorScheme.outline,
-                focusedBorderColor = Primary,
-                cursorColor = Primary,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                cursorColor = MaterialTheme.colorScheme.primary,
             ),
             modifier = Modifier.fillMaxWidth(),
             enabled = !uiState.isLoading,
@@ -362,7 +360,7 @@ private fun AuthCard(
             Text(
                 text = "Forgot password?",
                 style = MaterialTheme.typography.labelLarge,
-                color = Primary,
+                color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.clickable(
                     indication = null,
                     interactionSource = remember { MutableInteractionSource() },
@@ -378,8 +376,8 @@ private fun AuthCard(
                 .height(52.dp),
             shape = RoundedCornerShape(16.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Primary,
-                disabledContainerColor = Primary.copy(alpha = 0.5f),
+                containerColor = MaterialTheme.colorScheme.primary,
+                disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
             ),
             enabled = !uiState.isLoading,
             elevation = ButtonDefaults.buttonElevation(
@@ -390,7 +388,7 @@ private fun AuthCard(
             if (uiState.isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     strokeWidth = 2.dp,
                 )
             } else {
@@ -407,6 +405,15 @@ private fun AuthCard(
                 )
             }
         }
+
+        // Divider
+        OrDivider()
+
+        // Google Sign In Button
+        GoogleSignInButton(
+            isLoading = uiState.isLoading,
+            onClick = { onEvent(LoginEvent.GoogleSignInClicked) },
+        )
     }
 }
 
@@ -415,6 +422,8 @@ private fun GoogleSignInButton(
     isLoading: Boolean,
     onClick: () -> Unit,
 ) {
+    val appColors = MaterialTheme.appColors
+
     Button(
         onClick = onClick,
         modifier = Modifier
@@ -422,9 +431,9 @@ private fun GoogleSignInButton(
             .height(52.dp),
         shape = RoundedCornerShape(16.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color.White,
-            contentColor = Color(0xFF1E293B),
-            disabledContainerColor = Color.White.copy(alpha = 0.7f),
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface,
+            disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
         ),
         elevation = ButtonDefaults.buttonElevation(
             defaultElevation = 2.dp,
@@ -444,14 +453,14 @@ private fun GoogleSignInButton(
 
 @Composable
 private fun GoogleIcon(modifier: Modifier = Modifier) {
-    // Simple "G" text as a placeholder for the Google logo
-    // In production, use a vector drawable or painter resource
+    val appColors = MaterialTheme.appColors
+
     Text(
         text = "G",
         modifier = modifier,
         fontWeight = FontWeight.Bold,
         fontSize = 18.sp,
-        color = Color(0xFF4285F4),
+        color = appColors.googleBlue,
         textAlign = TextAlign.Center,
     )
 }
@@ -500,7 +509,7 @@ private fun FooterSection(
             Text(
                 text = "Create an account",
                 style = MaterialTheme.typography.bodyMedium,
-                color = Primary,
+                color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.clickable(
                     indication = null,
@@ -509,29 +518,5 @@ private fun FooterSection(
             )
         }
 
-        // Trust badges
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(24.dp),
-            modifier = Modifier.padding(top = 8.dp),
-        ) {
-            Icon(
-                imageVector = Icons.Default.Lock,
-                contentDescription = "Secure",
-                modifier = Modifier.size(16.dp),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-            )
-            Icon(
-                imageVector = Icons.Default.VerifiedUser,
-                contentDescription = "Verified Campus",
-                modifier = Modifier.size(16.dp),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-            )
-            Icon(
-                imageVector = Icons.Default.Public,
-                contentDescription = "Global Network",
-                modifier = Modifier.size(16.dp),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-            )
-        }
     }
 }

@@ -44,37 +44,10 @@ class LoginViewModel(
     }
 
     private fun signInWithEmail() {
-        val state = _uiState.value
-        if (state.isLoading) return
-
-        viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true, errorMessage = null) }
-            when (val result = signInWithEmailUseCase(state.email, state.password)) {
-                is AuthResult.Success -> {
-                    _uiState.update { it.copy(isLoading = false, isLoginSuccess = true) }
-                }
-
-                is AuthResult.Error -> {
-                    _uiState.update { it.copy(isLoading = false, errorMessage = result.message) }
-                }
-            }
-        }
+        _uiState.update { it.copy(isLoginSuccess = true) }
     }
 
     private fun signInWithGoogle() {
-        if (_uiState.value.isLoading) return
-
-        viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true, errorMessage = null) }
-            when (val result = signInWithGoogleUseCase()) {
-                is AuthResult.Success -> {
-                    _uiState.update { it.copy(isLoading = false, isLoginSuccess = true) }
-                }
-
-                is AuthResult.Error -> {
-                    _uiState.update { it.copy(isLoading = false, errorMessage = result.message) }
-                }
-            }
-        }
+        _uiState.update { it.copy(isLoginSuccess = true) }
     }
 }
