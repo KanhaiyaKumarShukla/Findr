@@ -35,7 +35,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun CampusConnectTheme(
+fun FindrTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {

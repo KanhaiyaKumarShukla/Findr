@@ -8,12 +8,12 @@ import com.exa.android.reflekt.feature.auth.domain.usecase.SignInWithEmailUseCas
 import com.exa.android.reflekt.feature.auth.domain.usecase.SignInWithGoogleUseCase
 import com.exa.android.reflekt.feature.auth.presentation.login.LoginScreen
 import com.exa.android.reflekt.feature.auth.presentation.login.LoginViewModel
-import com.exa.android.reflekt.ui.theme.CampusConnectTheme
+import com.exa.android.reflekt.ui.theme.FindrTheme
 
 @Composable
 @Preview
 fun App() {
-    CampusConnectTheme(darkTheme = true) {
+    FindrTheme(darkTheme = true) {
         // Manual DI — replace with Koin/Hilt when you integrate a DI framework
         val viewModel = remember {
             val repository = AuthRepositoryImpl()
