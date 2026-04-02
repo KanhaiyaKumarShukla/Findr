@@ -1,15 +1,31 @@
 package com.exa.android.reflekt.feature.home.presentation
 
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+// NOTE: No Compose (Color, ImageVector) imports here — domain state must be pure Kotlin.
+// Compose types are mapped in the individual card composables.
+
+// ─── Enums for visual variants ────────────────────────────────────────────────
+
+enum class LiveGradientType {
+    BLUE_TECH, PURPLE_VOTE, GREEN_SPORTS, ORANGE_CAMPAIGN
+}
+
+enum class LiveEventIconType {
+    LAPTOP, VOTE, SOCCER, CAMPAIGN
+}
+
+enum class FeedImageIconType {
+    CODE, AWARD, BUG_REPORT, ANNOUNCEMENT, NONE
+}
+
+// ─── Data models ─────────────────────────────────────────────────────────────
 
 data class LiveEvent(
     val id: String,
     val title: String,
     val subtitle: String,
     val viewerCount: Int,
-    val gradientColors: List<Color>,
-    val icon: ImageVector,
+    val gradientType: LiveGradientType,
+    val iconType: LiveEventIconType,
     val isPulsing: Boolean = false,
 )
 
@@ -30,12 +46,12 @@ data class FeedPost(
     val location: String? = null,
     val content: String,
     val hasImage: Boolean = false,
-    val imageGradientColors: List<Color> = emptyList(),
-    val imageIcon: ImageVector? = null,
+    val imageIconType: FeedImageIconType = FeedImageIconType.NONE,
     val likeCount: Int,
     val commentCount: Int,
     val isLiked: Boolean = false,
-    val avatarColor: Color,
+    // Avatar colour as ARGB Long — no Compose import needed
+    val avatarColorArgb: Long,
 )
 
 data class ProjectPost(
@@ -46,9 +62,10 @@ data class ProjectPost(
     val description: String,
     val tags: List<String> = emptyList(),
     val location: String? = null,
-    val avatarColor: Color,
+    val avatarColorArgb: Long,
     val categoryLabel: String = "Project",
-    val categoryColor: Color = Color(0xFF13B6EC),
+    // Colour key — mapped to actual Color in composable
+    val categoryColorKey: String = "blue",
 )
 
 data class BugPost(
@@ -58,10 +75,9 @@ data class BugPost(
     val title: String,
     val errorSnippet: String,
     val collaboratorCount: Int = 0,
-    val collaboratorColors: List<Color> = emptyList(),
-    val avatarColor: Color,
+    val collaboratorColorArgbs: List<Long> = emptyList(),
+    val avatarColorArgb: Long,
     val categoryLabel: String = "Bug Help",
-    val categoryColor: Color = Color(0xFFEF4444),
 )
 
 data class AnnouncementPost(
@@ -71,20 +87,20 @@ data class AnnouncementPost(
     val title: String,
     val description: String,
     val ctaLabel: String,
-    val accentColor: Color,
-    val icon: ImageVector,
+    val accentColorKey: String = "blue",
+    val iconType: FeedImageIconType = FeedImageIconType.ANNOUNCEMENT,
 )
 
 sealed class FeedItem(val id: String) {
-    data class Post(val data: FeedPost) : FeedItem(data.id)
-    data class Project(val data: ProjectPost) : FeedItem(data.id)
-    data class Bug(val data: BugPost) : FeedItem(data.id)
+    data class Post(val data: FeedPost)             : FeedItem(data.id)
+    data class Project(val data: ProjectPost)       : FeedItem(data.id)
+    data class Bug(val data: BugPost)               : FeedItem(data.id)
     data class Announcement(val data: AnnouncementPost) : FeedItem(data.id)
 }
 
 data class BottomNavItem(
     val label: String,
-    val icon: ImageVector,
+    val iconKey: String,
     val isSelected: Boolean = false,
     val isFab: Boolean = false,
 )
@@ -97,4 +113,5 @@ data class HomeUiState(
     val bottomNavItems: List<BottomNavItem> = emptyList(),
     val selectedFilterIndex: Int = 0,
     val notificationCount: Int = 0,
+    val errorMessage: String? = null,
 )
