@@ -1,49 +1,32 @@
 package com.exa.android.reflekt
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.safeContentPadding
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
-import org.jetbrains.compose.resources.painterResource
-
-import myapplication.composeapp.generated.resources.Res
-import myapplication.composeapp.generated.resources.compose_multiplatform
+import com.exa.android.reflekt.feature.auth.data.repository.AuthRepositoryImpl
+import com.exa.android.reflekt.feature.auth.domain.usecase.SignInWithEmailUseCase
+import com.exa.android.reflekt.feature.auth.domain.usecase.SignInWithGoogleUseCase
+import com.exa.android.reflekt.feature.auth.presentation.login.LoginScreen
+import com.exa.android.reflekt.feature.auth.presentation.login.LoginViewModel
+import com.exa.android.reflekt.ui.theme.CampusConnectTheme
 
 @Composable
 @Preview
 fun App() {
-    MaterialTheme {
-        var showContent by remember { mutableStateOf(false) }
-        Column(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.primaryContainer)
-                .safeContentPadding()
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Button(onClick = { showContent = !showContent }) {
-                Text("Click me!")
-            }
-            AnimatedVisibility(showContent) {
-                val greeting = remember { Greeting().greet() }
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Image(painterResource(Res.drawable.compose_multiplatform), null)
-                    Text("Compose: $greeting")
-                }
-            }
+    CampusConnectTheme(darkTheme = true) {
+        // Manual DI — replace with Koin/Hilt when you integrate a DI framework
+        val viewModel = remember {
+            val repository = AuthRepositoryImpl()
+            val signInWithEmail = SignInWithEmailUseCase(repository)
+            val signInWithGoogle = SignInWithGoogleUseCase(repository)
+            LoginViewModel(signInWithEmail, signInWithGoogle)
         }
+
+        LoginScreen(
+            viewModel = viewModel,
+            onLoginSuccess = { /* TODO: Navigate to home */ },
+            onNavigateToSignUp = { /* TODO: Navigate to sign up */ },
+            onNavigateToForgotPassword = { /* TODO: Navigate to forgot password */ },
+        )
     }
 }
