@@ -64,13 +64,21 @@ class CreateProjectViewModel : ViewModel() {
             }
 
             is CreateProjectEvent.UploadAttachment -> {
-                // TODO: Integrate with platform file picker
+                _uiState.update { it.copy(showFilePickerDialog = true) }
+            }
+
+            is CreateProjectEvent.FileSelected -> {
                 _uiState.update {
                     it.copy(
-                        attachedFileName = "Project_Wireframes_v1.pdf",
-                        attachedFileSize = "2.4 MB",
+                        attachedFileName = event.fileName,
+                        attachedFileSize = event.fileSize,
+                        showFilePickerDialog = false,
                     )
                 }
+            }
+
+            is CreateProjectEvent.DismissFilePicker -> {
+                _uiState.update { it.copy(showFilePickerDialog = false) }
             }
 
             is CreateProjectEvent.RemoveAttachment -> {

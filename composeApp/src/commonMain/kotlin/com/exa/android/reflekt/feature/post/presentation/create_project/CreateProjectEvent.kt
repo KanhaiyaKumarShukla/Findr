@@ -10,6 +10,8 @@ sealed class CreateProjectEvent {
     data object IncrementOpenings : CreateProjectEvent()
     data object DecrementOpenings : CreateProjectEvent()
     data object UploadAttachment : CreateProjectEvent()
+    data class FileSelected(val fileName: String, val fileSize: String) : CreateProjectEvent()
+    data object DismissFilePicker : CreateProjectEvent()
     data object RemoveAttachment : CreateProjectEvent()
     data object PreviewClicked : CreateProjectEvent()
     data object PostProject : CreateProjectEvent()

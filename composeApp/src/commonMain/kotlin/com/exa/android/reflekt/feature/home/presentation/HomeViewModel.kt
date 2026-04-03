@@ -64,6 +64,28 @@ class HomeViewModel : ViewModel() {
             is HomeEvent.AnnouncementCtaClicked -> { /* TODO */ }
             is HomeEvent.ProjectEnrollClicked  -> { /* TODO: navigate to project detail */ }
             is HomeEvent.BugCollaborateClicked -> { /* TODO */ }
+
+            is HomeEvent.PollVoted -> {
+                _uiState.update { state ->
+                    state.copy(
+                        feedItems = state.feedItems.map { item ->
+                            if (item is FeedItem.Poll && item.data.id == event.pollId && item.data.votedIndex == null) {
+                                val updatedOptions = item.data.options.mapIndexed { i, option ->
+                                    if (i == event.optionIndex) option.copy(voteCount = option.voteCount + 1)
+                                    else option
+                                }
+                                FeedItem.Poll(
+                                    item.data.copy(
+                                        options = updatedOptions,
+                                        votedIndex = event.optionIndex,
+                                        totalVotes = item.data.totalVotes + 1,
+                                    ),
+                                )
+                            } else item
+                        },
+                    )
+                }
+            }
         }
     }
 
@@ -157,6 +179,22 @@ class HomeViewModel : ViewModel() {
                     collaboratorCount = 2,
                     collaboratorColorArgbs = listOf(0xFF13B6EC, 0xFF6366F1),
                     avatarColorArgb = 0xFFEF4444,
+                ),
+            ),
+            FeedItem.Poll(
+                PollPost(
+                    id = "poll_1",
+                    authorName = "Campus Life",
+                    authorSubtitle = "1 hour ago • Student Council",
+                    question = "Best study spot on campus? 📚",
+                    options = listOf(
+                        PollOption("Library 3rd Floor", voteCount = 142),
+                        PollOption("Student Center Café", voteCount = 98),
+                        PollOption("Engineering Lounge", voteCount = 67),
+                        PollOption("Outdoor Quad", voteCount = 43),
+                    ),
+                    totalVotes = 350,
+                    avatarColorArgb = 0xFFA855F7,
                 ),
             ),
             FeedItem.Post(

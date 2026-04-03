@@ -22,6 +22,7 @@ import com.exa.android.reflekt.feature.home.presentation.components.FeedPostCard
 import com.exa.android.reflekt.feature.home.presentation.components.FilterChipsRow
 import com.exa.android.reflekt.feature.home.presentation.components.HomeTopNavBar
 import com.exa.android.reflekt.feature.home.presentation.components.LiveNowSection
+import com.exa.android.reflekt.feature.home.presentation.components.PollCard
 import com.exa.android.reflekt.feature.home.presentation.components.ProjectPostCard
 import com.exa.android.reflekt.feature.home.presentation.components.TrendingNewsTicker
 
@@ -38,6 +39,7 @@ fun HomeScreen(
     viewModel: HomeViewModel,
     onNavigateToCreatePost: () -> Unit = {},
     onNavigateToNotifications: () -> Unit = {},
+    onNavigateToProjectDetail: (projectId: String) -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -96,9 +98,14 @@ fun HomeScreen(
             items(uiState.feedItems, key = { it.id }) { item ->
                 when (item) {
                     is FeedItem.Post         -> FeedPostCard(item.data, viewModel::onEvent)
-                    is FeedItem.Project      -> ProjectPostCard(item.data, viewModel::onEvent)
+                    is FeedItem.Project      -> ProjectPostCard(
+                        project = item.data,
+                        onEvent = viewModel::onEvent,
+                        onCardClick = { onNavigateToProjectDetail(item.data.id) },
+                    )
                     is FeedItem.Bug          -> BugPostCard(item.data, viewModel::onEvent)
                     is FeedItem.Announcement -> AnnouncementCard(item.data, viewModel::onEvent)
+                    is FeedItem.Poll         -> PollCard(item.data, viewModel::onEvent)
                 }
             }
 

@@ -12,4 +12,5 @@ data class CreateProjectUiState(
     val isPosting: Boolean = false,
     val errorMessage: String? = null,
     val isPostSuccess: Boolean = false,
+    val showFilePickerDialog: Boolean = false,
 )

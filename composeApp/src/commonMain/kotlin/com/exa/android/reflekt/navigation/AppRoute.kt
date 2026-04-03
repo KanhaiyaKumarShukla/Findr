@@ -19,7 +19,9 @@ import kotlinx.serialization.Serializable
 @Serializable data object CreatePostSelectionRoute
 @Serializable data object CreateProjectRoute
 @Serializable data object CreateEventRoute
+@Serializable data object CreateBugReportRoute
 
 @Serializable data class ProjectDetailRoute(val projectId: String)
+@Serializable data class BugDetailRoute(val bugId: String)
 
 @Serializable data object ProfileRoute
