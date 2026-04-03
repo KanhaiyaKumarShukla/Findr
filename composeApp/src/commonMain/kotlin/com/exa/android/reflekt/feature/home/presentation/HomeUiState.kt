@@ -91,11 +91,29 @@ data class AnnouncementPost(
     val iconType: FeedImageIconType = FeedImageIconType.ANNOUNCEMENT,
 )
 
+data class PollOption(
+    val text: String,
+    val voteCount: Int = 0,
+)
+
+data class PollPost(
+    val id: String,
+    val authorName: String,
+    val authorSubtitle: String,
+    val question: String,
+    val options: List<PollOption>,
+    val totalVotes: Int = 0,
+    val votedIndex: Int? = null,
+    val avatarColorArgb: Long,
+    val accentColorKey: String = "purple",
+)
+
 sealed class FeedItem(val id: String) {
     data class Post(val data: FeedPost)             : FeedItem(data.id)
     data class Project(val data: ProjectPost)       : FeedItem(data.id)
     data class Bug(val data: BugPost)               : FeedItem(data.id)
     data class Announcement(val data: AnnouncementPost) : FeedItem(data.id)
+    data class Poll(val data: PollPost)             : FeedItem(data.id)
 }
 
 data class BottomNavItem(

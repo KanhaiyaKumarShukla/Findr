@@ -35,8 +35,10 @@ import androidx.compose.material.icons.filled.CloudUpload
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.GroupAdd
 import androidx.compose.material.icons.filled.LocalOffer
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.PictureAsPdf
 import androidx.compose.material.icons.filled.Remove
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -44,6 +46,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -77,11 +80,13 @@ fun CreateProjectScreen(
         return
     }
 
+    Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
+    ) { paddingValues ->
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .windowInsetsPadding(WindowInsets.statusBars),
+            .padding(paddingValues),
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             // ── Header ─────────────────────────────────────────────────────
@@ -166,6 +171,17 @@ fun CreateProjectScreen(
             }
         }
     }
+
+    // ── File Picker Dialog ──────────────────────────────────────────────
+    if (uiState.showFilePickerDialog) {
+        FilePickerDialog(
+            onFileSelected = { name, size ->
+                viewModel.onEvent(CreateProjectEvent.FileSelected(name, size))
+            },
+            onDismiss = { viewModel.onEvent(CreateProjectEvent.DismissFilePicker) },
+        )
+    }
+    }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -177,10 +193,6 @@ private fun Header(onCancel: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f),
-            )
             .padding(horizontal = 16.dp, vertical = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -690,12 +702,7 @@ private fun BottomActionBar(
         modifier = modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.background)
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f),
-            )
-            .windowInsetsPadding(WindowInsets.navigationBars)
-            .padding(horizontal = 16.dp, vertical = 16.dp),
+            .padding(horizontal = 16.dp, vertical = 12.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -760,6 +767,93 @@ private fun BottomActionBar(
             }
         }
     }
+}
+
+@Composable
+private fun FilePickerDialog(
+    onFileSelected: (name: String, size: String) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    val sampleFiles = listOf(
+        Triple("Project_Wireframes_v1.pdf", "2.4 MB", Icons.Default.PictureAsPdf),
+        Triple("Architecture_Diagram.pdf", "1.8 MB", Icons.Default.PictureAsPdf),
+        Triple("UI_Mockup.png", "3.1 MB", Icons.Default.Image),
+        Triple("Requirements_Doc.pdf", "520 KB", Icons.Default.PictureAsPdf),
+    )
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        containerColor = MaterialTheme.colorScheme.surface,
+        shape = RoundedCornerShape(20.dp),
+        title = {
+            Text(
+                text = "Select a File",
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+            )
+        },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                sampleFiles.forEach { (name, size, icon) ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(12.dp))
+                            .clickable { onFileSelected(name, size) }
+                            .padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(40.dp)
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(
+                                    if (name.endsWith(".pdf")) Color(0xFFDC2626).copy(alpha = 0.1f)
+                                    else MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                                ),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Icon(
+                                imageVector = icon,
+                                contentDescription = null,
+                                modifier = Modifier.size(20.dp),
+                                tint = if (name.endsWith(".pdf")) Color(0xFFDC2626)
+                                else MaterialTheme.colorScheme.primary,
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.width(12.dp))
+
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = name,
+                                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
+                                color = MaterialTheme.colorScheme.onSurface,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                            Text(
+                                text = size,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {},
+        dismissButton = {
+            Text(
+                text = "Cancel",
+                style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(8.dp))
+                    .clickable(onClick = onDismiss)
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+            )
+        },
+    )
 }
 
 @Composable

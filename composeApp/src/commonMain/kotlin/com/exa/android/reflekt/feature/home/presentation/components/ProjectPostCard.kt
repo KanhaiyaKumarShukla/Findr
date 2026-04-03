@@ -42,6 +42,7 @@ import com.exa.android.reflekt.ui.theme.appColors
 internal fun ProjectPostCard(
     project: ProjectPost,
     onEvent: (HomeEvent) -> Unit,
+    onCardClick: () -> Unit = {},
 ) {
     val appColors = MaterialTheme.appColors
     val avatarColor = project.avatarColorArgb.toColor()
@@ -54,6 +55,7 @@ internal fun ProjectPostCard(
             .clip(RoundedCornerShape(16.dp))
             .background(MaterialTheme.colorScheme.surface)
             .border(1.dp, appColors.cardBorder.copy(alpha = 0.5f), RoundedCornerShape(16.dp))
+            .clickable(onClick = onCardClick)
             .padding(16.dp),
     ) {
         // Header

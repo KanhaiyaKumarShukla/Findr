@@ -12,4 +12,5 @@ sealed class HomeEvent {
     data class AnnouncementCtaClicked(val announcementId: String) : HomeEvent()
     data class ProjectEnrollClicked(val projectId: String) : HomeEvent()
     data class BugCollaborateClicked(val bugId: String) : HomeEvent()
+    data class PollVoted(val pollId: String, val optionIndex: Int) : HomeEvent()
 }

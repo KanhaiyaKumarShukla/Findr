@@ -36,7 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
-import com.exa.android.reflekt.feature.auth.presentation.registration.components.BackgroundDecorations
+import com.exa.android.reflekt.feature.auth.presentation.login.components.BackgroundDecorations
 import com.exa.android.reflekt.feature.auth.presentation.registration.components.BottomNavigation
 import com.exa.android.reflekt.feature.auth.presentation.registration.components.StepOne
 import com.exa.android.reflekt.feature.auth.presentation.registration.components.StepProgressHeader

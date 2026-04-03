@@ -108,11 +108,6 @@ fun CreatePostSelectionScreen(
                 onClick = { onCategorySelected(PostCategory.POST) },
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Support divider
-            SupportDivider()
-
             Spacer(modifier = Modifier.height(16.dp))
 
             // Bug report
@@ -138,7 +133,7 @@ private fun TopBar(onDismiss: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 24.dp),
+            .padding(horizontal = 24.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.End,
     ) {
         IconButton(
@@ -254,30 +249,6 @@ private fun SelectionOption(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
-    }
-}
-
-@Composable
-private fun SupportDivider() {
-    Box(
-        modifier = Modifier.fillMaxWidth(),
-        contentAlignment = Alignment.Center,
-    ) {
-        HorizontalDivider(
-            color = MaterialTheme.colorScheme.outlineVariant,
-        )
-
-        Text(
-            text = "SUPPORT",
-            style = MaterialTheme.typography.labelMedium.copy(
-                letterSpacing = 1.5.sp,
-                fontWeight = FontWeight.Medium,
-            ),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.background)
-                .padding(horizontal = 8.dp),
-        )
     }
 }
 

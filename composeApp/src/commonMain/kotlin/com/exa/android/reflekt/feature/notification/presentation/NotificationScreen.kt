@@ -30,9 +30,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Campaign
-import androidx.compose.material.icons.filled.DoneAll
 import androidx.compose.material.icons.filled.Event
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.Work
@@ -42,6 +40,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
@@ -149,48 +148,47 @@ fun NotificationScreen(
 ) {
     var selectedFilter by remember { mutableStateOf(0) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .windowInsetsPadding(WindowInsets.statusBars)
-    ) {
-        // ── Sticky Header ────────────────────────────────────────────────────
-        NotificationHeader(
-            selectedFilter = selectedFilter,
-            onFilterSelected = { selectedFilter = it },
-            onBack = onBack,
-        )
-
-        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-
-        // ── Notification List ────────────────────────────────────────────────
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(bottom = 24.dp),
+    Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
         ) {
-            // Today section
-            item {
-                SectionHeader(
-                    title = "Today",
-                    showMarkAllRead = true,
-                )
-            }
-            items(todayNotifications, key = { it.id }) { notification ->
-                NotificationRow(notification)
-            }
+            // ── Sticky Header ────────────────────────────────────────────────
+            NotificationHeader(
+                selectedFilter = selectedFilter,
+                onFilterSelected = { selectedFilter = it },
+                onBack = onBack,
+            )
 
-            // Yesterday section
-            item {
-                SectionHeader(title = "Yesterday")
-            }
-            items(yesterdayNotifications, key = { it.id }) { notification ->
-                NotificationRow(notification)
-            }
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
 
-            // Caught up
-            item {
-                CaughtUpSection()
+            // ── Notification List ────────────────────────────────────────────
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(bottom = 24.dp),
+            ) {
+                // Today section
+                item {
+                    SectionHeader(
+                        title = "Today",
+                        showMarkAllRead = true,
+                    )
+                }
+                items(todayNotifications, key = { it.id }) { notification ->
+                    NotificationRow(notification)
+                }
+
+                // Yesterday section
+                item {
+                    SectionHeader(title = "Yesterday")
+                }
+                items(yesterdayNotifications, key = { it.id }) { notification ->
+                    NotificationRow(notification)
+                }
+
             }
         }
     }
@@ -230,13 +228,6 @@ private fun NotificationHeader(
                 modifier = Modifier.weight(1f),
             )
 
-            IconButton(onClick = { /* TODO: Settings */ }) {
-                Icon(
-                    imageVector = Icons.Default.Settings,
-                    contentDescription = "Settings",
-                    tint = MaterialTheme.colorScheme.onBackground,
-                )
-            }
         }
 
         // Filter chips
@@ -343,13 +334,6 @@ private fun NotificationRow(notification: NotificationItem) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .then(
-                if (notification.isUnread) {
-                    Modifier.drawUnreadIndicator()
-                } else {
-                    Modifier
-                }
-            )
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = ripple(),
@@ -545,49 +529,6 @@ private fun NotificationRow(notification: NotificationItem) {
                     .background(MaterialTheme.colorScheme.primary),
             )
         }
-    }
-}
-
-@Composable
-private fun CaughtUpSection() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 48.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Box(
-            modifier = Modifier
-                .size(64.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.surfaceVariant),
-            contentAlignment = Alignment.Center,
-        ) {
-            Icon(
-                imageVector = Icons.Default.DoneAll,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.size(32.dp),
-            )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = "You're all caught up!",
-            style = MaterialTheme.typography.titleMedium.copy(
-                fontWeight = FontWeight.Bold,
-            ),
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
-        )
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        Text(
-            text = "Check back later for new updates and opportunities.",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-        )
     }
 }
 

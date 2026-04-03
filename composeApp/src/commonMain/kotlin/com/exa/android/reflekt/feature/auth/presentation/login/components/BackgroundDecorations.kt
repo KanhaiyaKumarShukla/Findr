@@ -13,7 +13,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 
 @Composable
-internal fun BackgroundDecorations() {
+fun BackgroundDecorations() {
     // Top-right glow
     Box(
         modifier = Modifier
