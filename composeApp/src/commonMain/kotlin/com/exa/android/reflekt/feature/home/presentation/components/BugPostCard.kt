@@ -3,6 +3,7 @@ package com.exa.android.reflekt.feature.home.presentation.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,7 +25,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,6 +47,7 @@ import com.exa.android.reflekt.ui.theme.DonutLineHeight
 internal fun BugPostCard(
     bug: BugPost,
     onEvent: (HomeEvent) -> Unit,
+    onCardClick: () -> Unit = {},
 ) {
     val colors = DonutTheme.colorTokens
     val avatarColor = bug.avatarColorArgb.toColor()
@@ -56,6 +60,11 @@ internal fun BugPostCard(
             .clip(RoundedCornerShape(DonutRadius.panel))
             .background(colors.surface)
             .border(DonutTheme.dimens.borderThin, DonutTheme.colorTokens.error.copy(alpha = 0.25f), RoundedCornerShape(DonutRadius.panel))
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = ripple(),
+                onClick = onCardClick,
+            )
             .padding(DonutTheme.dimens.spacing16),
     ) {
         Row(

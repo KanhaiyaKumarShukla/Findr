@@ -39,7 +39,12 @@ fun HomeScreen(
     viewModel: HomeViewModel,
     onNavigateToCreatePost: () -> Unit = {},
     onNavigateToNotifications: () -> Unit = {},
+    onNavigateToProfile: () -> Unit = {},
+    onNavigateToChat: () -> Unit = {},
     onNavigateToProjectDetail: (projectId: String) -> Unit = {},
+    onNavigateToBugDetail: (bugId: String) -> Unit = {},
+    onNavigateToEventDetail: (eventId: String) -> Unit = {},
+    onNavigateToPollDetail: (pollId: String) -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -48,10 +53,10 @@ fun HomeScreen(
             HomeTopNavBar(
                 notificationCount = uiState.notificationCount,
                 onEvent = { event ->
-                    if (event is HomeEvent.NotificationClicked) {
-                        onNavigateToNotifications()
-                    } else {
-                        viewModel.onEvent(event)
+                    when (event) {
+                        is HomeEvent.NotificationClicked -> onNavigateToNotifications()
+                        is HomeEvent.ProfileClicked -> onNavigateToProfile()
+                        else -> viewModel.onEvent(event)
                     }
                 },
             )
@@ -60,12 +65,18 @@ fun HomeScreen(
             BottomNavBar(
                 items = uiState.bottomNavItems,
                 onEvent = { event ->
-                    if (event is HomeEvent.BottomNavClicked &&
-                        uiState.bottomNavItems.getOrNull(event.index)?.isFab == true
-                    ) {
-                        onNavigateToCreatePost()
-                    } else {
-                        viewModel.onEvent(event)
+                    when {
+                        event is HomeEvent.BottomNavClicked &&
+                            uiState.bottomNavItems.getOrNull(event.index)?.isFab == true -> {
+                            onNavigateToCreatePost()
+                        }
+                        event is HomeEvent.BottomNavClicked && event.index == 3 -> {
+                            onNavigateToChat()
+                        }
+                        event is HomeEvent.BottomNavClicked && event.index == 4 -> {
+                            onNavigateToProfile()
+                        }
+                        else -> viewModel.onEvent(event)
                     }
                 },
             )
@@ -80,7 +91,13 @@ fun HomeScreen(
             item {
                 LiveNowSection(
                     events = uiState.liveEvents,
-                    onEvent = viewModel::onEvent,
+                    onEvent = { event ->
+                        if (event is HomeEvent.LiveEventClicked) {
+                            onNavigateToEventDetail(event.eventId)
+                        } else {
+                            viewModel.onEvent(event)
+                        }
+                    },
                 )
             }
 
@@ -103,9 +120,17 @@ fun HomeScreen(
                         onEvent = viewModel::onEvent,
                         onCardClick = { onNavigateToProjectDetail(item.data.id) },
                     )
-                    is FeedItem.Bug          -> BugPostCard(item.data, viewModel::onEvent)
+                    is FeedItem.Bug          -> BugPostCard(
+                        bug = item.data,
+                        onEvent = viewModel::onEvent,
+                        onCardClick = { onNavigateToBugDetail(item.data.id) },
+                    )
                     is FeedItem.Announcement -> AnnouncementCard(item.data, viewModel::onEvent)
-                    is FeedItem.Poll         -> PollCard(item.data, viewModel::onEvent)
+                    is FeedItem.Poll         -> PollCard(
+                        poll = item.data,
+                        onEvent = viewModel::onEvent,
+                        onCardClick = { onNavigateToPollDetail(item.data.id) },
+                    )
                 }
             }
 

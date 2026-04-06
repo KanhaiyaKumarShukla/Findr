@@ -20,7 +20,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Explore
-import androidx.compose.material.icons.filled.Groups
+import androidx.compose.material.icons.outlined.ChatBubbleOutline
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
@@ -46,7 +46,7 @@ private fun String.toNavIcon(): ImageVector = when (this) {
     "home"    -> Icons.Default.Home
     "explore" -> Icons.Default.Explore
     "add"     -> Icons.Default.Add
-    "groups"  -> Icons.Default.Groups
+    "chat"    -> Icons.Outlined.ChatBubbleOutline
     "person"  -> Icons.Default.Person
     else      -> Icons.Default.Home
 }

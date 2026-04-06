@@ -8,6 +8,8 @@ import com.exa.android.reflekt.feature.auth.presentation.navigation.authGraph
 import com.exa.android.reflekt.feature.home.presentation.navigation.homeGraph
 import com.exa.android.reflekt.feature.onboarding.presentation.navigation.onboardingGraph
 import com.exa.android.reflekt.feature.post.presentation.navigation.postGraph
+import com.exa.android.reflekt.feature.chat.presentation.navigation.chatGraph
+import com.exa.android.reflekt.feature.profile.presentation.navigation.profileGraph
 import com.exa.android.reflekt.navigation.OnboardingGraph
 import com.exa.android.reflekt.ui.theme.DonutTheme
 
@@ -22,6 +24,8 @@ fun App() {
             authGraph(navController)
             homeGraph(navController)
             postGraph(navController)
+            profileGraph(navController)
+            chatGraph(navController)
         }
     }
 }

@@ -88,7 +88,11 @@ class CreateProjectViewModel : ViewModel() {
             }
 
             is CreateProjectEvent.PreviewClicked -> {
-                // TODO: Navigate to preview
+                _uiState.update { it.copy(showPreview = true) }
+            }
+
+            is CreateProjectEvent.DismissPreview -> {
+                _uiState.update { it.copy(showPreview = false) }
             }
 
             is CreateProjectEvent.PostProject -> postProject()

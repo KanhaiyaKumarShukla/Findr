@@ -182,6 +182,14 @@ fun CreateProjectScreen(
             onDismiss = { viewModel.onEvent(CreateProjectEvent.DismissFilePicker) },
         )
     }
+
+    // ── Preview Bottom Sheet ────────────────────────────────────────────
+    if (uiState.showPreview) {
+        ProjectPreviewSheet(
+            state = uiState,
+            onDismiss = { viewModel.onEvent(CreateProjectEvent.DismissPreview) },
+        )
+    }
     }
 }
 

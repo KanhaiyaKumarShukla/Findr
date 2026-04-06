@@ -31,7 +31,7 @@ import androidx.compose.material.icons.filled.Campaign
 import androidx.compose.material.icons.filled.HowToVote
 import androidx.compose.material.icons.filled.Laptop
 import androidx.compose.material.icons.filled.Podcasts
-import androidx.compose.material.icons.filled.RemoveRedEye
+import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.SportsSoccer
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -217,18 +217,23 @@ private fun LiveEventCard(
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(DonutTheme.dimens.spacing12)
-                .background(Color.Black.copy(alpha = 0.5f), RoundedCornerShape(DonutRadius.lg))
-                .padding(horizontal = DonutTheme.dimens.spacing8, vertical = 3.dp),
+                .background(Color.Black.copy(alpha = 0.7f), RoundedCornerShape(DonutRadius.lg))
+                .padding(horizontal = DonutTheme.dimens.spacing8, vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing4),
         ) {
             Icon(
-                imageVector = Icons.Default.RemoveRedEye,
+                imageVector = Icons.Default.People,
                 contentDescription = null,
                 tint = Color.White,
-                modifier = Modifier.size(DonutTheme.dimens.spacing12),
+                modifier = Modifier.size(14.dp),
             )
-            Text(text = formatViewerCount(event.viewerCount), fontSize = DonutTextSize.caption, color = Color.White)
+            Text(
+                text = formatParticipantCount(event.participantCount),
+                fontSize = DonutTextSize.small,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.White,
+            )
         }
 
         Column(
@@ -256,6 +261,6 @@ private fun LiveEventCard(
     }
 }
 
-private fun formatViewerCount(count: Int): String =
-    if (count >= 1000) "${count / 1000}.${(count % 1000) / 100}k watching"
-    else "$count watching"
+private fun formatParticipantCount(count: Int): String =
+    if (count >= 1000) "${count / 1000}.${(count % 1000) / 100}k joined"
+    else "$count joined"
