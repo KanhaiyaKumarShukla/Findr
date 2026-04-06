@@ -23,7 +23,7 @@ data class LiveEvent(
     val id: String,
     val title: String,
     val subtitle: String,
-    val viewerCount: Int,
+    val participantCount: Int,
     val gradientType: LiveGradientType,
     val iconType: LiveEventIconType,
     val isPulsing: Boolean = false,

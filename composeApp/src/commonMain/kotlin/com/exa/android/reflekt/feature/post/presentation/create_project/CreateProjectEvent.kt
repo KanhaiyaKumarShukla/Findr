@@ -14,6 +14,7 @@ sealed class CreateProjectEvent {
     data object DismissFilePicker : CreateProjectEvent()
     data object RemoveAttachment : CreateProjectEvent()
     data object PreviewClicked : CreateProjectEvent()
+    data object DismissPreview : CreateProjectEvent()
     data object PostProject : CreateProjectEvent()
     data object DismissError : CreateProjectEvent()
 }

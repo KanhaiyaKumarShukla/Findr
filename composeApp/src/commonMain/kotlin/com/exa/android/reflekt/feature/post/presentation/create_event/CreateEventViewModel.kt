@@ -2,6 +2,9 @@ package com.exa.android.reflekt.feature.post.presentation.create_event
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.exa.android.reflekt.core.data.EventRepository
+import com.exa.android.reflekt.core.data.PostedEvent
+import kotlin.random.Random
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -76,6 +79,17 @@ class CreateEventViewModel : ViewModel() {
         viewModelScope.launch {
             _uiState.update { it.copy(isPosting = true) }
             delay(1500) // simulate network
+            EventRepository.addEvent(
+                PostedEvent(
+                    id = "event_${Random.nextInt(100_000)}",
+                    topic = state.topic,
+                    description = state.description,
+                    date = state.date,
+                    time = state.time,
+                    location = if (state.eventType == EventType.PHYSICAL) state.location else state.meetingLink,
+                    isVirtual = state.eventType == EventType.VIRTUAL,
+                ),
+            )
             _uiState.update { it.copy(isPosting = false, isPostSuccess = true) }
         }
     }

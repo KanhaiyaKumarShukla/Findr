@@ -1,9 +1,14 @@
 package com.exa.android.reflekt.feature.home.presentation
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.exa.android.reflekt.core.data.EventRepository
+import com.exa.android.reflekt.core.data.toLiveEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 
 /**
@@ -14,6 +19,19 @@ class HomeViewModel : ViewModel() {
 
     private val _uiState = MutableStateFlow(createInitialState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
+
+    private val sampleLiveEvents = createInitialState().liveEvents
+
+    init {
+        EventRepository.postedEvents
+            .onEach { posted ->
+                val userEvents = posted.map { it.toLiveEvent() }
+                _uiState.update { state ->
+                    state.copy(liveEvents = userEvents + sampleLiveEvents)
+                }
+            }
+            .launchIn(viewModelScope)
+    }
 
     fun onEvent(event: HomeEvent) {
         when (event) {
@@ -95,7 +113,7 @@ class HomeViewModel : ViewModel() {
                 id = "live_1",
                 title = "Inter-University Hackathon",
                 subtitle = "Leaderboard: Team Alpha +40pts",
-                viewerCount = 1200,
+                participantCount = 1200,
                 gradientType = LiveGradientType.BLUE_TECH,
                 iconType = LiveEventIconType.LAPTOP,
                 isPulsing = true,
@@ -104,7 +122,7 @@ class HomeViewModel : ViewModel() {
                 id = "live_2",
                 title = "Student Council Elections",
                 subtitle = "75% Votes Counted • Results incoming",
-                viewerCount = 892,
+                participantCount = 892,
                 gradientType = LiveGradientType.PURPLE_VOTE,
                 iconType = LiveEventIconType.VOTE,
             ),
@@ -112,9 +130,26 @@ class HomeViewModel : ViewModel() {
                 id = "live_3",
                 title = "Football: Home vs. Rivals",
                 subtitle = "4th Quarter • Score 21-14",
-                viewerCount = 2341,
+                participantCount = 2341,
                 gradientType = LiveGradientType.GREEN_SPORTS,
                 iconType = LiveEventIconType.SOCCER,
+            ),
+            LiveEvent(
+                id = "live_4",
+                title = "AI Workshop: LLMs 101",
+                subtitle = "Prof. Kim presenting • Q&A open",
+                participantCount = 478,
+                gradientType = LiveGradientType.BLUE_TECH,
+                iconType = LiveEventIconType.LAPTOP,
+                isPulsing = true,
+            ),
+            LiveEvent(
+                id = "live_5",
+                title = "Spring Fest Campaign",
+                subtitle = "Voting closes in 2 hours",
+                participantCount = 1567,
+                gradientType = LiveGradientType.ORANGE_CAMPAIGN,
+                iconType = LiveEventIconType.CAMPAIGN,
             ),
         ),
         newsTickerItems = listOf(
@@ -214,7 +249,7 @@ class HomeViewModel : ViewModel() {
             BottomNavItem("Home",     "home",     isSelected = true),
             BottomNavItem("Discover", "explore"),
             BottomNavItem("Post",     "add",      isFab = true),
-            BottomNavItem("Groups",   "groups"),
+            BottomNavItem("Chat",     "chat"),
             BottomNavItem("Profile",  "person"),
         ),
         notificationCount = 3,
