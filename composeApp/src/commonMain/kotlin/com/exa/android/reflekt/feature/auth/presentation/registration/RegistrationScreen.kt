@@ -42,7 +42,7 @@ import com.exa.android.reflekt.feature.auth.presentation.registration.components
 import com.exa.android.reflekt.feature.auth.presentation.registration.components.StepProgressHeader
 import com.exa.android.reflekt.feature.auth.presentation.registration.components.StepThree
 import com.exa.android.reflekt.feature.auth.presentation.registration.components.StepTwo
-import com.exa.android.reflekt.ui.theme.appColors
+import com.exa.android.reflekt.ui.theme.DonutTheme
 
 @Composable
 fun RegistrationScreen(
@@ -51,7 +51,7 @@ fun RegistrationScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val focusManager = LocalFocusManager.current
-    val appColors = MaterialTheme.appColors
+    val colors = DonutTheme.colorTokens
 
     // Navigate away on success
     LaunchedEffect(uiState.isRegistrationSuccess) {
@@ -61,7 +61,7 @@ fun RegistrationScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(colors.background)
             .clickable(
                 indication = null,
                 interactionSource = remember { MutableInteractionSource() },
@@ -152,12 +152,12 @@ fun RegistrationScreen(
         ) {
             uiState.errorMessage?.let { message ->
                 Snackbar(
-                    containerColor = appColors.error,
-                    contentColor = appColors.onError,
+                    containerColor = colors.error,
+                    contentColor = colors.onError,
                     shape = RoundedCornerShape(12.dp),
                     action = {
                         TextButton(onClick = { viewModel.onEvent(RegistrationEvent.DismissError) }) {
-                            Text("Dismiss", color = appColors.onError)
+                            Text("Dismiss", color = colors.onError)
                         }
                     },
                 ) {

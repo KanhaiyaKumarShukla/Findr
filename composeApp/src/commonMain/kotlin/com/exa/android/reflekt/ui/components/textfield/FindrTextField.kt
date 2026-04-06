@@ -22,8 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.exa.android.reflekt.ui.theme.Primary
-
+import com.exa.android.reflekt.ui.theme.DonutTheme
+import com.exa.android.reflekt.ui.theme.DonutRadius
 /**
  * Branded outlined text field with:
  * - Leading icon slot
@@ -89,7 +89,7 @@ fun FindrTextField(
             visualTransformation = visualTransformation,
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions,
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(DonutRadius.panel),
             colors = colors ?: OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = if (isError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
                 unfocusedBorderColor = if (isError) MaterialTheme.colorScheme.error
@@ -113,7 +113,7 @@ fun FindrTextField(
                 text = errorMessage.orEmpty(),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.error,
-                modifier = Modifier.padding(start = 16.dp, top = 4.dp),
+                modifier = Modifier.padding(start = DonutTheme.dimens.spacing16, top = DonutTheme.dimens.spacing4),
             )
         }
     }

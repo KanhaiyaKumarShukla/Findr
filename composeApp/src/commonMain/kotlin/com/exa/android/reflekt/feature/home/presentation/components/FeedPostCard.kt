@@ -17,8 +17,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ChatBubbleOutline
 import androidx.compose.material.icons.automirrored.filled.MenuBook
+import androidx.compose.material.icons.filled.ChatBubbleOutline
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -37,14 +37,15 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.exa.android.reflekt.feature.home.presentation.FeedImageIconType
 import com.exa.android.reflekt.feature.home.presentation.FeedPost
 import com.exa.android.reflekt.feature.home.presentation.HomeEvent
-import com.exa.android.reflekt.ui.theme.appColors
+import com.exa.android.reflekt.ui.theme.DonutTheme
+import com.exa.android.reflekt.ui.theme.DonutRadius
+import com.exa.android.reflekt.ui.theme.DonutTextSize
+import com.exa.android.reflekt.ui.theme.DonutLineHeight
 
-private val LiveRed = Color(0xFFEF4444)
+
 
 private fun FeedImageIconType.toImageVector(): ImageVector? = when (this) {
     FeedImageIconType.CODE          -> Icons.Default.Code
@@ -54,41 +55,40 @@ private fun FeedImageIconType.toImageVector(): ImageVector? = when (this) {
     FeedImageIconType.NONE          -> null
 }
 
-private val feedImageGradients = mapOf(
-    FeedImageIconType.CODE         to listOf(Color(0xFF1A237E), Color(0xFF0EA0D1)),
-    FeedImageIconType.AWARD        to listOf(Color(0xFF004D40), Color(0xFF26A69A)),
-    FeedImageIconType.BUG_REPORT   to listOf(Color(0xFF2D1B4E), Color(0xFF6366F1)),
-    FeedImageIconType.ANNOUNCEMENT to listOf(Color(0xFF7C2D12), Color(0xFFEA580C)),
+@Composable
+private fun feedImageGradients() = mapOf(
+    FeedImageIconType.CODE         to listOf(DonutTheme.colorTokens.surfaceVariant, DonutTheme.staticColorTokens.accentBlue),
+    FeedImageIconType.AWARD        to listOf(DonutTheme.colorTokens.surfaceVariant, DonutTheme.staticColorTokens.accentGreen),
+    FeedImageIconType.BUG_REPORT   to listOf(DonutTheme.colorTokens.surfaceVariant, DonutTheme.staticColorTokens.accentIndigo),
+    FeedImageIconType.ANNOUNCEMENT to listOf(DonutTheme.colorTokens.surfaceVariant, DonutTheme.staticColorTokens.accentOrange),
     FeedImageIconType.NONE         to emptyList(),
 )
 
-/** Social feed post card. */
 @Composable
 internal fun FeedPostCard(
     post: FeedPost,
     onEvent: (HomeEvent) -> Unit,
 ) {
-    val appColors = MaterialTheme.appColors
+    val colors = DonutTheme.colorTokens
     val avatarColor = post.avatarColorArgb.toColor()
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surface)
-            .border(1.dp, appColors.cardBorder.copy(alpha = 0.5f), RoundedCornerShape(16.dp)),
+            .padding(horizontal = DonutTheme.dimens.spacing16, vertical = DonutTheme.dimens.spacing4)
+            .clip(RoundedCornerShape(DonutRadius.panel))
+            .background(colors.surface)
+            .border(DonutTheme.dimens.borderThin, colors.cardBorder.copy(alpha = 0.5f), RoundedCornerShape(DonutRadius.panel)),
     ) {
-        // Header
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(DonutTheme.dimens.spacing16),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(
                 modifier = Modifier
-                    .size(36.dp)
+                    .size(DonutTheme.dimens.avatarSizeMedium)
                     .clip(CircleShape)
                     .background(avatarColor.copy(alpha = 0.2f)),
                 contentAlignment = Alignment.Center,
@@ -97,11 +97,11 @@ internal fun FeedPostCard(
                     imageVector = Icons.Default.Person,
                     contentDescription = null,
                     tint = avatarColor,
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(DonutTheme.dimens.iconSizeLarge),
                 )
             }
 
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(DonutTheme.dimens.spacing12))
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
@@ -111,8 +111,8 @@ internal fun FeedPostCard(
                 )
                 Text(
                     text = post.authorSubtitle,
-                    fontSize = 10.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontSize = DonutTextSize.caption,
+                    color = colors.onSurfaceVariant,
                 )
             }
 
@@ -125,21 +125,19 @@ internal fun FeedPostCard(
             }
         }
 
-        // Content
         Text(
             text = post.content,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onBackground,
-            lineHeight = 22.sp,
-            modifier = Modifier.padding(horizontal = 16.dp),
+            color = colors.onBackground,
+            lineHeight = DonutLineHeight.bodyLoose,
+            modifier = Modifier.padding(horizontal = DonutTheme.dimens.spacing16),
         )
 
-        // Image placeholder
         if (post.hasImage && post.imageIconType != FeedImageIconType.NONE) {
-            val gradientColors = feedImageGradients[post.imageIconType] ?: emptyList()
+            val gradientColors = feedImageGradients()[post.imageIconType] ?: emptyList()
             val icon = post.imageIconType.toImageVector()
             if (gradientColors.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing12))
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -152,74 +150,73 @@ internal fun FeedPostCard(
                             imageVector = icon,
                             contentDescription = null,
                             tint = Color.White.copy(alpha = 0.2f),
-                            modifier = Modifier.size(56.dp),
+                            modifier = Modifier.size(DonutTheme.dimens.fabSize),
                         )
                     }
                 }
             }
         }
 
-        // Action bar
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 8.dp),
+                .padding(horizontal = DonutTheme.dimens.spacing12, vertical = DonutTheme.dimens.spacing8),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Row(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
+                    .clip(RoundedCornerShape(DonutRadius.lg))
                     .clickable { onEvent(HomeEvent.LikeToggled(post.id)) }
-                    .padding(horizontal = 8.dp, vertical = 6.dp),
+                    .padding(horizontal = DonutTheme.dimens.spacing8, vertical = DonutTheme.dimens.spacing6),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing4),
             ) {
                 Icon(
                     imageVector = if (post.isLiked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                     contentDescription = "Like",
-                    tint = if (post.isLiked) LiveRed else MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(20.dp),
+                    tint = if (post.isLiked) DonutTheme.colorTokens.error else colors.onSurfaceVariant,
+                    modifier = Modifier.size(DonutTheme.dimens.iconSizeLarge),
                 )
                 Text(
                     text = "${post.likeCount}",
-                    fontSize = 12.sp,
+                    fontSize = DonutTextSize.small,
                     fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = colors.onSurfaceVariant,
                 )
             }
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(DonutTheme.dimens.spacing8))
 
             Row(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
+                    .clip(RoundedCornerShape(DonutRadius.lg))
                     .clickable { }
-                    .padding(horizontal = 8.dp, vertical = 6.dp),
+                    .padding(horizontal = DonutTheme.dimens.spacing8, vertical = DonutTheme.dimens.spacing6),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing4),
             ) {
                 Icon(
                     imageVector = Icons.Default.ChatBubbleOutline,
                     contentDescription = "Comment",
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(20.dp),
+                    tint = colors.onSurfaceVariant,
+                    modifier = Modifier.size(DonutTheme.dimens.iconSizeLarge),
                 )
                 Text(
                     text = "${post.commentCount}",
-                    fontSize = 12.sp,
+                    fontSize = DonutTextSize.small,
                     fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = colors.onSurfaceVariant,
                 )
             }
 
             Spacer(modifier = Modifier.weight(1f))
 
-            IconButton(onClick = { }, modifier = Modifier.size(36.dp)) {
+            IconButton(onClick = { }, modifier = Modifier.size(DonutTheme.dimens.avatarSizeMedium)) {
                 Icon(
                     imageVector = Icons.Default.Share,
                     contentDescription = "Share",
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(20.dp),
+                    tint = colors.onSurfaceVariant,
+                    modifier = Modifier.size(DonutTheme.dimens.iconSizeLarge),
                 )
             }
         }

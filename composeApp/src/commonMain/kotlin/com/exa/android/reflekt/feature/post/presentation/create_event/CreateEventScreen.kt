@@ -1,5 +1,6 @@
 package com.exa.android.reflekt.feature.post.presentation.create_event
 
+import com.exa.android.reflekt.ui.theme.DonutTheme
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -171,7 +172,7 @@ fun CreateEventScreen(
                 snackbarData = data,
                 containerColor = MaterialTheme.colorScheme.errorContainer,
                 contentColor = MaterialTheme.colorScheme.onErrorContainer,
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(DonutTheme.dimens.spacing12),
             )
         }
     }
@@ -197,13 +198,13 @@ private fun HeaderBar(onCancel: () -> Unit) {
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontWeight = FontWeight.Medium,
             modifier = Modifier
-                .clip(RoundedCornerShape(8.dp))
+                .clip(RoundedCornerShape(DonutTheme.dimens.spacing8))
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = ripple(bounded = true),
                     onClick = onCancel,
                 )
-                .padding(4.dp),
+                .padding(DonutTheme.dimens.spacing4),
         )
 
         Text(
@@ -218,7 +219,7 @@ private fun HeaderBar(onCancel: () -> Unit) {
             text = "Cancel",
             style = MaterialTheme.typography.bodyLarge,
             color = Color.Transparent,
-            modifier = Modifier.padding(4.dp),
+            modifier = Modifier.padding(DonutTheme.dimens.spacing4),
         )
     }
 
@@ -236,9 +237,9 @@ private fun EventTypeToggle(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(DonutTheme.dimens.spacing12))
             .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
-            .padding(4.dp),
+            .padding(DonutTheme.dimens.spacing4),
     ) {
         EventType.entries.forEach { type ->
             val isSelected = type == selected
@@ -284,7 +285,7 @@ private fun BasicInfoSection(
     onTopicChange: (String) -> Unit,
     onDescriptionChange: (String) -> Unit,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing16)) {
         StyledTextField(
             value = topic,
             onValueChange = onTopicChange,
@@ -309,7 +310,7 @@ private fun BasicInfoSection(
                 modifier = Modifier.fillMaxWidth(),
                 minLines = 3,
                 maxLines = 5,
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(DonutTheme.dimens.spacing12),
                 colors = textFieldColors(),
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Sentences,
@@ -331,11 +332,11 @@ private fun CoverImageSection(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(2f)
-                .clip(RoundedCornerShape(16.dp))
+                .clip(RoundedCornerShape(DonutTheme.dimens.spacing16))
                 .border(
                     width = 2.dp,
                     color = MaterialTheme.colorScheme.outlineVariant,
-                    shape = RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(DonutTheme.dimens.spacing16),
                 )
                 .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f))
                 .clickable(
@@ -347,7 +348,7 @@ private fun CoverImageSection(
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing8),
             ) {
                 Box(
                     modifier = Modifier
@@ -389,11 +390,11 @@ private fun DateTimeLocationSection(
     onLocationChange: (String) -> Unit,
     onMeetingLinkChange: (String) -> Unit,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing16)) {
         // Date & Time row
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing12),
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 StyledTextField(
@@ -435,7 +436,7 @@ private fun DateTimeLocationSection(
                 text = "Switch to \"Virtual\" above to add a meeting link instead.",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                modifier = Modifier.padding(start = 4.dp),
+                modifier = Modifier.padding(start = DonutTheme.dimens.spacing4),
             )
         } else {
             StyledTextField(
@@ -451,7 +452,7 @@ private fun DateTimeLocationSection(
                 text = "Switch to \"Physical\" above to add a location instead.",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                modifier = Modifier.padding(start = 4.dp),
+                modifier = Modifier.padding(start = DonutTheme.dimens.spacing4),
             )
         }
     }
@@ -466,12 +467,12 @@ private fun ParticipantStepper(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(DonutTheme.dimens.spacing16))
             .background(MaterialTheme.colorScheme.surface)
             .border(
                 width = 1.dp,
                 color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(DonutTheme.dimens.spacing16),
             )
             .padding(20.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -494,11 +495,11 @@ private fun ParticipantStepper(
 
         Row(
             modifier = Modifier
-                .clip(RoundedCornerShape(12.dp))
+                .clip(RoundedCornerShape(DonutTheme.dimens.spacing12))
                 .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f))
-                .padding(4.dp),
+                .padding(DonutTheme.dimens.spacing4),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing4),
         ) {
             StepperButton(
                 icon = Icons.Default.Remove,
@@ -511,7 +512,7 @@ private fun ParticipantStepper(
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.width(32.dp),
+                modifier = Modifier.width(DonutTheme.dimens.spacing32),
                 textAlign = TextAlign.Center,
             )
 
@@ -532,7 +533,7 @@ private fun StepperButton(
 ) {
     Box(
         modifier = Modifier
-            .size(40.dp)
+            .size(DonutTheme.dimens.spacing40)
             .clip(RoundedCornerShape(10.dp))
             .background(MaterialTheme.colorScheme.surface)
             .clickable(
@@ -573,7 +574,7 @@ private fun PostEventButton(
                 )
             )
             .padding(horizontal = 20.dp)
-            .padding(top = 40.dp, bottom = 16.dp),
+            .padding(top = DonutTheme.dimens.spacing40, bottom = DonutTheme.dimens.spacing16),
     ) {
         Button(
             onClick = onClick,
@@ -606,7 +607,7 @@ private fun PostEventButton(
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(DonutTheme.dimens.spacing8))
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                     contentDescription = null,
@@ -628,7 +629,7 @@ private fun FieldLabel(text: String) {
         style = MaterialTheme.typography.bodyMedium,
         fontWeight = FontWeight.Medium,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = Modifier.padding(start = 4.dp, bottom = 6.dp),
+        modifier = Modifier.padding(start = DonutTheme.dimens.spacing4, bottom = 6.dp),
     )
 }
 
@@ -656,7 +657,7 @@ private fun StyledTextField(
             },
             modifier = Modifier.fillMaxWidth(),
             singleLine = singleLine,
-            shape = RoundedCornerShape(12.dp),
+            shape = RoundedCornerShape(DonutTheme.dimens.spacing12),
             colors = textFieldColors(),
             leadingIcon = leadingIcon?.let {
                 {

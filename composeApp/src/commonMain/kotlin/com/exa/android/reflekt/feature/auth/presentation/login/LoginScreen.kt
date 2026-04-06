@@ -35,7 +35,7 @@ import com.exa.android.reflekt.feature.auth.presentation.login.components.AuthCa
 import com.exa.android.reflekt.feature.auth.presentation.login.components.BackgroundDecorations
 import com.exa.android.reflekt.feature.auth.presentation.login.components.FooterSection
 import com.exa.android.reflekt.feature.auth.presentation.login.components.LogoSection
-import com.exa.android.reflekt.ui.theme.appColors
+import com.exa.android.reflekt.ui.theme.DonutTheme
 
 @Composable
 fun LoginScreen(
@@ -46,7 +46,7 @@ fun LoginScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val focusManager = LocalFocusManager.current
-    val appColors = MaterialTheme.appColors
+    val colors = DonutTheme.colorTokens
 
     LaunchedEffect(Unit) {
         viewModel.navEvent.collect { event ->
@@ -61,7 +61,7 @@ fun LoginScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(colors.background)
             .clickable(
                 indication = null,
                 interactionSource = remember { MutableInteractionSource() },
@@ -114,12 +114,12 @@ fun LoginScreen(
         ) {
             uiState.errorMessage?.let { message ->
                 Snackbar(
-                    containerColor = appColors.error,
-                    contentColor = appColors.onError,
+                    containerColor = colors.error,
+                    contentColor = colors.onError,
                     shape = RoundedCornerShape(12.dp),
                     action = {
                         TextButton(onClick = { viewModel.onEvent(LoginEvent.DismissError) }) {
-                            Text("Dismiss", color = appColors.onError)
+                            Text("Dismiss", color = colors.onError)
                         }
                     },
                 ) {

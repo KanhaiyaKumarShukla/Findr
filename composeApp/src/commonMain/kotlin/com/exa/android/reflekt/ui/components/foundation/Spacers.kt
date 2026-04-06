@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import com.exa.android.reflekt.ui.theme.DonutTheme
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -12,8 +13,8 @@ import androidx.compose.ui.unit.dp
 
 @Composable fun WidthSpacer(width: Dp) = Spacer(Modifier.width(width))
 
-@Composable fun SmallSpacer()  = HeightSpacer(4.dp)
-@Composable fun MediumSpacer() = HeightSpacer(8.dp)
-@Composable fun LargeSpacer()  = HeightSpacer(16.dp)
-@Composable fun XLargeSpacer() = HeightSpacer(24.dp)
-@Composable fun XXLargeSpacer() = HeightSpacer(32.dp)
+@Composable fun SmallSpacer()  = HeightSpacer(DonutTheme.dimens.spacing4)
+@Composable fun MediumSpacer() = HeightSpacer(DonutTheme.dimens.spacing8)
+@Composable fun LargeSpacer()  = HeightSpacer(DonutTheme.dimens.spacing16)
+@Composable fun XLargeSpacer() = HeightSpacer(DonutTheme.dimens.spacing24)
+@Composable fun XXLargeSpacer() = HeightSpacer(DonutTheme.dimens.spacing32)

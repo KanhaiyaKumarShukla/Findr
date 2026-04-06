@@ -42,7 +42,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -50,20 +49,22 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.exa.android.reflekt.feature.home.presentation.HomeEvent
 import com.exa.android.reflekt.feature.home.presentation.LiveEvent
 import com.exa.android.reflekt.feature.home.presentation.LiveEventIconType
 import com.exa.android.reflekt.feature.home.presentation.LiveGradientType
+import com.exa.android.reflekt.ui.theme.DonutTheme
+import com.exa.android.reflekt.ui.theme.DonutRadius
+import com.exa.android.reflekt.ui.theme.DonutTextSize
 
-private val LiveRed = Color(0xFFEF4444)
+private val LiveRed: Color @Composable get() = DonutTheme.colorTokens.error
 
-// Maps domain enums to Compose types — pure presentation logic
+@Composable
 private fun LiveGradientType.toColors(): List<Color> = when (this) {
-    LiveGradientType.BLUE_TECH    -> listOf(Color(0xFF1E3A5F), Color(0xFF0EA0D1))
-    LiveGradientType.PURPLE_VOTE  -> listOf(Color(0xFF2D1B4E), Color(0xFF6366F1))
-    LiveGradientType.GREEN_SPORTS -> listOf(Color(0xFF1B4332), Color(0xFF22C55E))
-    LiveGradientType.ORANGE_CAMPAIGN -> listOf(Color(0xFF7C2D12), Color(0xFFEA580C))
+    LiveGradientType.BLUE_TECH       -> listOf(DonutTheme.colorTokens.surfaceVariant, DonutTheme.staticColorTokens.accentBlue)
+    LiveGradientType.PURPLE_VOTE     -> listOf(DonutTheme.colorTokens.surfaceVariant, DonutTheme.staticColorTokens.accentIndigo)
+    LiveGradientType.GREEN_SPORTS    -> listOf(DonutTheme.colorTokens.surfaceVariant, DonutTheme.staticColorTokens.accentGreen)
+    LiveGradientType.ORANGE_CAMPAIGN -> listOf(DonutTheme.colorTokens.surfaceVariant, DonutTheme.staticColorTokens.accentOrange)
 }
 
 private fun LiveEventIconType.toImageVector(): ImageVector = when (this) {
@@ -73,7 +74,6 @@ private fun LiveEventIconType.toImageVector(): ImageVector = when (this) {
     LiveEventIconType.CAMPAIGN -> Icons.Default.Campaign
 }
 
-/** Live Now section: pulsing header + horizontal card row. */
 @Composable
 internal fun LiveNowSection(
     events: List<LiveEvent>,
@@ -90,21 +90,21 @@ internal fun LiveNowSection(
         label = "pulseAlpha",
     )
 
-    Column(modifier = Modifier.padding(top = 16.dp)) {
+    Column(modifier = Modifier.padding(top = DonutTheme.dimens.spacing16)) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = DonutTheme.dimens.spacing16),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(
                 modifier = Modifier
-                    .size(8.dp)
+                    .size(DonutTheme.dimens.iconSizeSmall)
                     .clip(CircleShape)
                     .graphicsLayer { alpha = pulseAlpha }
                     .background(LiveRed),
             )
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(DonutTheme.dimens.spacing8))
             Text(
                 text = "Live Now",
                 style = MaterialTheme.typography.titleLarge,
@@ -113,10 +113,10 @@ internal fun LiveNowSection(
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = "View All",
-                fontSize = 12.sp,
+                fontSize = DonutTextSize.small,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.primary,
-                letterSpacing = 1.sp,
+                letterSpacing = androidx.compose.ui.unit.TextUnit(1f, androidx.compose.ui.unit.TextUnitType.Sp),
                 modifier = Modifier.clickable(
                     indication = null,
                     interactionSource = remember { MutableInteractionSource() },
@@ -124,11 +124,11 @@ internal fun LiveNowSection(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing16))
 
         LazyRow(
-            contentPadding = PaddingValues(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            contentPadding = PaddingValues(horizontal = DonutTheme.dimens.spacing16),
+            horizontalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing12),
         ) {
             items(events, key = { it.id }) { event ->
                 LiveEventCard(
@@ -149,24 +149,24 @@ private fun LiveEventCard(
 ) {
     Box(
         modifier = Modifier
-            .width(280.dp)
-            .height(176.dp)
+            .width(DonutTheme.dimens.liveCardWidth)
+            .height(DonutTheme.dimens.liveCardHeight)
             .then(
                 if (event.isPulsing) {
                     Modifier.border(
-                        width = 2.dp,
+                        width = DonutTheme.dimens.borderThick,
                         color = LiveRed.copy(alpha = pulseAlpha),
-                        shape = RoundedCornerShape(16.dp),
+                        shape = RoundedCornerShape(DonutRadius.panel),
                     )
                 } else {
                     Modifier.border(
-                        width = 1.dp,
+                        width = DonutTheme.dimens.borderThin,
                         color = Color.White.copy(alpha = 0.1f),
-                        shape = RoundedCornerShape(16.dp),
+                        shape = RoundedCornerShape(DonutRadius.panel),
                     )
                 },
             )
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(DonutRadius.panel))
             .clickable { onClick() },
     ) {
         Box(
@@ -179,14 +179,14 @@ private fun LiveEventCard(
                 imageVector = event.iconType.toImageVector(),
                 contentDescription = null,
                 tint = Color.White.copy(alpha = 0.15f),
-                modifier = Modifier.size(64.dp),
+                modifier = Modifier.size(DonutTheme.dimens.liveCardIconSize),
             )
         }
 
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(100.dp)
+                .height(DonutTheme.dimens.liveGradientOverlayHeight)
                 .align(Alignment.BottomCenter)
                 .background(
                     Brush.verticalGradient(
@@ -195,13 +195,12 @@ private fun LiveEventCard(
                 ),
         )
 
-        // LIVE badge
         Row(
             modifier = Modifier
                 .align(Alignment.TopStart)
-                .padding(12.dp)
-                .background(LiveRed, RoundedCornerShape(4.dp))
-                .padding(horizontal = 6.dp, vertical = 2.dp),
+                .padding(DonutTheme.dimens.spacing12)
+                .background(LiveRed, RoundedCornerShape(DonutRadius.sm))
+                .padding(horizontal = DonutTheme.dimens.spacing6, vertical = DonutTheme.dimens.spacing2),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(3.dp),
         ) {
@@ -209,49 +208,47 @@ private fun LiveEventCard(
                 imageVector = Icons.Default.Podcasts,
                 contentDescription = null,
                 tint = Color.White,
-                modifier = Modifier.size(12.dp),
+                modifier = Modifier.size(DonutTheme.dimens.spacing12),
             )
-            Text(text = "LIVE", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Color.White)
+            Text(text = "LIVE", fontSize = DonutTextSize.caption, fontWeight = FontWeight.Bold, color = Color.White)
         }
 
-        // Viewer count badge
         Row(
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .padding(12.dp)
-                .background(Color.Black.copy(alpha = 0.5f), RoundedCornerShape(8.dp))
-                .padding(horizontal = 8.dp, vertical = 3.dp),
+                .padding(DonutTheme.dimens.spacing12)
+                .background(Color.Black.copy(alpha = 0.5f), RoundedCornerShape(DonutRadius.lg))
+                .padding(horizontal = DonutTheme.dimens.spacing8, vertical = 3.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing4),
         ) {
             Icon(
                 imageVector = Icons.Default.RemoveRedEye,
                 contentDescription = null,
                 tint = Color.White,
-                modifier = Modifier.size(12.dp),
+                modifier = Modifier.size(DonutTheme.dimens.spacing12),
             )
-            Text(text = formatViewerCount(event.viewerCount), fontSize = 10.sp, color = Color.White)
+            Text(text = formatViewerCount(event.viewerCount), fontSize = DonutTextSize.caption, color = Color.White)
         }
 
-        // Title & subtitle
         Column(
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .padding(14.dp),
+                .padding(DonutTheme.dimens.spacing14),
         ) {
             Text(
                 text = event.title,
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
+                fontSize = DonutTextSize.bodyLarge,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            Spacer(modifier = Modifier.height(2.dp))
+            Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing2))
             Text(
                 text = event.subtitle,
                 color = Color.White.copy(alpha = 0.8f),
-                fontSize = 12.sp,
+                fontSize = DonutTextSize.small,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )

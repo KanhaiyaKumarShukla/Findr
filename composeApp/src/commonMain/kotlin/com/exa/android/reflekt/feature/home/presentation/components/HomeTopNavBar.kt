@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
@@ -29,15 +30,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.foundation.layout.offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.exa.android.reflekt.feature.home.presentation.HomeEvent
+import com.exa.android.reflekt.ui.theme.DonutTheme
+import com.exa.android.reflekt.ui.theme.DonutTextSize
 
-private val AlertRed = androidx.compose.ui.graphics.Color(0xFFEF4444)
+private val AlertRed: Color @Composable get() = DonutTheme.colorTokens.error
 
-/** Top navigation bar: avatar, app title, search and notification bell. */
 @Composable
 internal fun HomeTopNavBar(
     notificationCount: Int,
@@ -48,15 +48,14 @@ internal fun HomeTopNavBar(
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.background.copy(alpha = 0.8f))
             .windowInsetsPadding(WindowInsets.statusBars)
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = DonutTheme.dimens.spacing16, vertical = DonutTheme.dimens.spacing12),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        // Profile avatar
         Box(
             modifier = Modifier
-                .size(40.dp)
+                .size(DonutTheme.dimens.avatarSizeBase)
                 .clip(CircleShape)
-                .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
+                .border(DonutTheme.dimens.borderThick, MaterialTheme.colorScheme.primary, CircleShape)
                 .background(MaterialTheme.colorScheme.surface)
                 .clickable(
                     indication = null,
@@ -68,11 +67,11 @@ internal fun HomeTopNavBar(
                 imageVector = Icons.Default.Person,
                 contentDescription = "Profile",
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(22.dp),
+                modifier = Modifier.size(DonutTheme.dimens.iconSizeExtraLarge),
             )
         }
 
-        Spacer(modifier = Modifier.width(12.dp))
+        Spacer(modifier = Modifier.width(DonutTheme.dimens.spacing12))
 
         Column {
             Text(
@@ -83,10 +82,10 @@ internal fun HomeTopNavBar(
             )
             Text(
                 text = "CAMPUS LIVE",
-                fontSize = 10.sp,
+                fontSize = DonutTextSize.caption,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.primary,
-                letterSpacing = 1.5.sp,
+                letterSpacing = androidx.compose.ui.unit.TextUnit(1.5f, androidx.compose.ui.unit.TextUnitType.Sp),
             )
         }
 
@@ -112,8 +111,8 @@ internal fun HomeTopNavBar(
                 Box(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .offset(x = (-6).dp, y = 6.dp)
-                        .size(8.dp)
+                        .offset(x = (-DonutTheme.dimens.spacing6), y = DonutTheme.dimens.spacing6)
+                        .size(DonutTheme.dimens.iconSizeSmall)
                         .clip(CircleShape)
                         .background(AlertRed),
                 )

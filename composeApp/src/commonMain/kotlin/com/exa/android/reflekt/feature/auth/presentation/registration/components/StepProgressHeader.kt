@@ -14,7 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
+import com.exa.android.reflekt.ui.theme.DonutTheme
+import com.exa.android.reflekt.ui.theme.DonutRadius
 
 /** Step x of y label + animated progress bar. */
 @Composable
@@ -25,7 +26,7 @@ internal fun StepProgressHeader(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 16.dp),
+            .padding(horizontal = DonutTheme.dimens.spacing24, vertical = DonutTheme.dimens.spacing16),
     ) {
         Text(
             text = "Step $currentStep of $totalSteps",
@@ -34,20 +35,20 @@ internal fun StepProgressHeader(
             fontWeight = FontWeight.SemiBold,
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing8))
 
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(6.dp)
-                .clip(RoundedCornerShape(3.dp))
+                .height(DonutTheme.dimens.spacing6)
+                .clip(RoundedCornerShape(DonutRadius.sm))
                 .background(MaterialTheme.colorScheme.surfaceVariant),
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth(fraction = currentStep.toFloat() / totalSteps)
-                    .height(6.dp)
-                    .clip(RoundedCornerShape(3.dp))
+                    .height(DonutTheme.dimens.spacing6)
+                    .clip(RoundedCornerShape(DonutRadius.sm))
                     .background(MaterialTheme.colorScheme.primary),
             )
         }

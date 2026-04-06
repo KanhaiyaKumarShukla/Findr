@@ -2,6 +2,7 @@ package com.exa.android.reflekt.feature.notification.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -13,15 +14,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -59,9 +57,10 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.exa.android.reflekt.ui.theme.appColors
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
+import com.exa.android.reflekt.ui.theme.DonutTheme
+import com.exa.android.reflekt.ui.theme.DonutRadius
 
 // ─── Models ──────────────────────────────────────────────────────────────────
 
@@ -168,7 +167,7 @@ fun NotificationScreen(
             // ── Notification List ────────────────────────────────────────────
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(bottom = 24.dp),
+                contentPadding = PaddingValues(bottom = DonutTheme.dimens.spacing24),
             ) {
                 // Today section
                 item {
@@ -209,7 +208,7 @@ private fun NotificationHeader(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 4.dp, vertical = 8.dp),
+                .padding(horizontal = DonutTheme.dimens.spacing4, vertical = DonutTheme.dimens.spacing8),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             IconButton(onClick = onBack) {
@@ -235,9 +234,9 @@ private fun NotificationHeader(
             modifier = Modifier
                 .fillMaxWidth()
                 .horizontalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp)
-                .padding(bottom = 12.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                .padding(horizontal = DonutTheme.dimens.spacing16)
+                .padding(bottom = DonutTheme.dimens.spacing12),
+            horizontalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing8),
         ) {
             filterChips.forEachIndexed { index, label ->
                 FilterChip(
@@ -276,7 +275,7 @@ private fun FilterChip(
                 indication = ripple(),
                 onClick = onClick,
             )
-            .padding(horizontal = 16.dp, vertical = 6.dp),
+            .padding(horizontal = DonutTheme.dimens.spacing16, vertical = DonutTheme.dimens.spacing6),
     ) {
         Text(
             text = label,
@@ -294,7 +293,7 @@ private fun SectionHeader(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 16.dp),
+            .padding(horizontal = DonutTheme.dimens.spacing16, vertical = DonutTheme.dimens.spacing16),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -302,7 +301,7 @@ private fun SectionHeader(
             text = title.uppercase(),
             style = MaterialTheme.typography.labelMedium.copy(
                 fontWeight = FontWeight.Bold,
-                letterSpacing = 1.sp,
+                letterSpacing = TextUnit(1f, TextUnitType.Sp),
             ),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -315,13 +314,13 @@ private fun SectionHeader(
                 ),
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
-                    .clip(RoundedCornerShape(4.dp))
+                    .clip(RoundedCornerShape(DonutRadius.sm))
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = ripple(),
                         onClick = { /* TODO */ },
                     )
-                    .padding(4.dp),
+                    .padding(DonutTheme.dimens.spacing4),
             )
         }
     }
@@ -339,13 +338,13 @@ private fun NotificationRow(notification: NotificationItem) {
                 indication = ripple(),
                 onClick = { /* TODO: Open notification detail */ },
             )
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = DonutTheme.dimens.spacing16, vertical = DonutTheme.dimens.spacing12),
     ) {
         // Icon
         Box(
             modifier = Modifier
-                .size(48.dp)
-                .clip(RoundedCornerShape(12.dp))
+                .size(DonutTheme.dimens.iconSize3X)
+                .clip(RoundedCornerShape(DonutRadius.card))
                 .background(iconInfo.backgroundColor),
             contentAlignment = Alignment.Center,
         ) {
@@ -353,11 +352,11 @@ private fun NotificationRow(notification: NotificationItem) {
                 imageVector = iconInfo.icon,
                 contentDescription = null,
                 tint = iconInfo.tintColor,
-                modifier = Modifier.size(24.dp),
+                modifier = Modifier.size(DonutTheme.dimens.iconSize2Xl),
             )
         }
 
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(DonutTheme.dimens.spacing16))
 
         // Content
         Column(modifier = Modifier.weight(1f)) {
@@ -399,7 +398,7 @@ private fun NotificationRow(notification: NotificationItem) {
                     )
                 }
 
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(DonutTheme.dimens.spacing8))
 
                 Text(
                     text = notification.timeAgo,
@@ -408,7 +407,7 @@ private fun NotificationRow(notification: NotificationItem) {
                 )
             }
 
-            Spacer(modifier = Modifier.height(2.dp))
+            Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing2))
 
             // Body or quoted reply
             if (notification.quotedReply != null) {
@@ -420,18 +419,18 @@ private fun NotificationRow(notification: NotificationItem) {
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 4.dp)
-                        .clip(RoundedCornerShape(8.dp))
+                        .padding(top = DonutTheme.dimens.spacing4)
+                        .clip(RoundedCornerShape(DonutRadius.lg))
                         .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
-                        .padding(8.dp),
+                        .padding(DonutTheme.dimens.spacing8),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
 
                 // Reply / Like actions
                 Row(
-                    modifier = Modifier.padding(top = 8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    modifier = Modifier.padding(top = DonutTheme.dimens.spacing8),
+                    horizontalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing16),
                 ) {
                     Text(
                         text = "Reply",
@@ -440,13 +439,13 @@ private fun NotificationRow(notification: NotificationItem) {
                         ),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier
-                            .clip(RoundedCornerShape(4.dp))
+                            .clip(RoundedCornerShape(DonutRadius.sm))
                             .clickable(
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = ripple(),
                                 onClick = { /* TODO */ },
                             )
-                            .padding(2.dp),
+                            .padding(DonutTheme.dimens.spacing2),
                     )
                     Text(
                         text = "Like",
@@ -455,13 +454,13 @@ private fun NotificationRow(notification: NotificationItem) {
                         ),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier
-                            .clip(RoundedCornerShape(4.dp))
+                            .clip(RoundedCornerShape(DonutRadius.sm))
                             .clickable(
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = ripple(),
                                 onClick = { /* TODO */ },
                             )
-                            .padding(2.dp),
+                            .padding(DonutTheme.dimens.spacing2),
                     )
                 }
             } else {
@@ -477,17 +476,17 @@ private fun NotificationRow(notification: NotificationItem) {
             // Action buttons (Apply Now / Save)
             if (notification.hasActions) {
                 Row(
-                    modifier = Modifier.padding(top = 12.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.padding(top = DonutTheme.dimens.spacing12),
+                    horizontalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing8),
                 ) {
                     Button(
                         onClick = { /* TODO: Apply */ },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.primary,
                         ),
-                        shape = RoundedCornerShape(8.dp),
-                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
-                        modifier = Modifier.height(32.dp),
+                        shape = RoundedCornerShape(DonutRadius.lg),
+                        contentPadding = PaddingValues(horizontal = DonutTheme.dimens.spacing16, vertical = DonutTheme.dimens.spacing6),
+                        modifier = Modifier.height(DonutTheme.dimens.spacing32),
                     ) {
                         Text(
                             text = "Apply Now",
@@ -503,9 +502,9 @@ private fun NotificationRow(notification: NotificationItem) {
                             containerColor = MaterialTheme.colorScheme.surfaceVariant,
                             contentColor = MaterialTheme.colorScheme.onSurface,
                         ),
-                        shape = RoundedCornerShape(8.dp),
-                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
-                        modifier = Modifier.height(32.dp),
+                        shape = RoundedCornerShape(DonutRadius.lg),
+                        contentPadding = PaddingValues(horizontal = DonutTheme.dimens.spacing16, vertical = DonutTheme.dimens.spacing6),
+                        modifier = Modifier.height(DonutTheme.dimens.spacing32),
                     ) {
                         Text(
                             text = "Save",
@@ -520,11 +519,11 @@ private fun NotificationRow(notification: NotificationItem) {
 
         // Unread dot
         if (notification.isUnread) {
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(DonutTheme.dimens.spacing8))
             Box(
                 modifier = Modifier
-                    .padding(top = 8.dp)
-                    .size(8.dp)
+                    .padding(top = DonutTheme.dimens.spacing8)
+                    .size(DonutTheme.dimens.iconSizeSmall)
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.primary),
             )
@@ -540,10 +539,10 @@ private data class IconInfo(
     val backgroundColor: Color,
 )
 
-private val AmberColor = Color(0xFFF59E0B)
-private val RoseColor = Color(0xFFEF4444)
-private val EmeraldColor = Color(0xFF10B981)
-private val PurpleColor = Color(0xFF8B5CF6)
+private val AmberColor: Color @Composable get() = DonutTheme.staticColorTokens.accentYellow
+private val RoseColor: Color @Composable get() = DonutTheme.colorTokens.error
+private val EmeraldColor: Color @Composable get() = DonutTheme.staticColorTokens.accentGreen
+private val PurpleColor: Color @Composable get() = DonutTheme.staticColorTokens.accentPurple
 
 @Composable
 private fun NotificationItem.iconInfo(): IconInfo = when (type) {
@@ -582,15 +581,17 @@ private fun NotificationItem.iconInfo(): IconInfo = when (type) {
 /**
  * Draws a left-side primary-colored border to indicate an unread notification.
  */
-private fun Modifier.drawUnreadIndicator(): Modifier = this.then(
-    Modifier.drawWithContent {
-        drawContent()
-        drawRect(
-            color = PrimaryBlue,
-            topLeft = Offset.Zero,
-            size = Size(4.dp.toPx(), size.height),
-        )
-    }
-)
-
-private val PrimaryBlue = Color(0xFF13B6EC)
+private fun Modifier.drawUnreadIndicator(): Modifier = composed {
+    val borderSize = DonutTheme.dimens.borderAccent
+    val primaryBlue = DonutTheme.staticColorTokens.accentBlue
+    this.then(
+        Modifier.drawWithContent {
+            drawContent()
+            drawRect(
+                color = primaryBlue,
+                topLeft = Offset.Zero,
+                size = Size(borderSize.toPx(), size.height),
+            )
+        }
+    )
+}

@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.sp
 import com.exa.android.reflekt.feature.auth.presentation.registration.RegistrationEvent
 import com.exa.android.reflekt.feature.auth.presentation.registration.RegistrationUiState
 import com.exa.android.reflekt.ui.components.textfield.FindrTextField
-import com.exa.android.reflekt.ui.theme.appColors
+import com.exa.android.reflekt.ui.theme.DonutTheme
 
 @Composable
 internal fun StepOne(
@@ -49,13 +49,13 @@ internal fun StepOne(
     onEvent: (RegistrationEvent) -> Unit,
     focusManager: FocusManager,
 ) {
-    val appColors = MaterialTheme.appColors
+    val colors = DonutTheme.colorTokens
 
     Column {
         Text(
             text = "Create Account",
             style = MaterialTheme.typography.headlineLarge,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = colors.onBackground,
             fontWeight = FontWeight.Bold,
             letterSpacing = (-0.5).sp,
         )
@@ -63,7 +63,7 @@ internal fun StepOne(
         Text(
             text = "Join your campus community and start connecting with peers.",
             style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = colors.onSurfaceVariant,
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -72,7 +72,7 @@ internal fun StepOne(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(24.dp))
-                .background(appColors.formCardBackground.copy(alpha = 0.7f))
+                .background(colors.formCardBackground.copy(alpha = 0.7f))
                 .padding(24.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
@@ -120,7 +120,7 @@ internal fun StepOne(
                                           else Icons.Default.VisibilityOff,
                             contentDescription = if (uiState.isPasswordVisible) "Hide password"
                                                  else "Show password",
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            tint = colors.onSurfaceVariant,
                         )
                     }
                 },
@@ -151,12 +151,12 @@ internal fun StepOne(
             Text(
                 text = "Already have an account? ",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = colors.onSurfaceVariant,
             )
             Text(
                 text = "Sign In",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary,
+                color = colors.primary,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.clickable(
                     indication = null,

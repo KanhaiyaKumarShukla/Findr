@@ -6,6 +6,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.graphics.Color
 
 private val DarkColorScheme = darkColorScheme(
@@ -36,15 +37,46 @@ private val LightColorScheme = lightColorScheme(
     outlineVariant = DividerLight,
 )
 
+object DonutTheme{
+
+val colorTokens: DonutColorTokens
+    @Composable
+    @ReadOnlyComposable
+    get() = LocalDonutColorTokens.current
+
+val staticColorTokens: DonutColorTokens
+    @Composable
+    @ReadOnlyComposable
+    get() = LocalStaticDonutColorTokens.current
+
+//val typography: DonutTypography
+//    @Composable
+//    @ReadOnlyComposable
+//    get() = DonutTypography
+
+val shapes: DonutShapes
+    @Composable
+    @ReadOnlyComposable
+    get() = DonutShapes
+
+val dimens: DonutDimens
+    @Composable
+    @ReadOnlyComposable
+    get() = LocalDonutDimens.current
+}
+
 @Composable
-fun FindrTheme(
+fun DonutTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
     val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
-    val appColors = if (darkTheme) DarkAppColors else LightAppColors
+    val colorTokens = if (darkTheme) donutDarkColorTokens() else donutLightColorTokens()
 
-    CompositionLocalProvider(LocalAppColors provides appColors) {
+    CompositionLocalProvider(
+        LocalDonutColorTokens provides colorTokens,
+        LocalDonutDimens provides donutDefaultDimens(),
+        ) {
         MaterialTheme(
             colorScheme = colorScheme,
             typography = AppTypography,

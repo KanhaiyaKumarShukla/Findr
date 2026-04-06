@@ -47,7 +47,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.exa.android.reflekt.ui.theme.appColors
+import com.exa.android.reflekt.ui.theme.DonutTheme
 
 enum class PostCategory {
     PROJECT, EVENT, POST, BUG_REPORT
@@ -60,10 +60,12 @@ fun CreatePostSelectionScreen(
 ) {
     val scrollState = rememberScrollState()
 
+    val colors = DonutTheme.colorTokens
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(colors.background)
             .windowInsetsPadding(WindowInsets.statusBars)
     ) {
         // ── Top Bar ──────────────────────────────────────────────────────────
@@ -130,6 +132,7 @@ fun CreatePostSelectionScreen(
 
 @Composable
 private fun TopBar(onDismiss: () -> Unit) {
+    val colors = DonutTheme.colorTokens
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -139,7 +142,7 @@ private fun TopBar(onDismiss: () -> Unit) {
         IconButton(
             onClick = onDismiss,
             colors = IconButtonDefaults.iconButtonColors(
-                containerColor = MaterialTheme.colorScheme.surface,
+                containerColor = colors.surface,
             ),
             modifier = Modifier.size(40.dp),
         ) {
@@ -147,7 +150,7 @@ private fun TopBar(onDismiss: () -> Unit) {
                 imageVector = Icons.Default.Close,
                 contentDescription = "Close",
                 modifier = Modifier.size(20.dp),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                tint = colors.onSurfaceVariant,
             )
         }
     }
@@ -155,6 +158,7 @@ private fun TopBar(onDismiss: () -> Unit) {
 
 @Composable
 private fun HeroSection() {
+    val colors = DonutTheme.colorTokens
     Column {
         Text(
             text = "What do you want\nto share?",
@@ -162,15 +166,13 @@ private fun HeroSection() {
                 fontWeight = FontWeight.Bold,
                 lineHeight = 38.sp,
             ),
-            color = MaterialTheme.colorScheme.onBackground,
+            color = colors.onBackground,
         )
-
         Spacer(modifier = Modifier.height(12.dp))
-
         Text(
             text = "Choose a category to get started with your contribution.",
             style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = colors.onSurfaceVariant,
         )
     }
 }
@@ -182,14 +184,15 @@ private fun SelectionOption(
     description: String,
     onClick: () -> Unit,
 ) {
+    val colors = DonutTheme.colorTokens
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surface)
+            .background(colors.surface)
             .border(
                 width = 1.dp,
-                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
+                color = colors.outline.copy(alpha = 0.5f),
                 shape = RoundedCornerShape(16.dp),
             )
             .clickable(
@@ -200,25 +203,21 @@ private fun SelectionOption(
             .padding(20.dp),
         verticalAlignment = Alignment.Top,
     ) {
-        // Icon container
         Box(
             modifier = Modifier
                 .size(48.dp)
                 .clip(RoundedCornerShape(12.dp))
-                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
+                .background(colors.primary.copy(alpha = 0.1f)),
             contentAlignment = Alignment.Center,
         ) {
             Icon(
                 imageVector = icon,
                 contentDescription = title,
                 modifier = Modifier.size(24.dp),
-                tint = MaterialTheme.colorScheme.primary,
+                tint = colors.primary,
             )
         }
-
         Spacer(modifier = Modifier.width(16.dp))
-
-        // Text content
         Column(modifier = Modifier.weight(1f)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -230,23 +229,20 @@ private fun SelectionOption(
                     style = MaterialTheme.typography.titleMedium.copy(
                         fontWeight = FontWeight.SemiBold,
                     ),
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = colors.onBackground,
                 )
-
                 Icon(
                     imageVector = Icons.Default.ChevronRight,
                     contentDescription = null,
                     modifier = Modifier.size(20.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = colors.onSurfaceVariant,
                 )
             }
-
             Spacer(modifier = Modifier.height(4.dp))
-
             Text(
                 text = description,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = colors.onSurfaceVariant,
             )
         }
     }
@@ -254,6 +250,7 @@ private fun SelectionOption(
 
 @Composable
 private fun GuidelinesFooter() {
+    val colors = DonutTheme.colorTokens
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -263,7 +260,7 @@ private fun GuidelinesFooter() {
         Row(
             modifier = Modifier
                 .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
+                .background(colors.primary.copy(alpha = 0.1f))
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = ripple(),
@@ -276,15 +273,13 @@ private fun GuidelinesFooter() {
                 imageVector = Icons.Default.Info,
                 contentDescription = null,
                 modifier = Modifier.size(16.dp),
-                tint = MaterialTheme.colorScheme.primary,
+                tint = colors.primary,
             )
-
             Spacer(modifier = Modifier.width(6.dp))
-
             Text(
                 text = "Read our community posting guidelines",
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.primary,
+                color = colors.primary,
             )
         }
     }

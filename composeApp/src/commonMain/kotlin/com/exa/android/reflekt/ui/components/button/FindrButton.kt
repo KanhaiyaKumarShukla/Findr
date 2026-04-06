@@ -24,6 +24,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.exa.android.reflekt.ui.theme.DonutTheme
+import com.exa.android.reflekt.ui.theme.DonutRadius
+import com.exa.android.reflekt.ui.theme.DonutTextSize
 
 // ─────────────────────────────────────────────────────────────
 //  Primary button  (filled, brand color)
@@ -45,8 +48,8 @@ fun FindrPrimaryButton(
     modifier: Modifier = Modifier,
     isLoading: Boolean = false,
     enabled: Boolean = true,
-    height: Dp = 52.dp,
-    elevation: androidx.compose.material3.ButtonElevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp, pressedElevation = 2.dp),
+    height: Dp = DonutTheme.dimens.spacing52,
+    elevation: androidx.compose.material3.ButtonElevation = ButtonDefaults.buttonElevation(defaultElevation = DonutTheme.dimens.elevationMedium, pressedElevation = DonutTheme.dimens.elevationPressed),
     colors: androidx.compose.material3.ButtonColors? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
 ) {
@@ -62,29 +65,29 @@ fun FindrPrimaryButton(
         modifier = modifier
             .fillMaxWidth()
             .height(height),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(DonutRadius.panel),
         enabled = enabled && !isLoading,
         colors = buttonColors,
         elevation = elevation,
-        contentPadding = PaddingValues(horizontal = 24.dp),
+        contentPadding = PaddingValues(horizontal = DonutTheme.dimens.spacing24),
     ) {
         if (isLoading) {
             CircularProgressIndicator(
-                modifier = Modifier.size(22.dp),
+                modifier = Modifier.size(DonutTheme.dimens.iconSizeExtraLarge),
                 color = buttonColors.contentColor,
-                strokeWidth = 2.dp,
+                strokeWidth = DonutTheme.dimens.elevationPressed,
             )
         } else {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = text,
                     style = MaterialTheme.typography.labelLarge.copy(
-                        fontSize = 16.sp,
+                        fontSize = DonutTextSize.bodyLarge,
                         fontWeight = FontWeight.Bold
                     ),
                 )
                 if (trailingIcon != null) {
-                    Spacer(Modifier.width(8.dp))
+                    Spacer(Modifier.width(DonutTheme.dimens.spacing8))
                     trailingIcon()
                 }
             }
@@ -105,7 +108,7 @@ fun FindrOutlinedButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    height: Dp = 52.dp,
+    height: Dp = DonutTheme.dimens.spacing52,
     colors: androidx.compose.material3.ButtonColors? = null,
     border: androidx.compose.foundation.BorderStroke? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
@@ -120,24 +123,24 @@ fun FindrOutlinedButton(
         modifier = modifier
             .fillMaxWidth()
             .height(height),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(DonutRadius.panel),
         enabled = enabled,
         colors = colors ?: defaultColors,
         border = border ?: androidx.compose.foundation.BorderStroke(
-            width = 1.dp,
+            width = DonutTheme.dimens.borderThin,
             color = if (enabled) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
         ),
-        contentPadding = PaddingValues(horizontal = 24.dp),
+        contentPadding = PaddingValues(horizontal = DonutTheme.dimens.spacing24),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             if (leadingIcon != null) {
                 leadingIcon()
-                Spacer(Modifier.width(8.dp))
+                Spacer(Modifier.width(DonutTheme.dimens.spacing8))
             }
             Text(
                 text = text,
                 style = MaterialTheme.typography.labelLarge.copy(
-                    fontSize = 15.sp,
+                    fontSize = DonutTextSize.body,
                     fontWeight = FontWeight.Medium
                 ),
             )
@@ -192,8 +195,8 @@ fun FindrSocialButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isLoading: Boolean = false,
-    height: Dp = 52.dp,
-    elevation: androidx.compose.material3.ButtonElevation = ButtonDefaults.buttonElevation(defaultElevation = 2.dp, pressedElevation = 1.dp),
+    height: Dp = DonutTheme.dimens.spacing52,
+    elevation: androidx.compose.material3.ButtonElevation = ButtonDefaults.buttonElevation(defaultElevation = DonutTheme.dimens.elevationPressed, pressedElevation = DonutTheme.dimens.borderThin),
     colors: androidx.compose.material3.ButtonColors? = null,
 ) {
     val defaultColors = ButtonDefaults.buttonColors(
@@ -207,28 +210,28 @@ fun FindrSocialButton(
         modifier = modifier
             .fillMaxWidth()
             .height(height),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(DonutRadius.panel),
         enabled = !isLoading,
         colors = colors ?: defaultColors,
         elevation = elevation,
-        contentPadding = PaddingValues(horizontal = 24.dp),
+        contentPadding = PaddingValues(horizontal = DonutTheme.dimens.spacing24),
     ) {
         if (isLoading) {
             CircularProgressIndicator(
-                modifier = Modifier.size(22.dp),
+                modifier = Modifier.size(DonutTheme.dimens.iconSizeExtraLarge),
                 color = MaterialTheme.colorScheme.primary,
-                strokeWidth = 2.dp,
+                strokeWidth = DonutTheme.dimens.elevationPressed,
             )
         } else {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(modifier = Modifier.size(20.dp), contentAlignment = Alignment.Center) {
+                Box(modifier = Modifier.size(DonutTheme.dimens.iconSizeLarge), contentAlignment = Alignment.Center) {
                     icon()
                 }
-                Spacer(Modifier.width(12.dp))
+                Spacer(Modifier.width(DonutTheme.dimens.spacing12))
                 Text(
                     text = text,
                     style = MaterialTheme.typography.labelLarge.copy(
-                        fontSize = 15.sp,
+                        fontSize = DonutTextSize.body,
                         fontWeight = FontWeight.SemiBold
                     ),
                 )

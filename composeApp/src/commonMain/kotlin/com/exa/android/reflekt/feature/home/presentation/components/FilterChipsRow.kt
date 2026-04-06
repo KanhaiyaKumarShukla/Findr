@@ -18,41 +18,38 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.exa.android.reflekt.feature.home.presentation.FilterChip
 import com.exa.android.reflekt.feature.home.presentation.HomeEvent
+import com.exa.android.reflekt.ui.theme.DonutTheme
+import com.exa.android.reflekt.ui.theme.DonutTextSize
 
-/**
- * Horizontal scrollable row of filter chips.
- * Note: We use a custom chip here (not FindrFilterChip) because this chip has a unique
- * "pill with box shadow" style specific to the Home feed, not the generic filter chip style.
- * If the design system unifies these, migrate to [FindrFilterChip].
- */
+// Horizontal scrollable row of filter chips.
+// Custom pill style with box-shadow specific to the Home feed.
 @Composable
 internal fun FilterChipsRow(
     chips: List<FilterChip>,
     onEvent: (HomeEvent) -> Unit,
 ) {
     LazyRow(
-        contentPadding = PaddingValues(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.padding(vertical = 20.dp),
+        contentPadding = PaddingValues(horizontal = DonutTheme.dimens.spacing16),
+        horizontalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing8),
+        modifier = Modifier.padding(vertical = DonutTheme.dimens.spacing20),
     ) {
         itemsIndexed(chips) { index, chip ->
             val interactionSource = remember { MutableInteractionSource() }
+            val pillShape = RoundedCornerShape(DonutTheme.dimens.spacing20)
             Text(
                 text = chip.label,
-                fontSize = 14.sp,
+                fontSize = DonutTextSize.body,
                 fontWeight = if (chip.isSelected) FontWeight.SemiBold else FontWeight.Medium,
                 color = if (chip.isSelected) Color.White
                         else MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier
-                    .clip(RoundedCornerShape(20.dp))
+                    .clip(pillShape)
                     .then(
                         if (chip.isSelected) {
                             Modifier
-                                .shadow(8.dp, RoundedCornerShape(20.dp))
+                                .shadow(DonutTheme.dimens.elevationCard, pillShape)
                                 .background(MaterialTheme.colorScheme.primary)
                         } else {
                             Modifier.background(MaterialTheme.colorScheme.surface)
@@ -62,7 +59,7 @@ internal fun FilterChipsRow(
                         indication = null,
                         interactionSource = interactionSource,
                     ) { onEvent(HomeEvent.FilterSelected(index)) }
-                    .padding(horizontal = 16.dp, vertical = 10.dp),
+                    .padding(horizontal = DonutTheme.dimens.spacing16, vertical = DonutTheme.dimens.spacing10),
             )
         }
     }

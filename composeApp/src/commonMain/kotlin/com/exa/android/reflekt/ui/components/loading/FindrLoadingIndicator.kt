@@ -22,7 +22,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.exa.android.reflekt.ui.theme.Primary
+import com.exa.android.reflekt.ui.theme.DonutTheme
 
 // ─────────────────────────────────────────────────────────────
 //  Three-dot pulse indicator
@@ -38,9 +38,9 @@ import com.exa.android.reflekt.ui.theme.Primary
 @Composable
 fun ThreeDotLoadingIndicator(
     modifier: Modifier = Modifier,
-    dotColor: Color = Primary,
-    dotSize: Dp = 10.dp,
-    spacing: Dp = 6.dp,
+    dotColor: Color = DonutTheme.colorTokens.primary,
+    dotSize: Dp = DonutTheme.dimens.spacing10,
+    spacing: Dp = DonutTheme.dimens.spacing6,
 ) {
     val transition = rememberInfiniteTransition(label = "three_dot")
     val dotCount = 3
@@ -89,9 +89,9 @@ fun ThreeDotLoadingIndicator(
 @Composable
 fun FindrCircularLoader(
     modifier: Modifier = Modifier,
-    size: Dp = 32.dp,
-    color: Color = Primary,
-    strokeWidth: Dp = 3.dp,
+    size: Dp = DonutTheme.dimens.spacing32,
+    color: Color = DonutTheme.colorTokens.primary,
+    strokeWidth: Dp = DonutTheme.dimens.borderThick,
 ) {
     CircularProgressIndicator(
         modifier = modifier.size(size),

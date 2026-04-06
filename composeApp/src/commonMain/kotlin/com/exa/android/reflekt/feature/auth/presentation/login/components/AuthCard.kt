@@ -22,7 +22,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
@@ -31,14 +30,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.unit.dp
 import com.exa.android.reflekt.feature.auth.presentation.login.LoginEvent
 import com.exa.android.reflekt.feature.auth.presentation.login.LoginUiState
 import com.exa.android.reflekt.ui.components.button.FindrPrimaryButton
 import com.exa.android.reflekt.ui.components.button.FindrSocialButton
 import com.exa.android.reflekt.ui.components.button.FindrTextButton
 import com.exa.android.reflekt.ui.components.textfield.FindrTextField
-import com.exa.android.reflekt.ui.theme.appColors
+import com.exa.android.reflekt.ui.theme.DonutTheme
+import com.exa.android.reflekt.ui.theme.DonutRadius
 
 @Composable
 internal fun AuthCard(
@@ -46,15 +45,15 @@ internal fun AuthCard(
     onEvent: (LoginEvent) -> Unit,
     focusManager: FocusManager,
 ) {
-    val appColors = MaterialTheme.appColors
+    val colors = DonutTheme.colorTokens
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(24.dp))
-            .background(appColors.formCardBackground.copy(alpha = 0.7f))
-            .padding(24.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp),
+            .clip(RoundedCornerShape(DonutRadius.dialog))
+            .background(colors.formCardBackground.copy(alpha = 0.7f))
+            .padding(DonutTheme.dimens.spacing24),
+        verticalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing20),
     ) {
         FindrTextField(
             value = uiState.email,
@@ -84,7 +83,7 @@ internal fun AuthCard(
                                       else Icons.Default.VisibilityOff,
                         contentDescription = if (uiState.isPasswordVisible) "Hide password"
                                              else "Show password",
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        tint = colors.onSurfaceVariant,
                     )
                 }
             },
@@ -118,12 +117,12 @@ internal fun AuthCard(
             text = "Sign In",
             onClick = { onEvent(LoginEvent.SignInClicked) },
             isLoading = uiState.isLoading,
-            elevation = ButtonDefaults.buttonElevation(defaultElevation = 8.dp, pressedElevation = 4.dp),
+            elevation = ButtonDefaults.buttonElevation(defaultElevation = DonutTheme.dimens.elevationCard, pressedElevation = DonutTheme.dimens.elevationPressed),
             trailingIcon = {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                     contentDescription = null,
-                    modifier = Modifier.size(18.dp),
+                    modifier = Modifier.size(DonutTheme.dimens.iconSizeBase),
                 )
             },
         )
@@ -136,7 +135,7 @@ internal fun AuthCard(
                 Text(
                     text = "G",
                     style = MaterialTheme.typography.titleMedium,
-                    color = appColors.googleBlue,
+                    color = colors.googleBlue,
                 )
             },
             onClick = { onEvent(LoginEvent.GoogleSignInClicked) },

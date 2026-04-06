@@ -31,41 +31,40 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.exa.android.reflekt.feature.home.presentation.BugPost
 import com.exa.android.reflekt.feature.home.presentation.HomeEvent
-import com.exa.android.reflekt.ui.theme.appColors
+import com.exa.android.reflekt.ui.theme.DonutTheme
+import com.exa.android.reflekt.ui.theme.DonutRadius
+import com.exa.android.reflekt.ui.theme.DonutTextSize
+import com.exa.android.reflekt.ui.theme.DonutLineHeight
 
-private val BugRed = Color(0xFFEF4444)
 
-/** Bug / debugging help request card. */
+
 @Composable
 internal fun BugPostCard(
     bug: BugPost,
     onEvent: (HomeEvent) -> Unit,
 ) {
-    val appColors = MaterialTheme.appColors
+    val colors = DonutTheme.colorTokens
     val avatarColor = bug.avatarColorArgb.toColor()
     val collaboratorColors = bug.collaboratorColorArgbs.map { it.toColor() }
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surface)
-            .border(1.dp, BugRed.copy(alpha = 0.25f), RoundedCornerShape(16.dp))
-            .padding(16.dp),
+            .padding(horizontal = DonutTheme.dimens.spacing16, vertical = DonutTheme.dimens.spacing4)
+            .clip(RoundedCornerShape(DonutRadius.panel))
+            .background(colors.surface)
+            .border(DonutTheme.dimens.borderThin, DonutTheme.colorTokens.error.copy(alpha = 0.25f), RoundedCornerShape(DonutRadius.panel))
+            .padding(DonutTheme.dimens.spacing16),
     ) {
-        // Header
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(DonutTheme.dimens.avatarSizeBase)
                     .clip(CircleShape)
                     .background(avatarColor.copy(alpha = 0.2f)),
                 contentAlignment = Alignment.Center,
@@ -74,16 +73,16 @@ internal fun BugPostCard(
                     imageVector = Icons.Default.Person,
                     contentDescription = null,
                     tint = avatarColor,
-                    modifier = Modifier.size(22.dp),
+                    modifier = Modifier.size(DonutTheme.dimens.iconSizeExtraLarge),
                 )
             }
 
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(DonutTheme.dimens.spacing12))
 
             Column(modifier = Modifier.weight(1f)) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing8),
                 ) {
                     Text(
                         text = bug.authorName,
@@ -92,22 +91,22 @@ internal fun BugPostCard(
                     )
                     Box(
                         modifier = Modifier
-                            .clip(RoundedCornerShape(6.dp))
-                            .background(BugRed.copy(alpha = 0.1f))
-                            .padding(horizontal = 8.dp, vertical = 2.dp),
+                            .clip(RoundedCornerShape(DonutRadius.md))
+                            .background(DonutTheme.colorTokens.error.copy(alpha = 0.1f))
+                            .padding(horizontal = DonutTheme.dimens.spacing8, vertical = DonutTheme.dimens.spacing2),
                     ) {
                         Text(
                             text = bug.categoryLabel,
-                            fontSize = 10.sp,
+                            fontSize = DonutTextSize.caption,
                             fontWeight = FontWeight.SemiBold,
-                            color = BugRed,
+                            color = DonutTheme.colorTokens.error,
                         )
                     }
                 }
                 Text(
                     text = bug.authorSubtitle,
-                    fontSize = 11.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontSize = DonutTextSize.overline,
+                    color = colors.onSurfaceVariant,
                 )
             }
 
@@ -115,56 +114,54 @@ internal fun BugPostCard(
                 Icon(
                     imageVector = Icons.Default.MoreHoriz,
                     contentDescription = "More",
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = colors.onSurfaceVariant,
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(14.dp))
+        Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing14))
 
         Text(
             text = bug.title,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = colors.onBackground,
         )
 
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing10))
 
-        // Error code snippet
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(10.dp))
-                .background(MaterialTheme.colorScheme.background)
-                .border(1.dp, BugRed.copy(alpha = 0.2f), RoundedCornerShape(10.dp))
-                .padding(12.dp),
+                .clip(RoundedCornerShape(DonutRadius.xl))
+                .background(colors.background)
+                .border(DonutTheme.dimens.borderThin, DonutTheme.colorTokens.error.copy(alpha = 0.2f), RoundedCornerShape(DonutRadius.xl))
+                .padding(DonutTheme.dimens.spacing12),
         ) {
             Text(
                 text = bug.errorSnippet,
-                fontSize = 12.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                lineHeight = 18.sp,
+                fontSize = DonutTextSize.small,
+                color = colors.onSurfaceVariant,
+                lineHeight = DonutLineHeight.bodyLoose,
                 fontFamily = FontFamily.Monospace,
             )
         }
 
-        Spacer(modifier = Modifier.height(14.dp))
+        Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing14))
 
-        // Footer: overlapping avatars + Collaborate button
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             if (collaboratorColors.isNotEmpty()) {
-                Box(modifier = Modifier.height(28.dp)) {
+                Box(modifier = Modifier.height(DonutTheme.dimens.avatarSizeSmall)) {
                     collaboratorColors.forEachIndexed { index, color ->
                         Box(
                             modifier = Modifier
-                                .offset(x = (index * 18).dp)
-                                .size(28.dp)
+                                .offset(x = (index * DonutTheme.dimens.spacing18.value).toInt().let { DonutTheme.dimens.spacing18 })
+                                .size(DonutTheme.dimens.avatarSizeSmall)
                                 .clip(CircleShape)
-                                .border(2.dp, MaterialTheme.colorScheme.surface, CircleShape)
+                                .border(DonutTheme.dimens.borderThick, colors.surface, CircleShape)
                                 .background(color.copy(alpha = 0.3f)),
                             contentAlignment = Alignment.Center,
                         ) {
@@ -172,25 +169,25 @@ internal fun BugPostCard(
                                 imageVector = Icons.Default.Person,
                                 contentDescription = null,
                                 tint = color,
-                                modifier = Modifier.size(14.dp),
+                                modifier = Modifier.size(DonutTheme.dimens.iconSizeMedium),
                             )
                         }
                     }
                     if (bug.collaboratorCount > 0) {
                         Box(
                             modifier = Modifier
-                                .offset(x = (collaboratorColors.size * 18).dp)
-                                .size(28.dp)
+                                .offset(x = (collaboratorColors.size * DonutTheme.dimens.spacing18.value).toInt().let { DonutTheme.dimens.spacing18 })
+                                .size(DonutTheme.dimens.avatarSizeSmall)
                                 .clip(CircleShape)
-                                .border(2.dp, MaterialTheme.colorScheme.surface, CircleShape)
-                                .background(appColors.cardBackground),
+                                .border(DonutTheme.dimens.borderThick, colors.surface, CircleShape)
+                                .background(colors.cardBackground),
                             contentAlignment = Alignment.Center,
                         ) {
                             Text(
                                 text = "+${bug.collaboratorCount}",
-                                fontSize = 10.sp,
+                                fontSize = DonutTextSize.caption,
                                 fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                color = colors.onSurfaceVariant,
                             )
                         }
                     }
@@ -201,24 +198,24 @@ internal fun BugPostCard(
 
             Row(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(10.dp))
-                    .border(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.4f), RoundedCornerShape(10.dp))
+                    .clip(RoundedCornerShape(DonutRadius.xl))
+                    .border(DonutTheme.dimens.borderThin, colors.primary.copy(alpha = 0.4f), RoundedCornerShape(DonutRadius.xl))
                     .clickable { onEvent(HomeEvent.BugCollaborateClicked(bug.id)) }
-                    .padding(horizontal = 14.dp, vertical = 8.dp),
+                    .padding(horizontal = DonutTheme.dimens.spacing14, vertical = DonutTheme.dimens.spacing8),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                horizontalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing6),
             ) {
                 Icon(
                     imageVector = Icons.Default.ChatBubbleOutline,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(16.dp),
+                    tint = colors.primary,
+                    modifier = Modifier.size(DonutTheme.dimens.iconSizeNormal),
                 )
                 Text(
                     text = "Collaborate",
-                    fontSize = 13.sp,
+                    fontSize = DonutTextSize.button,
                     fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = colors.primary,
                 )
             }
         }

@@ -31,41 +31,40 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.exa.android.reflekt.feature.home.presentation.HomeEvent
 import com.exa.android.reflekt.feature.home.presentation.ProjectPost
-import com.exa.android.reflekt.ui.theme.appColors
+import com.exa.android.reflekt.ui.theme.DonutTheme
+import com.exa.android.reflekt.ui.theme.DonutRadius
+import com.exa.android.reflekt.ui.theme.DonutTextSize
+import com.exa.android.reflekt.ui.theme.DonutLineHeight
 
-/** Project looking-for-collaborators card. Tags use FindrSuggestionChip style inline. */
 @Composable
 internal fun ProjectPostCard(
     project: ProjectPost,
     onEvent: (HomeEvent) -> Unit,
     onCardClick: () -> Unit = {},
 ) {
-    val appColors = MaterialTheme.appColors
+    val colors = DonutTheme.colorTokens
     val avatarColor = project.avatarColorArgb.toColor()
     val categoryColor = colorFromKey(project.categoryColorKey)
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surface)
-            .border(1.dp, appColors.cardBorder.copy(alpha = 0.5f), RoundedCornerShape(16.dp))
+            .padding(horizontal = DonutTheme.dimens.spacing16, vertical = DonutTheme.dimens.spacing4)
+            .clip(RoundedCornerShape(DonutRadius.panel))
+            .background(colors.surface)
+            .border(DonutTheme.dimens.borderThin, colors.cardBorder.copy(alpha = 0.5f), RoundedCornerShape(DonutRadius.panel))
             .clickable(onClick = onCardClick)
-            .padding(16.dp),
+            .padding(DonutTheme.dimens.spacing16),
     ) {
-        // Header
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(DonutTheme.dimens.avatarSizeBase)
                     .clip(CircleShape)
                     .background(avatarColor.copy(alpha = 0.2f)),
                 contentAlignment = Alignment.Center,
@@ -74,16 +73,16 @@ internal fun ProjectPostCard(
                     imageVector = Icons.Default.Person,
                     contentDescription = null,
                     tint = avatarColor,
-                    modifier = Modifier.size(22.dp),
+                    modifier = Modifier.size(DonutTheme.dimens.iconSizeExtraLarge),
                 )
             }
 
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(DonutTheme.dimens.spacing12))
 
             Column(modifier = Modifier.weight(1f)) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing8),
                 ) {
                     Text(
                         text = project.authorName,
@@ -92,13 +91,13 @@ internal fun ProjectPostCard(
                     )
                     Box(
                         modifier = Modifier
-                            .clip(RoundedCornerShape(6.dp))
+                            .clip(RoundedCornerShape(DonutRadius.md))
                             .background(categoryColor.copy(alpha = 0.1f))
-                            .padding(horizontal = 8.dp, vertical = 2.dp),
+                            .padding(horizontal = DonutTheme.dimens.spacing8, vertical = DonutTheme.dimens.spacing2),
                     ) {
                         Text(
                             text = project.categoryLabel,
-                            fontSize = 10.sp,
+                            fontSize = DonutTextSize.caption,
                             fontWeight = FontWeight.SemiBold,
                             color = categoryColor,
                         )
@@ -106,8 +105,8 @@ internal fun ProjectPostCard(
                 }
                 Text(
                     text = project.authorSubtitle,
-                    fontSize = 11.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontSize = DonutTextSize.overline,
+                    color = colors.onSurfaceVariant,
                 )
             }
 
@@ -115,54 +114,52 @@ internal fun ProjectPostCard(
                 Icon(
                     imageVector = Icons.Default.MoreHoriz,
                     contentDescription = "More",
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = colors.onSurfaceVariant,
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(14.dp))
+        Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing14))
 
         Text(
             text = project.title,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = colors.onBackground,
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing8))
 
         Text(
             text = project.description,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            lineHeight = 20.sp,
+            lineHeight = DonutLineHeight.body,
         )
 
-        Spacer(modifier = Modifier.height(14.dp))
+        Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing14))
 
-        // Tech tags — inline styled (could be FindrSuggestionChip in future)
         if (project.tags.isNotEmpty()) {
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing8)) {
                 project.tags.forEach { tag ->
                     Box(
                         modifier = Modifier
-                            .clip(RoundedCornerShape(6.dp))
-                            .border(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.5f), RoundedCornerShape(6.dp))
-                            .padding(horizontal = 10.dp, vertical = 5.dp),
+                            .clip(RoundedCornerShape(DonutRadius.md))
+                            .border(DonutTheme.dimens.borderThin, colors.outline.copy(alpha = 0.5f), RoundedCornerShape(DonutRadius.md))
+                            .padding(horizontal = DonutTheme.dimens.spacing10, vertical = DonutTheme.dimens.spacing5),
                     ) {
                         Text(
                             text = "#$tag",
-                            fontSize = 12.sp,
+                            fontSize = DonutTextSize.small,
                             fontWeight = FontWeight.Medium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = colors.onSurfaceVariant,
                         )
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(14.dp))
+            Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing14))
         }
 
-        // Footer
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -171,14 +168,14 @@ internal fun ProjectPostCard(
                 Icon(
                     imageVector = Icons.Default.LocationOn,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(14.dp),
+                    tint = colors.onSurfaceVariant,
+                    modifier = Modifier.size(DonutTheme.dimens.iconSizeMedium),
                 )
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(modifier = Modifier.width(DonutTheme.dimens.spacing4))
                 Text(
                     text = project.location,
-                    fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontSize = DonutTextSize.small,
+                    color = colors.onSurfaceVariant,
                 )
             }
 
@@ -186,11 +183,11 @@ internal fun ProjectPostCard(
 
             Button(
                 onClick = { onEvent(HomeEvent.ProjectEnrollClicked(project.id)) },
-                shape = RoundedCornerShape(10.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
+                shape = RoundedCornerShape(DonutRadius.xl),
+                colors = ButtonDefaults.buttonColors(containerColor = colors.primary),
+                contentPadding = PaddingValues(horizontal = DonutTheme.dimens.spacing20, vertical = DonutTheme.dimens.spacing8),
             ) {
-                Text(text = "Enroll", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                Text(text = "Enroll", fontWeight = FontWeight.Bold, fontSize = DonutTextSize.button)
             }
         }
     }

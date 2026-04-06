@@ -51,6 +51,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.exa.android.reflekt.ui.theme.DonutTheme
 
 @Composable
 fun CreateBugReportScreen(
@@ -83,7 +84,7 @@ fun CreateBugReportScreen(
                         .weight(1f)
                         .verticalScroll(rememberScrollState())
                         .padding(horizontal = 20.dp)
-                        .padding(bottom = 100.dp, top = 4.dp),
+                        .padding(bottom = 100.dp, top = DonutTheme.dimens.spacing4),
                 ) {
                     HeroSection()
 
@@ -128,7 +129,7 @@ fun CreateBugReportScreen(
                 Snackbar(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
-                        .padding(16.dp)
+                        .padding(DonutTheme.dimens.spacing16)
                         .padding(bottom = 80.dp),
                     containerColor = MaterialTheme.colorScheme.errorContainer,
                     contentColor = MaterialTheme.colorScheme.onErrorContainer,
@@ -167,7 +168,7 @@ private fun Header(onCancel: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 16.dp),
+            .padding(horizontal = DonutTheme.dimens.spacing16, vertical = DonutTheme.dimens.spacing16),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -176,13 +177,13 @@ private fun Header(onCancel: () -> Unit) {
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier
-                .clip(RoundedCornerShape(8.dp))
+                .clip(RoundedCornerShape(DonutTheme.dimens.spacing8))
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = ripple(),
                     onClick = onCancel,
                 )
-                .padding(horizontal = 4.dp, vertical = 2.dp),
+                .padding(horizontal = DonutTheme.dimens.spacing4, vertical = 2.dp),
         )
 
         Text(
@@ -191,7 +192,7 @@ private fun Header(onCancel: () -> Unit) {
             color = MaterialTheme.colorScheme.onBackground,
         )
 
-        Spacer(modifier = Modifier.width(40.dp))
+        Spacer(modifier = Modifier.width(DonutTheme.dimens.spacing40))
     }
 }
 
@@ -204,16 +205,16 @@ private fun HeroSection() {
         ) {
             Box(
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(DonutTheme.dimens.spacing40)
                     .clip(RoundedCornerShape(10.dp))
-                    .background(Color(0xFFEF4444).copy(alpha = 0.15f)),
+                    .background(DonutTheme.colorTokens.error.copy(alpha = 0.15f)),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
                     imageVector = Icons.Default.BugReport,
                     contentDescription = null,
                     modifier = Modifier.size(22.dp),
-                    tint = Color(0xFFEF4444),
+                    tint = DonutTheme.colorTokens.error,
                 )
             }
 
@@ -226,7 +227,7 @@ private fun HeroSection() {
             )
         }
 
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing4))
 
         Text(
             text = "Help us squash it. Describe the issue in detail.",
@@ -249,7 +250,7 @@ private fun BasicInfoSection(
 
     Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
         // Bug Title
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing8)) {
             Text(
                 text = "Bug Title",
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
@@ -265,14 +266,14 @@ private fun BasicInfoSection(
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(DonutTheme.dimens.spacing12),
                 singleLine = true,
                 colors = colors,
             )
         }
 
         // Steps to Reproduce
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing8)) {
             Text(
                 text = "Steps to Reproduce",
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
@@ -290,13 +291,13 @@ private fun BasicInfoSection(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(140.dp),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(DonutTheme.dimens.spacing12),
                 colors = colors,
             )
         }
 
         // Expected Behavior
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing8)) {
             Row {
                 Text(
                     text = "Expected Behavior",
@@ -321,7 +322,7 @@ private fun BasicInfoSection(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(90.dp),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(DonutTheme.dimens.spacing12),
                 colors = colors,
             )
         }
@@ -333,7 +334,7 @@ private fun SeveritySection(
     selected: BugSeverity,
     onSelect: (BugSeverity) -> Unit,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing12)) {
         Text(
             text = "Severity",
             style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
@@ -342,15 +343,15 @@ private fun SeveritySection(
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing8),
         ) {
             BugSeverity.entries.forEach { severity ->
                 val isSelected = severity == selected
                 val chipColor = when (severity) {
-                    BugSeverity.LOW -> Color(0xFF10B981)
-                    BugSeverity.MEDIUM -> Color(0xFFF59E0B)
-                    BugSeverity.HIGH -> Color(0xFFF97316)
-                    BugSeverity.CRITICAL -> Color(0xFFEF4444)
+                    BugSeverity.LOW -> DonutTheme.staticColorTokens.accentGreen
+                    BugSeverity.MEDIUM -> DonutTheme.staticColorTokens.accentYellow
+                    BugSeverity.HIGH -> DonutTheme.staticColorTokens.accentOrange
+                    BugSeverity.CRITICAL -> DonutTheme.colorTokens.error
                 }
 
                 Box(
@@ -396,7 +397,7 @@ private fun AttachmentsSection(
     onUpload: () -> Unit,
     onRemove: () -> Unit,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing12)) {
         Row {
             Text(
                 text = "Screenshot",
@@ -413,11 +414,11 @@ private fun AttachmentsSection(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(16.dp))
+                .clip(RoundedCornerShape(DonutTheme.dimens.spacing16))
                 .border(
                     width = 2.dp,
                     color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
-                    shape = RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(DonutTheme.dimens.spacing16),
                 )
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
@@ -443,7 +444,7 @@ private fun AttachmentsSection(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing12))
 
                 Text(
                     text = "Tap to upload screenshot",
@@ -451,7 +452,7 @@ private fun AttachmentsSection(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing4))
 
                 Text(
                     text = "PNG, JPG up to 10MB",
@@ -465,22 +466,22 @@ private fun AttachmentsSection(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(12.dp))
+                    .clip(RoundedCornerShape(DonutTheme.dimens.spacing12))
                     .background(MaterialTheme.colorScheme.surface)
                     .border(
                         width = 1.dp,
                         color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
-                        shape = RoundedCornerShape(12.dp),
+                        shape = RoundedCornerShape(DonutTheme.dimens.spacing12),
                     )
-                    .padding(12.dp),
+                    .padding(DonutTheme.dimens.spacing12),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(
                     modifier = Modifier
-                        .size(40.dp)
-                        .clip(RoundedCornerShape(8.dp))
+                        .size(DonutTheme.dimens.spacing40)
+                        .clip(RoundedCornerShape(DonutTheme.dimens.spacing8))
                         .background(
-                            if (fileName.endsWith(".pdf")) Color(0xFFDC2626).copy(alpha = 0.1f)
+                            if (fileName.endsWith(".pdf")) DonutTheme.colorTokens.error.copy(alpha = 0.1f)
                             else MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
                         ),
                     contentAlignment = Alignment.Center,
@@ -490,12 +491,12 @@ private fun AttachmentsSection(
                         else Icons.Default.Image,
                         contentDescription = null,
                         modifier = Modifier.size(20.dp),
-                        tint = if (fileName.endsWith(".pdf")) Color(0xFFDC2626)
+                        tint = if (fileName.endsWith(".pdf")) DonutTheme.colorTokens.error
                         else MaterialTheme.colorScheme.primary,
                     )
                 }
 
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(DonutTheme.dimens.spacing12))
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
@@ -537,7 +538,7 @@ private fun BottomActionBar(
         modifier = modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.background)
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = DonutTheme.dimens.spacing16, vertical = DonutTheme.dimens.spacing12),
     ) {
         Button(
             onClick = onSubmit,
@@ -570,7 +571,7 @@ private fun BottomActionBar(
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                     contentDescription = null,
-                    modifier = Modifier.size(16.dp),
+                    modifier = Modifier.size(DonutTheme.dimens.spacing16),
                 )
             }
         }
@@ -599,22 +600,22 @@ private fun FilePickerDialog(
             )
         },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing4)) {
                 sampleFiles.forEach { (name, size, icon) ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clip(RoundedCornerShape(12.dp))
+                            .clip(RoundedCornerShape(DonutTheme.dimens.spacing12))
                             .clickable { onFileSelected(name, size) }
-                            .padding(12.dp),
+                            .padding(DonutTheme.dimens.spacing12),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Box(
                             modifier = Modifier
-                                .size(40.dp)
-                                .clip(RoundedCornerShape(8.dp))
+                                .size(DonutTheme.dimens.spacing40)
+                                .clip(RoundedCornerShape(DonutTheme.dimens.spacing8))
                                 .background(
-                                    if (name.endsWith(".pdf")) Color(0xFFDC2626).copy(alpha = 0.1f)
+                                    if (name.endsWith(".pdf")) DonutTheme.colorTokens.error.copy(alpha = 0.1f)
                                     else MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
                                 ),
                             contentAlignment = Alignment.Center,
@@ -623,12 +624,12 @@ private fun FilePickerDialog(
                                 imageVector = icon,
                                 contentDescription = null,
                                 modifier = Modifier.size(20.dp),
-                                tint = if (name.endsWith(".pdf")) Color(0xFFDC2626)
+                                tint = if (name.endsWith(".pdf")) DonutTheme.colorTokens.error
                                 else MaterialTheme.colorScheme.primary,
                             )
                         }
 
-                        Spacer(modifier = Modifier.width(12.dp))
+                        Spacer(modifier = Modifier.width(DonutTheme.dimens.spacing12))
 
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
@@ -655,9 +656,9 @@ private fun FilePickerDialog(
                 style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
+                    .clip(RoundedCornerShape(DonutTheme.dimens.spacing8))
                     .clickable(onClick = onDismiss)
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                    .padding(horizontal = DonutTheme.dimens.spacing16, vertical = DonutTheme.dimens.spacing8),
             )
         },
     )

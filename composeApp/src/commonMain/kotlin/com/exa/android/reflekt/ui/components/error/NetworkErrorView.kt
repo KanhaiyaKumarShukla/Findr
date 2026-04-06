@@ -17,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import com.exa.android.reflekt.ui.theme.DonutTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -93,18 +94,18 @@ fun NetworkErrorView(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = 32.dp),
+            .padding(horizontal = DonutTheme.dimens.spacing32),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
         Icon(
             imageVector = config.icon,
             contentDescription = null,
-            modifier = Modifier.size(72.dp),
+            modifier = Modifier.size(DonutTheme.dimens.spacing72),
             tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
         )
 
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(DonutTheme.dimens.spacing24))
 
         Text(
             text = config.title,
@@ -114,7 +115,7 @@ fun NetworkErrorView(
             textAlign = TextAlign.Center,
         )
 
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(DonutTheme.dimens.spacing12))
 
         Text(
             text = message ?: config.message,
@@ -124,7 +125,7 @@ fun NetworkErrorView(
         )
 
         if (onRetry != null) {
-            Spacer(Modifier.height(32.dp))
+            Spacer(Modifier.height(DonutTheme.dimens.spacing32))
             FindrPrimaryButton(
                 text = "Try Again",
                 onClick = onRetry,
@@ -133,7 +134,7 @@ fun NetworkErrorView(
         }
 
         if (onSecondaryAction != null) {
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(DonutTheme.dimens.spacing12))
             FindrOutlinedButton(
                 text = secondaryLabel,
                 onClick = onSecondaryAction,
@@ -159,9 +160,9 @@ fun InlineErrorBanner(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(DonutTheme.dimens.spacing16),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing12),
     ) {
         Text(
             text = message,

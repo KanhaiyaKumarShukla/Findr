@@ -27,15 +27,15 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-
-// Shared shimmer brush builder
+import com.exa.android.reflekt.ui.theme.DonutTheme
+import com.exa.android.reflekt.ui.theme.DonutRadius
 
 @Composable
 private fun rememberShimmerBrush(
-    baseColor: Color = Color(0xFFE0E0E0),
-    highlightColor: Color = Color(0xFFF5F5F5),
     durationMs: Int = 1_200,
 ): Brush {
+    val baseColor: Color = DonutTheme.colorTokens.surfaceVariant
+    val highlightColor: Color = DonutTheme.colorTokens.outlineVariant
     val transition = rememberInfiniteTransition(label = "shimmer_box")
     val offset by transition.animateFloat(
         initialValue = 0f,
@@ -53,23 +53,13 @@ private fun rememberShimmerBrush(
     )
 }
 
-// ─────────────────────────────────────────────────────────────
-//  Primitive shimmer placeholder
-// ─────────────────────────────────────────────────────────────
-
-/**
- * A rectangular shimmer placeholder.
- *
- * @param width   Explicit width — leave null for [Modifier.fillMaxWidth].
- * @param height  Height of the placeholder.
- * @param cornerRadius  Corner rounding.
- */
+// Rectangular shimmer placeholder.
 @Composable
 fun ShimmerBox(
     height: Dp,
     modifier: Modifier = Modifier,
     width: Dp? = null,
-    cornerRadius: Dp = 8.dp,
+    cornerRadius: Dp = DonutRadius.lg,
 ) {
     val brush = rememberShimmerBrush()
     val sizeModifier = if (width != null) modifier.size(width, height) else modifier.fillMaxWidth().height(height)
@@ -80,9 +70,7 @@ fun ShimmerBox(
     )
 }
 
-/**
- * A circular shimmer placeholder — useful for avatar/icon skeletons.
- */
+// Circular shimmer placeholder for avatar/icon skeletons.
 @Composable
 fun ShimmerCircle(size: Dp, modifier: Modifier = Modifier) {
     val brush = rememberShimmerBrush()
@@ -94,27 +82,20 @@ fun ShimmerCircle(size: Dp, modifier: Modifier = Modifier) {
     )
 }
 
-// ─────────────────────────────────────────────────────────────
-//  Compound skeleton: user card row
-// ─────────────────────────────────────────────────────────────
-
-/**
- * Pre-built skeleton that mimics a user/profile card row.
- * Use inside a LazyColumn while content is loading.
- */
+// Pre-built skeleton that mimics a user/profile card row.
 @Composable
 fun UserCardSkeleton(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = DonutTheme.dimens.spacing16, vertical = DonutTheme.dimens.spacing12),
     ) {
-        ShimmerCircle(size = 48.dp)
-        Spacer(Modifier.width(12.dp))
+        ShimmerCircle(size = DonutTheme.dimens.iconSize3X)
+        Spacer(Modifier.width(DonutTheme.dimens.spacing12))
         Column(modifier = Modifier.weight(1f)) {
-            ShimmerBox(height = 14.dp, cornerRadius = 4.dp)
-            Spacer(Modifier.height(8.dp))
-            ShimmerBox(height = 12.dp, width = 140.dp, cornerRadius = 4.dp)
+            ShimmerBox(height = DonutTheme.dimens.spacing14, cornerRadius = DonutRadius.sm)
+            Spacer(Modifier.height(DonutTheme.dimens.spacing8))
+            ShimmerBox(height = DonutTheme.dimens.spacing12, width = DonutTheme.dimens.spacing120, cornerRadius = DonutRadius.sm)
         }
     }
 }

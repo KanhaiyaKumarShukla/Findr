@@ -2,6 +2,7 @@ package com.exa.android.reflekt.feature.home.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,36 +25,36 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.exa.android.reflekt.feature.home.presentation.AnnouncementPost
 import com.exa.android.reflekt.feature.home.presentation.HomeEvent
-import com.exa.android.reflekt.ui.theme.appColors
+import com.exa.android.reflekt.ui.theme.DonutTheme
+import com.exa.android.reflekt.ui.theme.DonutRadius
+import com.exa.android.reflekt.ui.theme.DonutTextSize
+import com.exa.android.reflekt.ui.theme.DonutLineHeight
 
-/** Campus announcement / notice card. */
 @Composable
 internal fun AnnouncementCard(
     announcement: AnnouncementPost,
     onEvent: (HomeEvent) -> Unit,
 ) {
+    val colors = DonutTheme.colorTokens
     val accentColor = colorFromKey(announcement.accentColorKey)
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surface)
-            .border(1.dp, MaterialTheme.appColors.cardBorder.copy(alpha = 0.5f), RoundedCornerShape(16.dp)),
+            .padding(horizontal = DonutTheme.dimens.spacing16, vertical = DonutTheme.dimens.spacing4)
+            .clip(RoundedCornerShape(DonutRadius.panel))
+            .background(colors.surface)
+            .border(DonutTheme.dimens.borderThin, colors.cardBorder.copy(alpha = 0.5f), RoundedCornerShape(DonutRadius.panel)),
     ) {
-        // Header
         Row(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(DonutTheme.dimens.spacing16),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            androidx.compose.foundation.layout.Box(
+            Box(
                 modifier = Modifier
-                    .size(36.dp)
+                    .size(DonutTheme.dimens.avatarSizeMedium)
                     .clip(CircleShape)
                     .background(accentColor.copy(alpha = 0.2f)),
                 contentAlignment = Alignment.Center,
@@ -62,11 +63,11 @@ internal fun AnnouncementCard(
                     imageVector = Icons.Default.Campaign,
                     contentDescription = null,
                     tint = accentColor,
-                    modifier = Modifier.size(18.dp),
+                    modifier = Modifier.size(DonutTheme.dimens.iconSizeBase),
                 )
             }
 
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(DonutTheme.dimens.spacing12))
 
             Column {
                 Text(
@@ -76,52 +77,51 @@ internal fun AnnouncementCard(
                 )
                 Text(
                     text = announcement.sourceSubtitle,
-                    fontSize = 10.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontSize = DonutTextSize.caption,
+                    color = colors.onSurfaceVariant,
                 )
             }
         }
 
-        // Body + CTA
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .clip(RoundedCornerShape(12.dp))
+                .padding(horizontal = DonutTheme.dimens.spacing16)
+                .clip(RoundedCornerShape(DonutRadius.card))
                 .background(accentColor.copy(alpha = 0.05f))
-                .border(1.dp, accentColor.copy(alpha = 0.1f), RoundedCornerShape(12.dp))
-                .padding(14.dp),
+                .border(DonutTheme.dimens.borderThin, accentColor.copy(alpha = 0.1f), RoundedCornerShape(DonutRadius.card))
+                .padding(DonutTheme.dimens.spacing14),
         ) {
             Text(
                 text = announcement.title,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
+                color = colors.primary,
             )
-            Spacer(modifier = Modifier.height(6.dp))
+            Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing6))
             Text(
                 text = announcement.description,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                lineHeight = 18.sp,
+                color = colors.onSurfaceVariant,
+                lineHeight = DonutLineHeight.bodyLoose,
             )
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing12))
             Button(
                 onClick = { onEvent(HomeEvent.AnnouncementCtaClicked(announcement.id)) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(40.dp),
-                shape = RoundedCornerShape(10.dp),
+                    .height(DonutTheme.dimens.navBarMinSize),
+                shape = RoundedCornerShape(DonutRadius.xl),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = accentColor.copy(alpha = 0.12f),
                     contentColor = accentColor,
                 ),
-                elevation = ButtonDefaults.buttonElevation(0.dp),
+                elevation = ButtonDefaults.buttonElevation(DonutTheme.dimens.elevationNone),
             ) {
-                Text(text = announcement.ctaLabel, fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                Text(text = announcement.ctaLabel, fontWeight = FontWeight.Bold, fontSize = DonutTextSize.small)
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing16))
     }
 }

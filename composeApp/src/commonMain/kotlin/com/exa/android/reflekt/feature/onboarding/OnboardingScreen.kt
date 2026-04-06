@@ -65,7 +65,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.exa.android.reflekt.ui.theme.appColors
+import com.exa.android.reflekt.ui.theme.DonutTheme
 import kotlinx.coroutines.launch
 
 private data class OnboardingPage(
@@ -98,12 +98,12 @@ fun OnboardingScreen(
 ) {
     val pagerState = rememberPagerState(pageCount = { pages.size })
     val coroutineScope = rememberCoroutineScope()
-    val appColors = MaterialTheme.appColors
+    val colors = DonutTheme.colorTokens
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+            .background(colors.background),
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             // Pager
@@ -119,32 +119,32 @@ fun OnboardingScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp)
-                    .padding(bottom = 40.dp),
+                    .padding(bottom = DonutTheme.dimens.spacing40),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(32.dp),
+                verticalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing32),
             ) {
                 // Pagination dots
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing12),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     repeat(pages.size) { index ->
                         Box(
                             modifier = Modifier
-                                .height(8.dp)
+                                .height(DonutTheme.dimens.spacing8)
                                 .then(
                                     if (index == pagerState.currentPage) {
-                                        Modifier.width(32.dp)
+                                        Modifier.width(DonutTheme.dimens.spacing32)
                                     } else {
-                                        Modifier.width(8.dp)
+                                        Modifier.width(DonutTheme.dimens.spacing8)
                                     },
                                 )
                                 .clip(CircleShape)
                                 .background(
                                     if (index == pagerState.currentPage) {
-                                        MaterialTheme.colorScheme.primary
+                                        colors.primary
                                     } else {
-                                        appColors.paginationDotInactive
+                                        colors.paginationDotInactive
                                     },
                                 ),
                         )
@@ -166,13 +166,13 @@ fun OnboardingScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
-                    shape = RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(DonutTheme.dimens.spacing16),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
+                        containerColor = colors.primary,
                     ),
                     elevation = ButtonDefaults.buttonElevation(
-                        defaultElevation = 8.dp,
-                        pressedElevation = 4.dp,
+                        defaultElevation = DonutTheme.dimens.spacing8,
+                        pressedElevation = DonutTheme.dimens.spacing4,
                     ),
                 ) {
                     Text(
@@ -180,7 +180,7 @@ fun OnboardingScreen(
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 16.sp,
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(DonutTheme.dimens.spacing8))
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                         contentDescription = null,
@@ -195,7 +195,7 @@ fun OnboardingScreen(
 @Composable
 private fun OnboardingPageContent(pageIndex: Int) {
     val page = pages[pageIndex]
-    val appColors = MaterialTheme.appColors
+    val colors = DonutTheme.colorTokens
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -219,16 +219,16 @@ private fun OnboardingPageContent(pageIndex: Int) {
         Column(
             modifier = Modifier
                 .weight(0.4f)
-                .padding(horizontal = 32.dp)
-                .padding(top = 40.dp),
+                .padding(horizontal = DonutTheme.dimens.spacing32)
+                .padding(top = DonutTheme.dimens.spacing40),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = buildAnnotatedString {
-                    withStyle(SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
+                    withStyle(SpanStyle(color = colors.onBackground)) {
                         append(page.titleStart)
                     }
-                    withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                    withStyle(SpanStyle(color = colors.primary)) {
                         append(page.titleAccent)
                     }
                 },
@@ -239,12 +239,12 @@ private fun OnboardingPageContent(pageIndex: Int) {
                 lineHeight = 36.sp,
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing16))
 
             Text(
                 text = page.subtitle,
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = colors.onSurfaceVariant,
                 textAlign = TextAlign.Center,
                 lineHeight = 24.sp,
             )
@@ -256,12 +256,12 @@ private fun OnboardingPageContent(pageIndex: Int) {
 
 @Composable
 private fun CollaborationIllustration() {
-    val appColors = MaterialTheme.appColors
+    val colors = DonutTheme.colorTokens
 
     Box(
         modifier = Modifier
             .size(280.dp)
-            .padding(16.dp),
+            .padding(DonutTheme.dimens.spacing16),
         contentAlignment = Alignment.Center,
     ) {
         // Central group icon
@@ -272,8 +272,8 @@ private fun CollaborationIllustration() {
                 .background(
                     brush = Brush.linearGradient(
                         colors = listOf(
-                            MaterialTheme.colorScheme.primary,
-                            appColors.accentBlue,
+                            colors.primary,
+                            colors.accentBlue,
                         ),
                     ),
                 ),
@@ -282,7 +282,7 @@ private fun CollaborationIllustration() {
             Icon(
                 imageVector = Icons.Default.Groups,
                 contentDescription = null,
-                tint = appColors.iconOnAccent,
+                tint = colors.iconOnAccent,
                 modifier = Modifier.size(48.dp),
             )
         }
@@ -290,28 +290,28 @@ private fun CollaborationIllustration() {
         // Floating icons around
         FloatingIcon(
             icon = Icons.Default.Code,
-            backgroundColor = appColors.accentGreen,
+            backgroundColor = colors.accentGreen,
             offsetX = (-75).dp,
             offsetY = (-55).dp,
             size = 38.dp,
         )
         FloatingIcon(
             icon = Icons.Default.Brush,
-            backgroundColor = appColors.accentPurple,
+            backgroundColor = colors.accentPurple,
             offsetX = 75.dp,
             offsetY = (-45).dp,
             size = 34.dp,
         )
         FloatingIcon(
             icon = Icons.Default.Lightbulb,
-            backgroundColor = appColors.accentYellow,
+            backgroundColor = colors.accentYellow,
             offsetX = (-70).dp,
             offsetY = 60.dp,
             size = 34.dp,
         )
         FloatingIcon(
             icon = Icons.Default.Handshake,
-            backgroundColor = appColors.accentOrange,
+            backgroundColor = colors.accentOrange,
             offsetX = 70.dp,
             offsetY = 55.dp,
             size = 36.dp,
@@ -323,12 +323,12 @@ private fun CollaborationIllustration() {
 
 @Composable
 private fun CareerIllustration() {
-    val appColors = MaterialTheme.appColors
+    val colors = DonutTheme.colorTokens
 
     Box(
         modifier = Modifier
             .size(280.dp)
-            .padding(32.dp),
+            .padding(DonutTheme.dimens.spacing32),
         contentAlignment = Alignment.Center,
     ) {
         // Central career icon
@@ -339,8 +339,8 @@ private fun CareerIllustration() {
                 .background(
                     brush = Brush.linearGradient(
                         colors = listOf(
-                            MaterialTheme.colorScheme.primary,
-                            appColors.accentIndigo,
+                            colors.primary,
+                            colors.accentIndigo,
                         ),
                     ),
                 ),
@@ -349,8 +349,8 @@ private fun CareerIllustration() {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.TrendingUp,
                 contentDescription = null,
-                tint = appColors.iconOnAccent,
-                modifier = Modifier.size(40.dp),
+                tint = colors.iconOnAccent,
+                modifier = Modifier.size(DonutTheme.dimens.spacing40),
             )
         }
 
@@ -365,22 +365,22 @@ private fun CareerIllustration() {
         Box(
             modifier = Modifier
                 .offset(x = 55.dp, y = 55.dp)
-                .clip(RoundedCornerShape(12.dp))
-                .background(appColors.cardBackground.copy(alpha = 0.9f))
-                .border(1.dp, appColors.cardBorder, RoundedCornerShape(12.dp))
+                .clip(RoundedCornerShape(DonutTheme.dimens.spacing12))
+                .background(colors.cardBackground.copy(alpha = 0.9f))
+                .border(1.dp, colors.cardBorder, RoundedCornerShape(DonutTheme.dimens.spacing12))
                 .padding(10.dp),
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     imageVector = Icons.Default.Verified,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = colors.primary,
                     modifier = Modifier.size(14.dp),
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
                     text = "Eligible",
-                    color = appColors.cardText,
+                    color = colors.cardText,
                     fontSize = 11.sp,
                     fontWeight = FontWeight.Medium,
                 )
@@ -390,17 +390,17 @@ private fun CareerIllustration() {
         // Floating icons
         FloatingIcon(
             icon = Icons.Default.Work,
-            backgroundColor = appColors.accentOrange,
+            backgroundColor = colors.accentOrange,
             offsetX = 65.dp,
             offsetY = (-50).dp,
             size = 34.dp,
         )
         FloatingIcon(
             icon = Icons.Default.Timeline,
-            backgroundColor = appColors.accentGreen,
+            backgroundColor = colors.accentGreen,
             offsetX = (-65).dp,
             offsetY = 55.dp,
-            size = 32.dp,
+            size = DonutTheme.dimens.spacing32,
         )
     }
 }
@@ -411,14 +411,14 @@ private fun StatsCard(
     offsetX: Dp,
     offsetY: Dp,
 ) {
-    val appColors = MaterialTheme.appColors
+    val colors = DonutTheme.colorTokens
 
     Box(
         modifier = Modifier
             .offset(x = offsetX, y = offsetY)
-            .clip(RoundedCornerShape(12.dp))
-            .background(appColors.cardBackground.copy(alpha = 0.9f))
-            .border(1.dp, appColors.cardBorder, RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(DonutTheme.dimens.spacing12))
+            .background(colors.cardBackground.copy(alpha = 0.9f))
+            .border(1.dp, colors.cardBorder, RoundedCornerShape(DonutTheme.dimens.spacing12))
             .padding(10.dp),
     ) {
         Column {
@@ -427,30 +427,30 @@ private fun StatsCard(
                     modifier = Modifier
                         .size(6.dp)
                         .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primary),
+                        .background(colors.primary),
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
                     text = label.uppercase(),
-                    color = appColors.barChartLabel,
+                    color = colors.barChartLabel,
                     fontSize = 8.sp,
                     fontWeight = FontWeight.SemiBold,
                     letterSpacing = 1.sp,
                 )
             }
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing8))
             // Mini bar chart
             Row(
                 horizontalArrangement = Arrangement.spacedBy(3.dp),
                 verticalAlignment = Alignment.Bottom,
-                modifier = Modifier.height(32.dp),
+                modifier = Modifier.height(DonutTheme.dimens.spacing32),
             ) {
                 val heights = listOf(0.4f, 0.6f, 0.5f, 0.85f)
-                val colors = listOf(
-                    appColors.barChartLow,
-                    appColors.barChartMid,
-                    appColors.barChartHigh,
-                    MaterialTheme.colorScheme.primary,
+                val barColors = listOf(
+                    colors.barChartLow,
+                    colors.barChartMid,
+                    colors.barChartHigh,
+                    colors.primary,
                 )
                 heights.forEachIndexed { index, fraction ->
                     Box(
@@ -459,7 +459,7 @@ private fun StatsCard(
                             .fillMaxSize()
                             .weight(fraction)
                             .clip(RoundedCornerShape(2.dp))
-                            .background(colors[index]),
+                            .background(barColors[index]),
                     )
                 }
             }
@@ -504,7 +504,7 @@ private fun CommunityIllustration() {
         animationSpec = infiniteRepeatable(tween(1750, easing = FastOutSlowInEasing), RepeatMode.Reverse), label = ""
     )
 
-    val appColors = MaterialTheme.appColors
+    val colors = DonutTheme.colorTokens
 
     Box(
         modifier = Modifier
@@ -518,14 +518,14 @@ private fun CommunityIllustration() {
             modifier = Modifier
                 .fillMaxSize()
                 .clip(CircleShape)
-                .background(appColors.illustrationBackground.copy(alpha = 0.5f))
-                .border(1.dp, appColors.cardBorder.copy(alpha = 0.5f), CircleShape)
+                .background(colors.illustrationBackground.copy(alpha = 0.5f))
+                .border(1.dp, colors.cardBorder.copy(alpha = 0.5f), CircleShape)
         ) {
             // Grid Lines
+            val primaryColor = DonutTheme.staticColorTokens.accentBlue
             androidx.compose.foundation.Canvas(modifier = Modifier.fillMaxSize().alpha(0.2f)) {
                 val dotSpacing = 24.dp.toPx()
                 val dotRadius = 1.dp.toPx()
-                val primaryColor = androidx.compose.ui.graphics.Color(0xFF13b6ec)
                 var y = 0f
                 while (y < size.height) {
                     var x = 0f
@@ -543,13 +543,13 @@ private fun CommunityIllustration() {
             modifier = Modifier
                 .fillMaxSize(0.6f)
                 .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.05f))
-                .border(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.3f), CircleShape)
+                .background(colors.primary.copy(alpha = 0.05f))
+                .border(1.dp, colors.primary.copy(alpha = 0.3f), CircleShape)
         )
 
         // Outer dashed circle (85%)
         val dashEffect = androidx.compose.ui.graphics.PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
-        val strokeColor = appColors.cardBorder.copy(alpha = 0.3f)
+        val strokeColor = colors.cardBorder.copy(alpha = 0.3f)
         androidx.compose.foundation.Canvas(modifier = Modifier.fillMaxSize(0.85f)) {
             drawCircle(
                 color = strokeColor,
@@ -568,14 +568,14 @@ private fun CommunityIllustration() {
                     .fillMaxSize()
                     .scale(pingScale)
                     .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primary.copy(alpha = pingAlpha))
+                    .background(colors.primary.copy(alpha = pingAlpha))
             )
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primary)
-                    .border(4.dp, MaterialTheme.colorScheme.background, CircleShape),
+                    .background(colors.primary)
+                    .border(DonutTheme.dimens.spacing4, colors.background, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -591,9 +591,9 @@ private fun CommunityIllustration() {
         AvatarBubble(
             offsetX = 80.dp,
             offsetY = (-60).dp,
-            size = 40.dp,
+            size = DonutTheme.dimens.spacing40,
             bounceOffset = bounce1.dp,
-            badgeColor = Color(0xFF22c55e), // Green
+            badgeColor = DonutTheme.staticColorTokens.accentGreen, // Green
             badgeIcon = Icons.Default.Code
         )
         AvatarBubble(
@@ -601,7 +601,7 @@ private fun CommunityIllustration() {
             offsetY = 65.dp,
             size = 36.dp,
             bounceOffset = bounce2.dp,
-            badgeColor = Color(0xFFa855f7), // Purple
+            badgeColor = DonutTheme.staticColorTokens.accentPurple, // Purple
             badgeIcon = Icons.Default.Brush
         )
         AvatarBubble(
@@ -616,9 +616,9 @@ private fun CommunityIllustration() {
         AvatarBubble(
             offsetX = 65.dp,
             offsetY = 60.dp,
-            size = 32.dp,
+            size = DonutTheme.dimens.spacing32,
             bounceOffset = bounce3.dp,
-            badgeColor = Color(0xFFeab308), // Yellow
+            badgeColor = DonutTheme.staticColorTokens.accentYellow, // Yellow
             badgeIcon = Icons.Default.School
         )
     }
@@ -634,21 +634,21 @@ private fun AvatarBubble(
     badgeIcon: ImageVector?,
     alpha: Float = 1f,
 ) {
-    val appColors = MaterialTheme.appColors
+    val colors = DonutTheme.colorTokens
 
     Box(modifier = Modifier.offset(x = offsetX, y = offsetY + bounceOffset)) {
         Box(
             modifier = Modifier
                 .size(size)
                 .clip(CircleShape)
-                .background(appColors.cardBackground)
-                .border(2.dp, MaterialTheme.colorScheme.background, CircleShape),
+                .background(colors.cardBackground)
+                .border(2.dp, colors.background, CircleShape),
             contentAlignment = Alignment.Center,
         ) {
             Icon(
                 imageVector = Icons.Default.Person,
                 contentDescription = null,
-                tint = appColors.iconOnAccent.copy(alpha = alpha),
+                tint = colors.iconOnAccent.copy(alpha = alpha),
                 modifier = Modifier.size(size * 0.6f),
             )
         }
@@ -660,7 +660,7 @@ private fun AvatarBubble(
                     .offset(x = (2).dp, y = (2).dp)
                     .clip(CircleShape)
                     .background(badgeColor)
-                    .border(1.5.dp, MaterialTheme.colorScheme.background, CircleShape),
+                    .border(1.5.dp, colors.background, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -682,7 +682,7 @@ private fun FloatingIcon(
     offsetY: Dp,
     size: Dp,
 ) {
-    val appColors = MaterialTheme.appColors
+    val colors = DonutTheme.colorTokens
 
     Box(
         modifier = Modifier
@@ -695,7 +695,7 @@ private fun FloatingIcon(
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = appColors.iconOnAccent,
+            tint = colors.iconOnAccent,
             modifier = Modifier.size(size * 0.5f),
         )
     }

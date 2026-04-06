@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
+import com.exa.android.reflekt.ui.theme.DonutTheme
 
 @Composable
 internal fun OrDivider() {
@@ -26,7 +26,7 @@ internal fun OrDivider() {
             text = "or continue with email",
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(horizontal = 16.dp),
+            modifier = Modifier.padding(horizontal = DonutTheme.dimens.spacing16),
             fontWeight = FontWeight.Medium,
         )
         HorizontalDivider(

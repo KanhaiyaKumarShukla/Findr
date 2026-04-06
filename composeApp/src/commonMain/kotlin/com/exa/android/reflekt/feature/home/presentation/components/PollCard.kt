@@ -33,18 +33,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.exa.android.reflekt.feature.home.presentation.HomeEvent
 import com.exa.android.reflekt.feature.home.presentation.PollPost
-import com.exa.android.reflekt.ui.theme.appColors
+import com.exa.android.reflekt.ui.theme.DonutTheme
+import com.exa.android.reflekt.ui.theme.DonutRadius
+import com.exa.android.reflekt.ui.theme.DonutTextSize
 
 @Composable
 internal fun PollCard(
     poll: PollPost,
     onEvent: (HomeEvent) -> Unit,
 ) {
-    val appColors = MaterialTheme.appColors
+    val colors = DonutTheme.colorTokens
     val avatarColor = poll.avatarColorArgb.toColor()
     val accentColor = colorFromKey(poll.accentColorKey)
     val hasVoted = poll.votedIndex != null
@@ -52,21 +52,20 @@ internal fun PollCard(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surface)
-            .border(1.dp, accentColor.copy(alpha = 0.25f), RoundedCornerShape(16.dp)),
+            .padding(horizontal = DonutTheme.dimens.spacing16, vertical = DonutTheme.dimens.spacing4)
+            .clip(RoundedCornerShape(DonutRadius.panel))
+            .background(colors.surface)
+            .border(DonutTheme.dimens.borderThin, accentColor.copy(alpha = 0.25f), RoundedCornerShape(DonutRadius.panel)),
     ) {
-        // Header
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(DonutTheme.dimens.spacing16),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(
                 modifier = Modifier
-                    .size(36.dp)
+                    .size(DonutTheme.dimens.avatarSizeMedium)
                     .clip(CircleShape)
                     .background(avatarColor.copy(alpha = 0.2f)),
                 contentAlignment = Alignment.Center,
@@ -75,11 +74,11 @@ internal fun PollCard(
                     imageVector = Icons.Default.Person,
                     contentDescription = null,
                     tint = avatarColor,
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(DonutTheme.dimens.iconSizeLarge),
                 )
             }
 
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(DonutTheme.dimens.spacing12))
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
@@ -89,30 +88,30 @@ internal fun PollCard(
                 )
                 Text(
                     text = poll.authorSubtitle,
-                    fontSize = 10.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontSize = DonutTextSize.caption,
+                    color = colors.onSurfaceVariant,
                 )
             }
 
             Box(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(6.dp))
+                    .clip(RoundedCornerShape(DonutRadius.md))
                     .background(accentColor.copy(alpha = 0.1f))
-                    .padding(horizontal = 8.dp, vertical = 4.dp),
+                    .padding(horizontal = DonutTheme.dimens.spacing8, vertical = DonutTheme.dimens.spacing4),
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    horizontalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing4),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Poll,
                         contentDescription = null,
                         tint = accentColor,
-                        modifier = Modifier.size(14.dp),
+                        modifier = Modifier.size(DonutTheme.dimens.iconSizeMedium),
                     )
                     Text(
                         text = "Poll",
-                        fontSize = 11.sp,
+                        fontSize = DonutTextSize.overline,
                         fontWeight = FontWeight.SemiBold,
                         color = accentColor,
                     )
@@ -123,28 +122,26 @@ internal fun PollCard(
                 Icon(
                     imageVector = Icons.Default.MoreHoriz,
                     contentDescription = "More",
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = colors.onSurfaceVariant,
                 )
             }
         }
 
-        // Question
         Text(
             text = poll.question,
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(horizontal = 16.dp),
+            color = colors.onSurface,
+            modifier = Modifier.padding(horizontal = DonutTheme.dimens.spacing16),
         )
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing12))
 
-        // Options
         Column(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = DonutTheme.dimens.spacing16)
                 .animateContentSize(),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing8),
         ) {
             poll.options.forEachIndexed { index, option ->
                 val isSelected = poll.votedIndex == index
@@ -158,35 +155,33 @@ internal fun PollCard(
                 val percentage = (fraction * 100).toInt()
 
                 if (hasVoted) {
-                    // Result view
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(44.dp)
-                            .clip(RoundedCornerShape(10.dp))
-                            .background(MaterialTheme.colorScheme.background)
+                            .height(DonutTheme.dimens.pollBarHeight)
+                            .clip(RoundedCornerShape(DonutRadius.xl))
+                            .background(colors.background)
                             .border(
-                                width = if (isSelected) 1.5.dp else 1.dp,
+                                width = if (isSelected) DonutTheme.dimens.borderMedium else DonutTheme.dimens.borderThin,
                                 color = if (isSelected) accentColor.copy(alpha = 0.6f)
-                                else MaterialTheme.colorScheme.outline.copy(alpha = 0.2f),
-                                shape = RoundedCornerShape(10.dp),
+                                else colors.outline.copy(alpha = 0.2f),
+                                shape = RoundedCornerShape(DonutRadius.xl),
                             ),
                     ) {
-                        // Progress fill
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth(animatedFraction)
-                                .height(44.dp)
+                                .height(DonutTheme.dimens.pollBarHeight)
                                 .background(
                                     if (isSelected) accentColor.copy(alpha = 0.15f)
-                                    else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f),
+                                    else colors.onSurface.copy(alpha = 0.05f),
                                 ),
                         )
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(44.dp)
-                                .padding(horizontal = 12.dp),
+                                .height(DonutTheme.dimens.pollBarHeight)
+                                .padding(horizontal = DonutTheme.dimens.spacing12),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             if (isSelected) {
@@ -194,60 +189,56 @@ internal fun PollCard(
                                     imageVector = Icons.Default.CheckCircle,
                                     contentDescription = null,
                                     tint = accentColor,
-                                    modifier = Modifier.size(16.dp),
+                                    modifier = Modifier.size(DonutTheme.dimens.iconSizeNormal),
                                 )
-                                Spacer(modifier = Modifier.width(6.dp))
+                                Spacer(modifier = Modifier.width(DonutTheme.dimens.spacing6))
                             }
                             Text(
                                 text = option.text,
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
-                                color = if (isSelected) accentColor
-                                else MaterialTheme.colorScheme.onSurface,
+                                color = if (isSelected) accentColor else colors.onSurface,
                                 modifier = Modifier.weight(1f),
                             )
                             Text(
                                 text = "$percentage%",
-                                fontSize = 13.sp,
+                                fontSize = DonutTextSize.button,
                                 fontWeight = FontWeight.Bold,
-                                color = if (isSelected) accentColor
-                                else MaterialTheme.colorScheme.onSurfaceVariant,
+                                color = if (isSelected) accentColor else colors.onSurfaceVariant,
                             )
                         }
                     }
                 } else {
-                    // Voting view
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(44.dp)
-                            .clip(RoundedCornerShape(10.dp))
+                            .height(DonutTheme.dimens.pollBarHeight)
+                            .clip(RoundedCornerShape(DonutRadius.xl))
                             .border(
-                                1.dp,
-                                MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
-                                RoundedCornerShape(10.dp),
+                                DonutTheme.dimens.borderThin,
+                                colors.outline.copy(alpha = 0.3f),
+                                RoundedCornerShape(DonutRadius.xl),
                             )
                             .clickable { onEvent(HomeEvent.PollVoted(poll.id, index)) }
-                            .padding(horizontal = 12.dp),
+                            .padding(horizontal = DonutTheme.dimens.spacing12),
                         contentAlignment = Alignment.CenterStart,
                     ) {
                         Text(
                             text = option.text,
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = colors.onSurface,
                         )
                     }
                 }
             }
         }
 
-        // Footer
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing12))
         Text(
             text = "${poll.totalVotes} votes",
-            fontSize = 12.sp,
+            fontSize = DonutTextSize.small,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+            modifier = Modifier.padding(horizontal = DonutTheme.dimens.spacing16, vertical = DonutTheme.dimens.spacing8),
         )
     }
 }

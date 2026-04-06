@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.sp
 import com.exa.android.reflekt.feature.auth.presentation.registration.RegistrationEvent
 import com.exa.android.reflekt.feature.auth.presentation.registration.RegistrationUiState
 import com.exa.android.reflekt.ui.components.chip.FindrFilterChip
-import com.exa.android.reflekt.ui.theme.appColors
+import com.exa.android.reflekt.ui.theme.DonutTheme
 
 private val availableInterests = listOf(
     "Technology", "Design",
@@ -35,13 +35,13 @@ internal fun StepThree(
     uiState: RegistrationUiState,
     onEvent: (RegistrationEvent) -> Unit,
 ) {
-    val appColors = MaterialTheme.appColors
+    val colors = DonutTheme.colorTokens
 
     Column {
         Text(
             text = "Your Interests",
             style = MaterialTheme.typography.headlineLarge,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = colors.onBackground,
             fontWeight = FontWeight.Bold,
             letterSpacing = (-0.5).sp,
         )
@@ -49,7 +49,7 @@ internal fun StepThree(
         Text(
             text = "Pick a few topics you're interested in.",
             style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = colors.onSurfaceVariant,
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -59,7 +59,7 @@ internal fun StepThree(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(24.dp))
-                .background(appColors.formCardBackground.copy(alpha = 0.7f))
+                .background(colors.formCardBackground.copy(alpha = 0.7f))
                 .padding(24.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {

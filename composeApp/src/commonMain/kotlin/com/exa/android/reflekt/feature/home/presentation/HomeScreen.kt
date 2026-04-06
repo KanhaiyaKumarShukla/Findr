@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.exa.android.reflekt.feature.home.presentation.components.AnnouncementCard
 import com.exa.android.reflekt.feature.home.presentation.components.BottomNavBar
 import com.exa.android.reflekt.feature.home.presentation.components.BugPostCard
@@ -25,6 +24,7 @@ import com.exa.android.reflekt.feature.home.presentation.components.LiveNowSecti
 import com.exa.android.reflekt.feature.home.presentation.components.PollCard
 import com.exa.android.reflekt.feature.home.presentation.components.ProjectPostCard
 import com.exa.android.reflekt.feature.home.presentation.components.TrendingNewsTicker
+import com.exa.android.reflekt.ui.theme.DonutTheme
 
 /**
  * Home screen — thin orchestrator.
@@ -109,7 +109,7 @@ fun HomeScreen(
                 }
             }
 
-            item { Spacer(modifier = Modifier.height(16.dp)) }
+            item { Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing16)) }
         }
     }
 }

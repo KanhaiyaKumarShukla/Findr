@@ -12,7 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
+import com.exa.android.reflekt.ui.theme.DonutTheme
 
 @Composable
 internal fun FooterSection(
@@ -20,7 +20,7 @@ internal fun FooterSection(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing16),
     ) {
         // Sign up prompt
         Row(

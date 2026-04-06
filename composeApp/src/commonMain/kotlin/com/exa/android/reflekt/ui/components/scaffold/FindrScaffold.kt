@@ -25,6 +25,8 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import com.exa.android.reflekt.ui.theme.DonutTheme
+import com.exa.android.reflekt.ui.theme.DonutRadius
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -99,7 +101,7 @@ fun FindrScaffold(
             ) { data ->
                 Snackbar(
                     snackbarData = data,
-                    shape = RoundedCornerShape(12.dp),
+                    shape = RoundedCornerShape(DonutRadius.card),
                     containerColor = MaterialTheme.colorScheme.inverseSurface,
                     contentColor = MaterialTheme.colorScheme.inverseOnSurface,
                     actionColor = MaterialTheme.colorScheme.primary,
@@ -107,7 +109,7 @@ fun FindrScaffold(
             }
         },
         containerColor = containerColor,
-        contentWindowInsets = WindowInsets(0.dp),
+        contentWindowInsets = WindowInsets(DonutTheme.dimens.spacing0),
     ) { paddingValues ->
         Box(modifier = Modifier.fillMaxSize()) {
             content(paddingValues)
@@ -145,10 +147,10 @@ fun FindrErrorSnackbar(
         Snackbar(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(DonutTheme.dimens.spacing16),
             containerColor = MaterialTheme.colorScheme.error,
             contentColor = MaterialTheme.colorScheme.onError,
-            shape = RoundedCornerShape(12.dp),
+            shape = RoundedCornerShape(DonutRadius.card),
             action = {
                 TextButton(onClick = onDismiss) {
                     Text(text = actionLabel, color = MaterialTheme.colorScheme.onError)

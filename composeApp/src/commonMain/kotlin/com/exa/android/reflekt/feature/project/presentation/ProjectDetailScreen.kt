@@ -78,7 +78,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.exa.android.reflekt.ui.theme.Primary
-import com.exa.android.reflekt.ui.theme.appColors
+import com.exa.android.reflekt.ui.theme.DonutTheme
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // Data Models
@@ -129,13 +129,13 @@ fun ProjectDetailScreen(
     onBack: () -> Unit,
     onEnroll: () -> Unit,
 ) {
-    val project = remember { sampleProject() }
+    val project = sampleProject()
     var isDescriptionExpanded by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+            .background(DonutTheme.colorTokens.background),
     ) {
         Column(
             modifier = Modifier
@@ -216,9 +216,9 @@ private fun HeroSection(onBack: () -> Unit) {
                 .background(
                     Brush.linearGradient(
                         colors = listOf(
-                            Color(0xFF0C4A6E),
-                            Color(0xFF075985),
-                            Color(0xFF0284C7),
+                            DonutTheme.colorTokens.surfaceVariant,
+                            DonutTheme.colorTokens.surfaceVariant,
+                            DonutTheme.staticColorTokens.accentBlue,
                             Primary.copy(alpha = 0.8f),
                         ),
                         start = Offset.Zero,
@@ -240,7 +240,7 @@ private fun HeroSection(onBack: () -> Unit) {
                     Brush.verticalGradient(
                         colors = listOf(
                             Color.Transparent,
-                            MaterialTheme.colorScheme.background,
+                            DonutTheme.colorTokens.background,
                         ),
                     ),
                 ),
@@ -364,10 +364,10 @@ private fun ProjectHeaderCard(project: ProjectDetail) {
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surface)
+            .background(DonutTheme.colorTokens.surface)
             .border(
                 width = 1.dp,
-                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+                color = DonutTheme.colorTokens.outline.copy(alpha = 0.3f),
                 shape = RoundedCornerShape(16.dp),
             )
             .padding(20.dp),
@@ -399,13 +399,13 @@ private fun ProjectHeaderCard(project: ProjectDetail) {
                     imageVector = Icons.Default.Schedule,
                     contentDescription = null,
                     modifier = Modifier.size(14.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = DonutTheme.colorTokens.onSurfaceVariant,
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = project.timeAgo,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = DonutTheme.colorTokens.onSurfaceVariant,
                 )
             }
         }
@@ -419,7 +419,7 @@ private fun ProjectHeaderCard(project: ProjectDetail) {
                 fontWeight = FontWeight.Bold,
                 lineHeight = 30.sp,
             ),
-            color = MaterialTheme.colorScheme.onBackground,
+            color = DonutTheme.colorTokens.onBackground,
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -429,7 +429,7 @@ private fun ProjectHeaderCard(project: ProjectDetail) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp)
-                .background(MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)),
+                .background(DonutTheme.colorTokens.outlineVariant.copy(alpha = 0.5f)),
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -469,12 +469,12 @@ private fun ProjectHeaderCard(project: ProjectDetail) {
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontWeight = FontWeight.SemiBold,
                     ),
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = DonutTheme.colorTokens.onBackground,
                 )
                 Text(
                     text = project.authorSubtitle,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = DonutTheme.colorTokens.onSurfaceVariant,
                 )
             }
         }
@@ -498,7 +498,7 @@ private fun TeamStatusSection(spotsFilled: Int, spotsTotal: Int) {
                     fontWeight = FontWeight.SemiBold,
                     letterSpacing = 1.2.sp,
                 ),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = DonutTheme.colorTokens.onSurfaceVariant,
             )
             Text(
                 text = "$spotsFilled/$spotsTotal Spots Filled",
@@ -523,7 +523,7 @@ private fun TeamStatusSection(spotsFilled: Int, spotsTotal: Int) {
                 modifier = Modifier
                     .fillMaxSize()
                     .background(
-                        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.15f),
+                        DonutTheme.colorTokens.onSurfaceVariant.copy(alpha = 0.15f),
                     ),
             )
             // Fill
@@ -545,7 +545,7 @@ private fun TeamStatusSection(spotsFilled: Int, spotsTotal: Int) {
         Text(
             text = "Only $spotsRemaining roles remaining. Application closes in 48h.",
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = DonutTheme.colorTokens.onSurfaceVariant,
         )
     }
 }
@@ -562,7 +562,7 @@ private fun AboutSection(
             style = MaterialTheme.typography.titleLarge.copy(
                 fontWeight = FontWeight.Bold,
             ),
-            color = MaterialTheme.colorScheme.onBackground,
+            color = DonutTheme.colorTokens.onBackground,
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -572,7 +572,7 @@ private fun AboutSection(
             style = MaterialTheme.typography.bodyMedium.copy(
                 lineHeight = 22.sp,
             ),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = DonutTheme.colorTokens.onSurfaceVariant,
             maxLines = if (isExpanded) Int.MAX_VALUE else 3,
             overflow = TextOverflow.Ellipsis,
         )
@@ -615,7 +615,7 @@ private fun OpenRolesSection(roles: List<OpenRole>) {
             style = MaterialTheme.typography.titleLarge.copy(
                 fontWeight = FontWeight.Bold,
             ),
-            color = MaterialTheme.colorScheme.onBackground,
+            color = DonutTheme.colorTokens.onBackground,
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -634,12 +634,12 @@ private fun RoleCard(role: OpenRole) {
     val borderColor = if (role.isHighlighted) {
         Primary.copy(alpha = 0.3f)
     } else {
-        MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+        DonutTheme.colorTokens.outline.copy(alpha = 0.3f)
     }
     val backgroundColor = if (role.isHighlighted) {
         Primary.copy(alpha = 0.05f)
     } else {
-        MaterialTheme.colorScheme.surface
+        DonutTheme.colorTokens.surface
     }
 
     Box(
@@ -661,7 +661,7 @@ private fun RoleCard(role: OpenRole) {
                     style = MaterialTheme.typography.titleMedium.copy(
                         fontWeight = FontWeight.Bold,
                     ),
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = DonutTheme.colorTokens.onBackground,
                 )
 
                 if (role.isHighlighted) {
@@ -674,7 +674,7 @@ private fun RoleCard(role: OpenRole) {
             Text(
                 text = role.description,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = DonutTheme.colorTokens.onSurfaceVariant,
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -720,13 +720,13 @@ private fun SkillTag(text: String) {
         style = MaterialTheme.typography.bodySmall.copy(
             fontWeight = FontWeight.Medium,
         ),
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        color = DonutTheme.colorTokens.onSurfaceVariant,
         modifier = Modifier
             .clip(RoundedCornerShape(4.dp))
-            .background(MaterialTheme.colorScheme.background)
+            .background(DonutTheme.colorTokens.background)
             .border(
                 1.dp,
-                MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+                DonutTheme.colorTokens.outline.copy(alpha = 0.3f),
                 RoundedCornerShape(4.dp),
             )
             .padding(horizontal = 10.dp, vertical = 6.dp),
@@ -746,7 +746,7 @@ private fun CollaboratorsSection(collaborators: List<Collaborator>) {
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.Bold,
                 ),
-                color = MaterialTheme.colorScheme.onBackground,
+                color = DonutTheme.colorTokens.onBackground,
             )
             Text(
                 text = "View All",
@@ -785,7 +785,7 @@ private fun CollaboratorsSection(collaborators: List<Collaborator>) {
                         .clip(CircleShape)
                         .border(
                             width = 2.dp,
-                            color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+                            color = DonutTheme.colorTokens.outline.copy(alpha = 0.3f),
                             shape = CircleShape,
                         )
                         .clickable(
@@ -799,7 +799,7 @@ private fun CollaboratorsSection(collaborators: List<Collaborator>) {
                         imageVector = Icons.Default.Add,
                         contentDescription = "Invite",
                         modifier = Modifier.size(24.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        tint = DonutTheme.colorTokens.onSurfaceVariant,
                     )
                 }
 
@@ -810,7 +810,7 @@ private fun CollaboratorsSection(collaborators: List<Collaborator>) {
                     style = MaterialTheme.typography.bodySmall.copy(
                         fontWeight = FontWeight.Medium,
                     ),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = DonutTheme.colorTokens.onSurfaceVariant,
                 )
             }
         }
@@ -832,7 +832,7 @@ private fun CollaboratorAvatar(collaborator: Collaborator) {
                         ),
                     ),
                 )
-                .border(2.dp, MaterialTheme.colorScheme.surface, CircleShape),
+                .border(2.dp, DonutTheme.colorTokens.surface, CircleShape),
             contentAlignment = Alignment.Center,
         ) {
             Text(
@@ -851,7 +851,7 @@ private fun CollaboratorAvatar(collaborator: Collaborator) {
             style = MaterialTheme.typography.bodySmall.copy(
                 fontWeight = FontWeight.Medium,
             ),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = DonutTheme.colorTokens.onSurfaceVariant,
         )
     }
 }
@@ -866,7 +866,7 @@ private fun DiscussionSection(comments: List<DiscussionComment>) {
             style = MaterialTheme.typography.titleLarge.copy(
                 fontWeight = FontWeight.Bold,
             ),
-            color = MaterialTheme.colorScheme.onBackground,
+            color = DonutTheme.colorTokens.onBackground,
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -907,10 +907,10 @@ private fun DiscussionSection(comments: List<DiscussionComment>) {
             },
             shape = RoundedCornerShape(50),
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
+                unfocusedBorderColor = DonutTheme.colorTokens.outline.copy(alpha = 0.5f),
                 focusedBorderColor = Primary,
-                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                unfocusedContainerColor = DonutTheme.colorTokens.surface,
+                focusedContainerColor = DonutTheme.colorTokens.surface,
             ),
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
@@ -923,12 +923,12 @@ private fun CommentBubble(comment: DiscussionComment) {
     val bgColor = if (comment.isOwner) {
         Primary.copy(alpha = 0.1f)
     } else {
-        MaterialTheme.colorScheme.surface
+        DonutTheme.colorTokens.surface
     }
     val borderColor = if (comment.isOwner) {
         Primary.copy(alpha = 0.2f)
     } else {
-        MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
+        DonutTheme.colorTokens.outline.copy(alpha = 0.2f)
     }
 
     Row(modifier = Modifier.fillMaxWidth()) {
@@ -994,7 +994,7 @@ private fun CommentBubble(comment: DiscussionComment) {
                         style = MaterialTheme.typography.bodySmall.copy(
                             fontWeight = FontWeight.Bold,
                         ),
-                        color = if (comment.isOwner) Primary else MaterialTheme.colorScheme.onBackground,
+                        color = if (comment.isOwner) Primary else DonutTheme.colorTokens.onBackground,
                     )
 
                     if (comment.isOwner) {
@@ -1019,7 +1019,7 @@ private fun CommentBubble(comment: DiscussionComment) {
                     style = MaterialTheme.typography.bodySmall.copy(
                         fontSize = 10.sp,
                     ),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = DonutTheme.colorTokens.onSurfaceVariant,
                 )
             }
 
@@ -1028,7 +1028,7 @@ private fun CommentBubble(comment: DiscussionComment) {
             Text(
                 text = comment.message,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = DonutTheme.colorTokens.onSurfaceVariant,
             )
         }
     }
@@ -1046,8 +1046,8 @@ private fun EnrollButton(
                 Brush.verticalGradient(
                     colors = listOf(
                         Color.Transparent,
-                        MaterialTheme.colorScheme.background.copy(alpha = 0.9f),
-                        MaterialTheme.colorScheme.background,
+                        DonutTheme.colorTokens.background.copy(alpha = 0.9f),
+                        DonutTheme.colorTokens.background,
                     ),
                 ),
             )
@@ -1100,13 +1100,14 @@ private fun EnrollButton(
 // Sample Data
 // ═══════════════════════════════════════════════════════════════════════════════
 
+@Composable
 private fun sampleProject() = ProjectDetail(
     category = "Tech Startup",
     title = "EcoTracker: Campus Carbon Footprint App",
     timeAgo = "2 days ago",
     authorName = "Alex Johnson",
     authorSubtitle = "Computer Science \u2022 Junior",
-    authorAvatarColor = Color(0xFF6366F1),
+    authorAvatarColor = DonutTheme.staticColorTokens.accentIndigo,
     spotsTotal = 5,
     spotsFilled = 3,
     description = "We are building a cross-platform mobile app to track carbon footprints for campus buildings in real-time. The goal is to gamify energy saving for students. We have the initial prototype ready in Figma and are looking for developers to bring it to life using React Native.",
@@ -1124,20 +1125,20 @@ private fun sampleProject() = ProjectDetail(
         ),
     ),
     collaborators = listOf(
-        Collaborator(name = "You", avatarColor = Color(0xFF2563EB)),
-        Collaborator(name = "Sarah", avatarColor = Color(0xFFDC2626)),
-        Collaborator(name = "Mike", avatarColor = Color(0xFF22C55E)),
+        Collaborator(name = "You", avatarColor = DonutTheme.staticColorTokens.accentBlue),
+        Collaborator(name = "Sarah", avatarColor = DonutTheme.colorTokens.error),
+        Collaborator(name = "Mike", avatarColor = DonutTheme.staticColorTokens.accentGreen),
     ),
     comments = listOf(
         DiscussionComment(
             authorName = "Dave M.",
-            avatarColor = Color(0xFFF97316),
+            avatarColor = DonutTheme.staticColorTokens.accentOrange,
             message = "Is this a paid project or for credit?",
             timeAgo = "1h ago",
         ),
         DiscussionComment(
             authorName = "Alex Johnson",
-            avatarColor = Color(0xFF6366F1),
+            avatarColor = DonutTheme.staticColorTokens.accentIndigo,
             message = "Hey Dave! It's unpaid but great for your portfolio. We might enter the campus hackathon though!",
             timeAgo = "30m ago",
             isOwner = true,

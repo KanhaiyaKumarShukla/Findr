@@ -1,7 +1,6 @@
 package com.exa.android.reflekt.feature.home.presentation.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -36,10 +35,12 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import com.exa.android.reflekt.feature.home.presentation.BottomNavItem
 import com.exa.android.reflekt.feature.home.presentation.HomeEvent
+import com.exa.android.reflekt.ui.theme.DonutTheme
+import com.exa.android.reflekt.ui.theme.DonutTextSize
 
 private fun String.toNavIcon(): ImageVector = when (this) {
     "home"    -> Icons.Default.Home
@@ -50,7 +51,6 @@ private fun String.toNavIcon(): ImageVector = when (this) {
     else      -> Icons.Default.Home
 }
 
-/** Fixed bottom navigation bar with optional elevated FAB. */
 @Composable
 internal fun BottomNavBar(
     items: List<BottomNavItem>,
@@ -65,7 +65,7 @@ internal fun BottomNavBar(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(1.dp)
+                .height(DonutTheme.dimens.dividerThickness)
                 .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
                 .align(Alignment.TopCenter),
         )
@@ -73,7 +73,7 @@ internal fun BottomNavBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp, vertical = 8.dp),
+                .padding(horizontal = DonutTheme.dimens.spacing8, vertical = DonutTheme.dimens.spacing8),
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.Bottom,
         ) {
@@ -81,9 +81,9 @@ internal fun BottomNavBar(
                 if (item.isFab) {
                     Box(
                         modifier = Modifier
-                            .offset(y = (-16).dp)
-                            .size(56.dp)
-                            .shadow(12.dp, CircleShape, spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f))
+                            .offset(y = -DonutTheme.dimens.spacing16)
+                            .size(DonutTheme.dimens.fabSize)
+                            .shadow(DonutTheme.dimens.elevationFab + DonutTheme.dimens.elevationMedium, CircleShape, spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f))
                             .clip(CircleShape)
                             .background(MaterialTheme.colorScheme.primary)
                             .clickable(
@@ -96,7 +96,7 @@ internal fun BottomNavBar(
                             imageVector = item.iconKey.toNavIcon(),
                             contentDescription = item.label,
                             tint = Color.White,
-                            modifier = Modifier.size(28.dp),
+                            modifier = Modifier.size(DonutTheme.dimens.spacing28),
                         )
                     }
                 } else {
@@ -106,7 +106,7 @@ internal fun BottomNavBar(
                                 indication = null,
                                 interactionSource = remember { MutableInteractionSource() },
                             ) { onEvent(HomeEvent.BottomNavClicked(index)) }
-                            .padding(horizontal = 12.dp, vertical = 4.dp),
+                            .padding(horizontal = DonutTheme.dimens.spacing12, vertical = DonutTheme.dimens.spacing4),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Icon(
@@ -114,14 +114,14 @@ internal fun BottomNavBar(
                             contentDescription = item.label,
                             tint = if (item.isSelected) MaterialTheme.colorScheme.primary
                                    else MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(24.dp),
+                            modifier = Modifier.size(DonutTheme.dimens.iconSize2Xl),
                         )
-                        Spacer(modifier = Modifier.height(4.dp))
+                        Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing4))
                         Text(
                             text = item.label.uppercase(),
-                            fontSize = 10.sp,
+                            fontSize = DonutTextSize.caption,
                             fontWeight = FontWeight.Bold,
-                            letterSpacing = 0.5.sp,
+                            letterSpacing = TextUnit(0.5f, TextUnitType.Sp),
                             color = if (item.isSelected) MaterialTheme.colorScheme.primary
                                     else MaterialTheme.colorScheme.onSurfaceVariant,
                         )

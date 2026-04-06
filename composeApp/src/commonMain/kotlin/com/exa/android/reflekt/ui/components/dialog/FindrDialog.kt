@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import com.exa.android.reflekt.ui.theme.DonutTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -60,23 +61,23 @@ fun FindrDialog(
 ) {
     BasicAlertDialog(onDismissRequest = onDismiss) {
         Surface(
-            shape = RoundedCornerShape(24.dp),
+            shape = RoundedCornerShape(DonutTheme.dimens.spacing24),
             color = MaterialTheme.colorScheme.surface,
             tonalElevation = 6.dp,
         ) {
             Column(
-                modifier = Modifier.padding(24.dp),
+                modifier = Modifier.padding(DonutTheme.dimens.spacing24),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 if (icon != null) {
                     Icon(
                         imageVector = icon,
                         contentDescription = null,
-                        modifier = Modifier.size(48.dp),
+                        modifier = Modifier.size(DonutTheme.dimens.spacing48),
                         tint = iconTint ?: if (isDestructive) MaterialTheme.colorScheme.error
                         else MaterialTheme.colorScheme.primary,
                     )
-                    Spacer(Modifier.height(16.dp))
+                    Spacer(Modifier.height(DonutTheme.dimens.spacing16))
                 }
 
                 Text(
@@ -87,7 +88,7 @@ fun FindrDialog(
                     textAlign = TextAlign.Center,
                 )
 
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(DonutTheme.dimens.spacing8))
 
                 Text(
                     text = message,
@@ -96,7 +97,7 @@ fun FindrDialog(
                     textAlign = TextAlign.Center,
                 )
 
-                Spacer(Modifier.height(24.dp))
+                Spacer(Modifier.height(DonutTheme.dimens.spacing24))
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -138,22 +139,22 @@ fun FindrInfoDialog(
 ) {
     BasicAlertDialog(onDismissRequest = onDismiss) {
         Surface(
-            shape = RoundedCornerShape(24.dp),
+            shape = RoundedCornerShape(DonutTheme.dimens.spacing24),
             color = MaterialTheme.colorScheme.surface,
             tonalElevation = 6.dp,
         ) {
             Column(
-                modifier = Modifier.padding(24.dp),
+                modifier = Modifier.padding(DonutTheme.dimens.spacing24),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 if (icon != null) {
                     Icon(
                         imageVector = icon,
                         contentDescription = null,
-                        modifier = Modifier.size(48.dp),
+                        modifier = Modifier.size(DonutTheme.dimens.spacing48),
                         tint = MaterialTheme.colorScheme.primary,
                     )
-                    Spacer(Modifier.height(16.dp))
+                    Spacer(Modifier.height(DonutTheme.dimens.spacing16))
                 }
 
                 Text(
@@ -163,7 +164,7 @@ fun FindrInfoDialog(
                     textAlign = TextAlign.Center,
                 )
 
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(DonutTheme.dimens.spacing8))
 
                 Text(
                     text = message,
@@ -172,7 +173,7 @@ fun FindrInfoDialog(
                     textAlign = TextAlign.Center,
                 )
 
-                Spacer(Modifier.height(24.dp))
+                Spacer(Modifier.height(DonutTheme.dimens.spacing24))
 
                 FindrTextButton(
                     text = dismissLabel,

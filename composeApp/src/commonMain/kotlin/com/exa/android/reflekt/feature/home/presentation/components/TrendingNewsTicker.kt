@@ -11,10 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,11 +19,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.exa.android.reflekt.feature.home.presentation.NewsTicker
+import com.exa.android.reflekt.ui.theme.DonutTheme
+import com.exa.android.reflekt.ui.theme.DonutTextSize
 
-/** Auto-scrolling marquee of campus buzz items. */
+// Auto-scrolling marquee of campus buzz items.
 @Composable
 internal fun TrendingNewsTicker(items: List<NewsTicker>) {
     val scrollState = rememberScrollState()
@@ -44,24 +41,24 @@ internal fun TrendingNewsTicker(items: List<NewsTicker>) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 20.dp)
+            .padding(top = DonutTheme.dimens.spacing20)
             .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.08f))
-            .padding(vertical = 10.dp),
+            .padding(vertical = DonutTheme.dimens.spacing10),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = "CAMPUS BUZZ",
-            fontSize = 10.sp,
+            fontSize = DonutTextSize.caption,
             fontWeight = FontWeight.ExtraBold,
             color = MaterialTheme.colorScheme.primary,
-            letterSpacing = 0.5.sp,
-            modifier = Modifier.padding(start = 16.dp, end = 12.dp),
+            letterSpacing = androidx.compose.ui.unit.TextUnit(0.5f, androidx.compose.ui.unit.TextUnitType.Sp),
+            modifier = Modifier.padding(start = DonutTheme.dimens.spacing16, end = DonutTheme.dimens.spacing12),
         )
 
         Box(
             modifier = Modifier
-                .width(1.dp)
-                .height(16.dp)
+                .width(DonutTheme.dimens.dividerThickness)
+                .height(DonutTheme.dimens.tickerHeight)
                 .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)),
         )
 
@@ -69,24 +66,24 @@ internal fun TrendingNewsTicker(items: List<NewsTicker>) {
             modifier = Modifier
                 .weight(1f)
                 .horizontalScroll(scrollState)
-                .padding(horizontal = 12.dp),
-            horizontalArrangement = Arrangement.spacedBy(24.dp),
+                .padding(horizontal = DonutTheme.dimens.spacing12),
+            horizontalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing24),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             items.forEach { item ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    horizontalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing6),
                 ) {
                     Text(
                         text = "#",
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary,
-                        fontSize = 14.sp,
+                        fontSize = DonutTextSize.body,
                     )
                     Text(
                         text = item.text,
-                        fontSize = 14.sp,
+                        fontSize = DonutTextSize.body,
                         fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onBackground,
                         maxLines = 1,

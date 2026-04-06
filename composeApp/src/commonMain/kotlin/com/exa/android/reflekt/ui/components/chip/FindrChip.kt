@@ -17,6 +17,7 @@ import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import com.exa.android.reflekt.ui.theme.DonutTheme
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -55,8 +56,8 @@ fun FindrFilterChip(
 ) {
     Box(
         modifier = modifier
-            .height(48.dp)
-            .clip(RoundedCornerShape(16.dp))
+            .height(DonutTheme.dimens.spacing48)
+            .clip(RoundedCornerShape(DonutTheme.dimens.spacing16))
             .background(
                 if (selected) MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
                 else MaterialTheme.colorScheme.background.copy(alpha = 0.5f),
@@ -65,7 +66,7 @@ fun FindrFilterChip(
                 width = 1.dp,
                 color = if (selected) MaterialTheme.colorScheme.primary
                 else MaterialTheme.colorScheme.outline,
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(DonutTheme.dimens.spacing16),
             )
             .clickable { onToggle() },
         contentAlignment = Alignment.Center,
@@ -76,7 +77,7 @@ fun FindrFilterChip(
         ) {
             if (leadingIcon != null) {
                 leadingIcon()
-                Spacer(Modifier.width(8.dp))
+                Spacer(Modifier.width(DonutTheme.dimens.spacing8))
             }
             Text(
                 text = label,
@@ -120,7 +121,7 @@ fun FindrInputChip(
                 Icon(
                     imageVector = Icons.Filled.Close,
                     contentDescription = "Remove $label",
-                    modifier = Modifier.padding(start = 4.dp),
+                    modifier = Modifier.padding(start = DonutTheme.dimens.spacing4),
                 )
             }
         } else null,
@@ -185,8 +186,8 @@ fun FindrChipGroup(
 ) {
     FlowRow(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing8),
+        verticalArrangement = Arrangement.spacedBy(DonutTheme.dimens.spacing8),
     ) {
         items.forEach { item ->
             FindrFilterChip(

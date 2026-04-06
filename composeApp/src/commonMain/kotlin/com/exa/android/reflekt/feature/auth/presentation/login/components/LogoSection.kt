@@ -1,6 +1,7 @@
 package com.exa.android.reflekt.feature.auth.presentation.login.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -22,29 +23,28 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.exa.android.reflekt.ui.theme.appColors
-import androidx.compose.foundation.layout.Box
+import com.exa.android.reflekt.ui.theme.DonutTheme
+import com.exa.android.reflekt.ui.theme.DonutTextSize
+import com.exa.android.reflekt.ui.theme.DonutLineHeight
 
 @Composable
 internal fun LogoSection() {
-    val appColors = MaterialTheme.appColors
+    val colors = DonutTheme.colorTokens
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(vertical = 16.dp),
+        modifier = Modifier.padding(vertical = DonutTheme.dimens.spacing16),
     ) {
-        // Logo icon box
         Box(
             modifier = Modifier
-                .size(80.dp)
-                .clip(RoundedCornerShape(20.dp))
+                .size(DonutTheme.dimens.spacing80)
+                .clip(RoundedCornerShape(DonutTheme.dimens.spacing20))
                 .background(
                     brush = Brush.linearGradient(
                         colors = listOf(
-                            MaterialTheme.colorScheme.primary,
-                            appColors.accentBlue,
+                            colors.primary,
+                            colors.accentBlue,
                         ),
                     ),
                 ),
@@ -53,38 +53,36 @@ internal fun LogoSection() {
             Icon(
                 imageVector = Icons.Default.School,
                 contentDescription = "CampusConnect Logo",
-                tint = appColors.iconOnAccent,
-                modifier = Modifier.size(40.dp),
+                tint = colors.iconOnAccent,
+                modifier = Modifier.size(DonutTheme.dimens.spacing40),
             )
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing24))
 
-        // App name
         Text(
             text = buildAnnotatedString {
-                withStyle(SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
+                withStyle(SpanStyle(color = colors.onBackground)) {
                     append("Campus")
                 }
-                withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                withStyle(SpanStyle(color = colors.primary)) {
                     append("Connect")
                 }
             },
-            fontSize = 30.sp,
+            fontSize = DonutTextSize.hero,
             fontWeight = FontWeight.Bold,
             letterSpacing = (-0.5).sp,
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(DonutTheme.dimens.spacing8))
 
-        // Tagline
         Text(
             text = "Connect. Collaborate. Get Hired.",
             style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = colors.onSurfaceVariant,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Medium,
-            lineHeight = 28.sp,
+            lineHeight = DonutLineHeight.title,
         )
     }
 }
